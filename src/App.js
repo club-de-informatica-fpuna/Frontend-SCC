@@ -1,16 +1,12 @@
 import React, {Component} from 'react';
-import {Switch, Route} from 'react-router-dom';
 
-import Home from './components/home'
+import Home from './template/home'
 
 class App extends Component {
   render(){
+    const { path } = this.props.match;
     return (
-      <div className="">
-        <Switch>
-          <Route exact path="/" component={Home}/>
-        </Switch>
-      </div>
+      <Home pathMatch={path}/>
     );
   }
 }
