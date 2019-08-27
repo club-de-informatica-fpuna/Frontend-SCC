@@ -1,0 +1,44 @@
+{
+    "Alumnos": {
+        "alumnos": [
+            { "getByCi": "/alumnos/108108" }
+        ]
+    },
+
+    "Socios": {
+        "socios": [
+            { "getByCi": "/socios/108108" }
+        ]
+    },
+    "Prestamos": {
+        "prestamos": [
+            { "getStateFilter": "/prestamos?state=P" },
+            { "getStateFilter": "/prestamos/alumno/65464?state=P" },
+            { "getStateFilter": "/prestamos/alumno/65464" }
+        ]
+    },
+    "Equipo": {
+        "equipo": [
+            { "getFilter": "/equipo?state=d" },
+            { "getAll": "/equipo?state=d" }
+        ]
+    },
+    "Ventas": {
+        "ventas": [
+            { "getProdFilter": "/ventas" },
+            { "getHistorySales": "/ventas/historial" }
+        ]
+    },
+    "Productos": {
+        "productos": [
+            { "getAll": "/productos" },
+            { "getFilter": "/productos?@Requestparam=&" },
+            { "getStatistics": "productos/analitics" }
+        ]
+    },
+    "Categorias": {
+        "categorias": [
+            { "getCategorias": "/categorias" }
+        ]
+    }
+}
