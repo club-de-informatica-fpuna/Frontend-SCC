@@ -12,9 +12,9 @@ export default class Body extends Component {
 
     render(){
         return(
-            <div>
-                <Menu showSide = {this.props.showMenu} pathMatch={this.props.pathMatch}/>
-                <Container pathMatch={this.props.pathMatch} />
+            <div style={{background: "#002764", height: "100%"}}>
+                <Menu showSide={this.props.showMenu} pathMatch={this.props.pathMatch}/>
+                <Container pathMatch={this.props.pathMatch} showSide={this.props.showMenu}/>
             </div>
         );
     }

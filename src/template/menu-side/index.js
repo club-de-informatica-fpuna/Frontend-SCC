@@ -11,13 +11,13 @@ export default class Menu extends Component {
     render() {
         return (
             <ListGroup className="side-nav" style={this.props.showSide ? { "width": 0 } : {}}>
-                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>Inicio</Link>
-                <Link className="list-group-item list-group-item-action list-group-item-light" to={`${this.props.pathMatch}/alumnos`}>Alumnos</Link>
-                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/home/socio"}>Socios</Link>
-                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>Prestamos</Link>
-                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>Equipos</Link>
-                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>Ventas</Link>
-                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>Caja</Link>
+                <Link className="list-group-item list-group-item-action list-group-item-light" to={`${this.props.pathMatch}`}>INICIO</Link>
+                <Link className="list-group-item list-group-item-action list-group-item-light" to={`${this.props.pathMatch}/alumnos`}>ALUMNOS</Link>
+                <Link className="list-group-item list-group-item-action list-group-item-light" to={`${this.props.pathMatch}/socios`}>SOCIOS</Link>
+                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>PRÉSTAMOS</Link>
+                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>EQUIPOS</Link>
+                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>VENTAS</Link>
+                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>CAJA</Link>
             </ListGroup>
         );
     }

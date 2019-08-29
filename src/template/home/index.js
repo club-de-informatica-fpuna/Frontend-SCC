@@ -19,7 +19,7 @@ export default class Home extends Component {
     
     render() {
         return(
-            <div>
+            <div style={{height: "100%"}}>
                 <Header sidebarFunction={this.handleSidebar.bind(this)} />
                 <Body showMenu={this.state.showSideBar} pathMatch={this.props.pathMatch}/>
             </div>
