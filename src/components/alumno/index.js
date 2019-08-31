@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
-import { FaUserPlus, FaSearch, FaTrash, FaUserEdit } from "react-icons/fa";
+import { FaUserPlus, FaSearch, FaTrash, FaUserEdit, FaUserFriends } from "react-icons/fa";
 import AlumnoRegistrar from "./alumnoRegistrar";
 import axios from "axios";
 
@@ -13,42 +13,60 @@ export default class Alumno extends Component {
             nombres: "",
             apellidos: "",
             email: "",
-            carreraSelected: undefined,
+            carreraSelected: 0,
             resultados: [],
             showNuevo: false,
             carreras: []
         };
     }
 
-    componentWillMount(){
-        this.getCarreras();        
+    componentWillMount() {
+        this.getCarreras();
     }
 
     render() {
+        console.log(this.state.resultados);
         let results = this.state.resultados;
         let haveResults = false;
         var tableResults = <div></div>;
         if (results !== undefined && results.length > 0) {
             haveResults = true;
-            tableResults = results.map( (i) => (
-                <tr>
-                    <td key={i.ci}>{i.nombres} {i.apellidos}</td>
-                    <td key={i.ci}>{i.ci}</td> 
-                    <td key={i.ci}>{i.telefono}</td>
-                    <td key={i.ci}>{i.email}</td>
-                    <td key={i.ci}>{i.idCarrera.denominacion}</td>
-                    <td key={i.ci}>
-                        <Button><FaUserEdit/></Button>&nbsp;&nbsp;
-                        <Button><FaTrash/></Button>
+            tableResults = results.map((i) => (
+                <tr key={i.ci} style={{cursor: "pointer"}}>
+                    <td>{i.nombres} {i.apellidos}</td>
+                    <td>{i.ci}</td>
+                    <td>{i.telefono}</td>
+                    <td>{i.email}</td>
+                    <td>{i.idCarrera.denominacion}</td>
+                    <td>
+                        <Button
+                            size="sm"
+                            variant="warning"
+                            title="Editar">
+                            <FaUserEdit />
+                        </Button>&nbsp;&nbsp;
+                        <Button
+                            size="sm"
+                            variant="danger"
+                            onClick={(e)=>{this.deleteAlumno(e, i.ci)}}
+                            title="Eliminar">
+                            <FaTrash />
+                        </Button>&nbsp;&nbsp;
+                        <Button
+                            size="sm"
+                            variant="info"
+                            title="Asociar">
+                            <FaUserFriends />
+                        </Button>               
                     </td>
                 </tr>
-            ) );
+            ));
         }
         let optionsCarreras = <option disabled={true}> - No hay carreras - </option>
         let carreras = this.state.carreras;
-        if(carreras != undefined && carreras.length > 0){
+        if (carreras != undefined && carreras.length > 0) {
             optionsCarreras = carreras.map((i) => (
-              <option key={i.idCarrera}>{i.denominacion}</option>
+                <option key={i.idCarrera} value={i.idCarrera}>{i.denominacion}</option>
             ));
         }
         return (
@@ -57,50 +75,52 @@ export default class Alumno extends Component {
                     show={this.state.showNuevo}
                     close={this.closeNuevo.bind(this)}
                     carreras={this.state.carreras}
-                    save={this.saveAlumno.bind(this)}/>
+                    save={this.saveAlumno.bind(this)} />
                 <h3 style={{ fontFamily: "Lato Light" }}>Alumnos</h3>
-                <Form style={{ marginTop: "10px"}}>
-                    <Row>
-                        <Col style={{ paddingRight: 0}}>
+                <Form style={{ marginTop: "10px" }}>
+                    <Form.Row>
+                        <Col>
                             <Form.Control
                                 type="number"
                                 placeholder="N° de cédula"
                                 value={this.state.cedula}
                                 onChange={(e) => { this.onChangeField(e, "cedula") }}
-                                />
+                            />
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
+                        <Col>
                             <Form.Control
                                 type="text"
                                 placeholder="Nombres"
                                 value={this.state.nombres}
                                 onChange={(e) => { this.onChangeField(e, "nombres") }} />
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
+                        <Col>
                             <Form.Control
                                 type="text"
                                 placeholder="Apellidos"
                                 value={this.state.apellidos}
                                 onChange={(e) => { this.onChangeField(e, "apellidos") }} />
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Form.Control as="select">
+                        <Col md="4">
+                            <Form.Control
+                                as="select"
+                                value={this.state.carreraSelected}
+                                onChange={(e) => { this.onChangeField(e, "carreraSelected")}}>
+                                <option value="0"> - TODAS LAS CARRERAS - </option>
                                 {optionsCarreras}
                             </Form.Control>
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Button bsStyle="primary" onClick={this.getAlumnosByFields.bind(this)}>
-                                <FaSearch />
-                            </Button>&nbsp;
-                            <Button bsStyle="primary" onClick={this.showNuevo.bind(this)}>
-                                <span>Nuevo</span>&nbsp;
+                        <Button bsStyle="primary" onClick={this.getAlumnosByFields.bind(this)}>
+                            <FaSearch />
+                        </Button>&nbsp;
+                        <Button bsStyle="primary" onClick={this.showNuevo.bind(this)}>
+                            <span>Nuevo</span>&nbsp;
                                 <FaUserPlus />
-                            </Button>
-                        </Col>
-                    </Row>
+                        </Button>
+                    </Form.Row>
                 </Form>
-                <section style={{display: haveResults ? "block" : "none", marginTop: "10px"}}>
-                    <Table hover variant="dark" responsive>
+                <section style={{ display: haveResults ? "block" : "none", marginTop: "10px" }}>
+                    <Table hover variant="dark" size="sm" responsive style={{fontSize: "12px"}}>
                         <thead>
                             <tr>
                                 <th>NOMBRES Y APELLIDOS</th>
@@ -126,45 +146,61 @@ export default class Alumno extends Component {
         this.setState(obj);
     }
 
-    showNuevo(e){
+    showNuevo(e) {
         e.preventDefault();
-        this.setState({showNuevo: true});
+        this.setState({ showNuevo: true });
     }
 
-    closeNuevo(e){
+    closeNuevo(e) {
         e.preventDefault();
-        this.setState({showNuevo: false});
+        this.setState({ showNuevo: false });
+    }
+
+    makeQuery(cedula, carrera, nombres, apellidos){
+        if(cedula === null && carrera === null && nombres === null && apellidos === null){ return ""; }
+        let query = "?", cantidad = 0;   
+        if(cedula !== null){ if(cantidad > 0) {query += "&";} query += "documento=" + cedula; cantidad++; }
+        if(carrera !== null){ if(cantidad > 0) {query += "&";} query += "idCarrera=" + carrera; cantidad++; }
+        if(nombres !== null){ if(cantidad > 0) {query += "&";} query += "nombres=" + nombres; cantidad++; }
+        if(apellidos !== null){ if(cantidad > 0) {query += "&";} query += "apellidos=" + apellidos; cantidad++; }
+        return query;
     }
 
     getAlumnosByFields(e) {
-        let cedula = this.state.cedula;
-        axios.get("http://localhost:8080/scc/alumnos")
+        let cedula = this.state.cedula === "" ? null : this.state.cedula;
+        let carrera = parseInt(this.state.carreraSelected) === 0 ? null : parseInt(this.state.carreraSelected);
+        let nombres = this.state.nombres === "" ? null : this.state.nombres;
+        let apellidos = this.state.apellidos === "" ? null : this.state.apellidos;
+        let queryParams = this.makeQuery(cedula, carrera, nombres, apellidos);
+        axios.get("http://localhost:8080/scc/alumnos/fields" + queryParams)
             .then(res => {
                 this.setState({ resultados: res.data });
             });
-    }    
+    }
 
-    getCarreras(){
+    getCarreras() {
         axios.get("http://localhost:8080/scc/carreras")
             .then(res => {
                 this.setState({ carreras: res.data });
             });
     }
 
-    saveAlumno(e, obj){
+    saveAlumno(e, obj) {
         e.preventDefault();
+        axios.post("http://localhost:8080/scc/alumnos", obj)
+            .then(res => {
+                this.setState({resultados: [res.data], showNuevo: false});
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
-
-        let headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        };
-        console.log(obj);
-        obj = JSON.stringify(obj);
-        axios.post("http://localhost:8080/scc/alumnos", {headers, obj})
+    deleteAlumno(e, ci){
+        e.preventDefault();
+        axios.delete("http://localhost:8080/scc/alumnos/" + ci)
         .then(res => {
-          console.log(res.data);
-          this.closeNuevo(e);
+            this.getAlumnosByFields();
         })
         .catch((error) => {
             console.log(error);
