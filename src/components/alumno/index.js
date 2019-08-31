@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
 import { FaUserPlus, FaSearch, FaTrash, FaUserEdit } from "react-icons/fa";
+import AlumnoRegistrar from "./alumnoRegistrar";
 import axios from "axios";
 
 export default class Alumno extends Component {
@@ -12,10 +13,15 @@ export default class Alumno extends Component {
             nombres: "",
             apellidos: "",
             email: "",
-            telefono: "",
             carreraSelected: undefined,
-            resultados: []
+            resultados: [],
+            showNuevo: false,
+            carreras: []
         };
+    }
+
+    componentWillMount(){
+        this.getCarreras();        
     }
 
     render() {
@@ -26,29 +32,42 @@ export default class Alumno extends Component {
             haveResults = true;
             tableResults = results.map( (i) => (
                 <tr>
-                    <td>{i.nombres} {i.apellidos}</td>
-                    <td>{i.ci}</td> 
-                    <td>{i.telefono}</td>
-                    <td>{i.email}</td>
-                    <td>{i.idCarrera.denominacion}</td>
-                    <td>
+                    <td key={i.ci}>{i.nombres} {i.apellidos}</td>
+                    <td key={i.ci}>{i.ci}</td> 
+                    <td key={i.ci}>{i.telefono}</td>
+                    <td key={i.ci}>{i.email}</td>
+                    <td key={i.ci}>{i.idCarrera.denominacion}</td>
+                    <td key={i.ci}>
                         <Button><FaUserEdit/></Button>&nbsp;&nbsp;
                         <Button><FaTrash/></Button>
                     </td>
                 </tr>
             ) );
         }
+        let optionsCarreras = <option disabled={true}> - No hay carreras - </option>
+        let carreras = this.state.carreras;
+        if(carreras != undefined && carreras.length > 0){
+            optionsCarreras = carreras.map((i) => (
+              <option key={i.idCarrera}>{i.denominacion}</option>
+            ));
+        }
         return (
             <section>
+                <AlumnoRegistrar
+                    show={this.state.showNuevo}
+                    close={this.closeNuevo.bind(this)}
+                    carreras={this.state.carreras}
+                    save={this.saveAlumno.bind(this)}/>
                 <h3 style={{ fontFamily: "Lato Light" }}>Alumnos</h3>
-                <Form style={{ marginTop: "10px" }}>
+                <Form style={{ marginTop: "10px"}}>
                     <Row>
-                        <Col style={{ paddingRight: 0 }}>
+                        <Col style={{ paddingRight: 0}}>
                             <Form.Control
                                 type="number"
                                 placeholder="N° de cédula"
                                 value={this.state.cedula}
-                                onChange={(e) => { this.onChangeField(e, "cedula") }} />
+                                onChange={(e) => { this.onChangeField(e, "cedula") }}
+                                />
                         </Col>
                         <Col style={{ padding: 0, paddingLeft: "5px" }}>
                             <Form.Control
@@ -65,27 +84,15 @@ export default class Alumno extends Component {
                                 onChange={(e) => { this.onChangeField(e, "apellidos") }} />
                         </Col>
                         <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Form.Control
-                                type="email"
-                                placeholder="Correo electrónico"
-                                value={this.state.email}
-                                onChange={(e) => { this.onChangeField(e, "email") }} />
-                        </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Form.Control
-                                type="text"
-                                placeholder="Teléfono"
-                                value={this.state.telefono}
-                                onChange={(e) => { this.onChangeField(e, "telefono") }} />
-                        </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Form.Control placeholder="Carrera" value={this.state.carreraSelected} />
+                            <Form.Control as="select">
+                                {optionsCarreras}
+                            </Form.Control>
                         </Col>
                         <Col style={{ padding: 0, paddingLeft: "5px" }}>
                             <Button bsStyle="primary" onClick={this.getAlumnosByFields.bind(this)}>
                                 <FaSearch />
                             </Button>&nbsp;
-                            <Button bsStyle="primary">
+                            <Button bsStyle="primary" onClick={this.showNuevo.bind(this)}>
                                 <span>Nuevo</span>&nbsp;
                                 <FaUserPlus />
                             </Button>
@@ -119,11 +126,49 @@ export default class Alumno extends Component {
         this.setState(obj);
     }
 
+    showNuevo(e){
+        e.preventDefault();
+        this.setState({showNuevo: true});
+    }
+
+    closeNuevo(e){
+        e.preventDefault();
+        this.setState({showNuevo: false});
+    }
+
     getAlumnosByFields(e) {
         let cedula = this.state.cedula;
         axios.get("http://localhost:8080/scc/alumnos")
             .then(res => {
                 this.setState({ resultados: res.data });
             });
+    }    
+
+    getCarreras(){
+        axios.get("http://localhost:8080/scc/carreras")
+            .then(res => {
+                this.setState({ carreras: res.data });
+            });
     }
+
+    saveAlumno(e, obj){
+        e.preventDefault();
+
+
+        let headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        };
+        console.log(obj);
+        obj = JSON.stringify(obj);
+        axios.post("http://localhost:8080/scc/alumnos", {headers, obj})
+        .then(res => {
+          console.log(res.data);
+          this.closeNuevo(e);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
 }
