@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
-import { FaUserPlus, FaSearch, FaTrash, FaUserEdit, FaUserFriends } from "react-icons/fa";
+import { FaUserPlus, FaSearch, FaTrash, FaUserEdit, FaUserFriends, FaRss } from "react-icons/fa";
 import AlumnoRegistrar from "./alumnoRegistrar";
+import RFIDReader from "./rfidReader";
 import axios from "axios";
 
 export default class Alumno extends Component {
@@ -16,7 +17,8 @@ export default class Alumno extends Component {
             carreraSelected: 0,
             resultados: [],
             showNuevo: false,
-            carreras: []
+            carreras: [],
+            rfidReading: false
         };
     }
 
@@ -32,7 +34,7 @@ export default class Alumno extends Component {
         if (results !== undefined && results.length > 0) {
             haveResults = true;
             tableResults = results.map((i) => (
-                <tr key={i.ci} style={{cursor: "pointer"}}>
+                <tr key={i.ci} style={{ cursor: "pointer" }}>
                     <td>{i.nombres} {i.apellidos}</td>
                     <td>{i.ci}</td>
                     <td>{i.telefono}</td>
@@ -48,7 +50,7 @@ export default class Alumno extends Component {
                         <Button
                             size="sm"
                             variant="danger"
-                            onClick={(e)=>{this.deleteAlumno(e, i.ci)}}
+                            onClick={(e) => { this.deleteAlumno(e, i.ci) }}
                             title="Eliminar">
                             <FaTrash />
                         </Button>&nbsp;&nbsp;
@@ -57,7 +59,7 @@ export default class Alumno extends Component {
                             variant="info"
                             title="Asociar">
                             <FaUserFriends />
-                        </Button>               
+                        </Button>
                     </td>
                 </tr>
             ));
@@ -76,6 +78,7 @@ export default class Alumno extends Component {
                     close={this.closeNuevo.bind(this)}
                     carreras={this.state.carreras}
                     save={this.saveAlumno.bind(this)} />
+                <RFIDReader show={this.state.rfidReading}/>
                 <h3 style={{ fontFamily: "Lato Light" }}>Alumnos</h3>
                 <Form style={{ marginTop: "10px" }}>
                     <Form.Row>
@@ -105,13 +108,16 @@ export default class Alumno extends Component {
                             <Form.Control
                                 as="select"
                                 value={this.state.carreraSelected}
-                                onChange={(e) => { this.onChangeField(e, "carreraSelected")}}>
+                                onChange={(e) => { this.onChangeField(e, "carreraSelected") }}>
                                 <option value="0"> - TODAS LAS CARRERAS - </option>
                                 {optionsCarreras}
                             </Form.Control>
                         </Col>
                         <Button bsStyle="primary" onClick={this.getAlumnosByFields.bind(this)}>
                             <FaSearch />
+                        </Button>&nbsp;
+                        <Button bsStyle="primary" onClick={this.getAlumnoFromRFID.bind(this)}>
+                            <FaRss />
                         </Button>&nbsp;
                         <Button bsStyle="primary" onClick={this.showNuevo.bind(this)}>
                             <span>Nuevo</span>&nbsp;
@@ -120,7 +126,7 @@ export default class Alumno extends Component {
                     </Form.Row>
                 </Form>
                 <section style={{ display: haveResults ? "block" : "none", marginTop: "10px" }}>
-                    <Table hover variant="dark" size="sm" responsive style={{fontSize: "12px"}}>
+                    <Table hover variant="dark" responsive style={{ fontSize: "12px" }}>
                         <thead>
                             <tr>
                                 <th>NOMBRES Y APELLIDOS</th>
@@ -156,13 +162,13 @@ export default class Alumno extends Component {
         this.setState({ showNuevo: false });
     }
 
-    makeQuery(cedula, carrera, nombres, apellidos){
-        if(cedula === null && carrera === null && nombres === null && apellidos === null){ return ""; }
-        let query = "?", cantidad = 0;   
-        if(cedula !== null){ if(cantidad > 0) {query += "&";} query += "documento=" + cedula; cantidad++; }
-        if(carrera !== null){ if(cantidad > 0) {query += "&";} query += "idCarrera=" + carrera; cantidad++; }
-        if(nombres !== null){ if(cantidad > 0) {query += "&";} query += "nombres=" + nombres; cantidad++; }
-        if(apellidos !== null){ if(cantidad > 0) {query += "&";} query += "apellidos=" + apellidos; cantidad++; }
+    makeQuery(cedula, carrera, nombres, apellidos) {
+        if (cedula === null && carrera === null && nombres === null && apellidos === null) { return ""; }
+        let query = "?", cantidad = 0;
+        if (cedula !== null) { if (cantidad > 0) { query += "&"; } query += "documento=" + cedula; cantidad++; }
+        if (carrera !== null) { if (cantidad > 0) { query += "&"; } query += "idCarrera=" + carrera; cantidad++; }
+        if (nombres !== null) { if (cantidad > 0) { query += "&"; } query += "nombres=" + nombres; cantidad++; }
+        if (apellidos !== null) { if (cantidad > 0) { query += "&"; } query += "apellidos=" + apellidos; cantidad++; }
         return query;
     }
 
@@ -189,22 +195,35 @@ export default class Alumno extends Component {
         e.preventDefault();
         axios.post("http://localhost:8080/scc/alumnos", obj)
             .then(res => {
-                this.setState({resultados: [res.data], showNuevo: false});
+                this.setState({ resultados: [res.data], showNuevo: false });
             })
             .catch((error) => {
                 console.log(error);
             });
     }
 
-    deleteAlumno(e, ci){
+    deleteAlumno(e, ci) {
         e.preventDefault();
         axios.delete("http://localhost:8080/scc/alumnos/" + ci)
-        .then(res => {
-            this.getAlumnosByFields();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            .then(res => {
+                this.getAlumnosByFields();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    async getAlumnoFromRFID(e) {
+        e.preventDefault();
+        this.setState({ rfidReading: true });
+        let res = await axios.get("http://localhost:8080/scc/alumnos/rfid");
+        if(res.status === 200){
+            this.setState({ resultados: [res.data], rfidReading: false });
+        }
+        else{
+            this.setState({rfidReading: false});
+        }
+
     }
 
 }
