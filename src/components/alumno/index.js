@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
-import { FaUserPlus, FaSearch, FaTrash, FaUserEdit } from "react-icons/fa";
+import { FaUserPlus, FaSearch, FaTrash, FaUserEdit, FaUserFriends, FaRss } from "react-icons/fa";
+import AlumnoRegistrar from "./alumnoRegistrar";
+import RFIDReader from "./rfidReader";
 import axios from "axios";
 
 export default class Alumno extends Component {
@@ -12,88 +14,119 @@ export default class Alumno extends Component {
             nombres: "",
             apellidos: "",
             email: "",
-            telefono: "",
-            carreraSelected: undefined,
-            resultados: []
+            carreraSelected: 0,
+            resultados: [],
+            showNuevo: false,
+            carreras: [],
+            rfidReading: false
         };
     }
 
+    componentWillMount() {
+        this.getCarreras();
+    }
+
     render() {
+        console.log(this.state.resultados);
         let results = this.state.resultados;
         let haveResults = false;
         var tableResults = <div></div>;
         if (results !== undefined && results.length > 0) {
             haveResults = true;
-            tableResults = results.map( (i) => (
-                <tr>
+            tableResults = results.map((i) => (
+                <tr key={i.ci} style={{ cursor: "pointer" }}>
                     <td>{i.nombres} {i.apellidos}</td>
-                    <td>{i.ci}</td> 
+                    <td>{i.ci}</td>
                     <td>{i.telefono}</td>
                     <td>{i.email}</td>
                     <td>{i.idCarrera.denominacion}</td>
                     <td>
-                        <Button><FaUserEdit/></Button>&nbsp;&nbsp;
-                        <Button><FaTrash/></Button>
+                        <Button
+                            size="sm"
+                            variant="warning"
+                            title="Editar">
+                            <FaUserEdit />
+                        </Button>&nbsp;&nbsp;
+                        <Button
+                            size="sm"
+                            variant="danger"
+                            onClick={(e) => { this.deleteAlumno(e, i.ci) }}
+                            title="Eliminar">
+                            <FaTrash />
+                        </Button>&nbsp;&nbsp;
+                        <Button
+                            size="sm"
+                            variant="info"
+                            title="Asociar">
+                            <FaUserFriends />
+                        </Button>
                     </td>
                 </tr>
-            ) );
+            ));
+        }
+        let optionsCarreras = <option disabled={true}> - No hay carreras - </option>
+        let carreras = this.state.carreras;
+        if (carreras != undefined && carreras.length > 0) {
+            optionsCarreras = carreras.map((i) => (
+                <option key={i.idCarrera} value={i.idCarrera}>{i.denominacion}</option>
+            ));
         }
         return (
             <section>
+                <AlumnoRegistrar
+                    show={this.state.showNuevo}
+                    close={this.closeNuevo.bind(this)}
+                    carreras={this.state.carreras}
+                    save={this.saveAlumno.bind(this)} />
+                <RFIDReader show={this.state.rfidReading}/>
                 <h3 style={{ fontFamily: "Lato Light" }}>Alumnos</h3>
                 <Form style={{ marginTop: "10px" }}>
-                    <Row>
-                        <Col style={{ paddingRight: 0 }}>
+                    <Form.Row>
+                        <Col>
                             <Form.Control
                                 type="number"
                                 placeholder="N° de cédula"
                                 value={this.state.cedula}
-                                onChange={(e) => { this.onChangeField(e, "cedula") }} />
+                                onChange={(e) => { this.onChangeField(e, "cedula") }}
+                            />
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
+                        <Col>
                             <Form.Control
                                 type="text"
                                 placeholder="Nombres"
                                 value={this.state.nombres}
                                 onChange={(e) => { this.onChangeField(e, "nombres") }} />
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
+                        <Col>
                             <Form.Control
                                 type="text"
                                 placeholder="Apellidos"
                                 value={this.state.apellidos}
                                 onChange={(e) => { this.onChangeField(e, "apellidos") }} />
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
+                        <Col md="4">
                             <Form.Control
-                                type="email"
-                                placeholder="Correo electrónico"
-                                value={this.state.email}
-                                onChange={(e) => { this.onChangeField(e, "email") }} />
+                                as="select"
+                                value={this.state.carreraSelected}
+                                onChange={(e) => { this.onChangeField(e, "carreraSelected") }}>
+                                <option value="0"> - TODAS LAS CARRERAS - </option>
+                                {optionsCarreras}
+                            </Form.Control>
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Form.Control
-                                type="text"
-                                placeholder="Teléfono"
-                                value={this.state.telefono}
-                                onChange={(e) => { this.onChangeField(e, "telefono") }} />
-                        </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Form.Control placeholder="Carrera" value={this.state.carreraSelected} />
-                        </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Button bsStyle="primary" onClick={this.getAlumnosByFields.bind(this)}>
-                                <FaSearch />
-                            </Button>&nbsp;
-                            <Button bsStyle="primary">
-                                <span>Nuevo</span>&nbsp;
+                        <Button bsStyle="primary" onClick={this.getAlumnosByFields.bind(this)}>
+                            <FaSearch />
+                        </Button>&nbsp;
+                        <Button bsStyle="primary" onClick={this.getAlumnoFromRFID.bind(this)}>
+                            <FaRss />
+                        </Button>&nbsp;
+                        <Button bsStyle="primary" onClick={this.showNuevo.bind(this)}>
+                            <span>Nuevo</span>&nbsp;
                                 <FaUserPlus />
-                            </Button>
-                        </Col>
-                    </Row>
+                        </Button>
+                    </Form.Row>
                 </Form>
-                <section style={{display: haveResults ? "block" : "none", marginTop: "10px"}}>
-                    <Table hover variant="dark" responsive>
+                <section style={{ display: haveResults ? "block" : "none", marginTop: "10px" }}>
+                    <Table hover variant="dark" responsive style={{ fontSize: "12px" }}>
                         <thead>
                             <tr>
                                 <th>NOMBRES Y APELLIDOS</th>
@@ -119,11 +152,78 @@ export default class Alumno extends Component {
         this.setState(obj);
     }
 
+    showNuevo(e) {
+        e.preventDefault();
+        this.setState({ showNuevo: true });
+    }
+
+    closeNuevo(e) {
+        e.preventDefault();
+        this.setState({ showNuevo: false });
+    }
+
+    makeQuery(cedula, carrera, nombres, apellidos) {
+        if (cedula === null && carrera === null && nombres === null && apellidos === null) { return ""; }
+        let query = "?", cantidad = 0;
+        if (cedula !== null) { if (cantidad > 0) { query += "&"; } query += "documento=" + cedula; cantidad++; }
+        if (carrera !== null) { if (cantidad > 0) { query += "&"; } query += "idCarrera=" + carrera; cantidad++; }
+        if (nombres !== null) { if (cantidad > 0) { query += "&"; } query += "nombres=" + nombres; cantidad++; }
+        if (apellidos !== null) { if (cantidad > 0) { query += "&"; } query += "apellidos=" + apellidos; cantidad++; }
+        return query;
+    }
+
     getAlumnosByFields(e) {
-        let cedula = this.state.cedula;
-        axios.get("http://localhost:8080/scc/alumnos")
+        let cedula = this.state.cedula === "" ? null : this.state.cedula;
+        let carrera = parseInt(this.state.carreraSelected) === 0 ? null : parseInt(this.state.carreraSelected);
+        let nombres = this.state.nombres === "" ? null : this.state.nombres;
+        let apellidos = this.state.apellidos === "" ? null : this.state.apellidos;
+        let queryParams = this.makeQuery(cedula, carrera, nombres, apellidos);
+        axios.get("http://localhost:8080/scc/alumnos/fields" + queryParams)
             .then(res => {
                 this.setState({ resultados: res.data });
             });
     }
+
+    getCarreras() {
+        axios.get("http://localhost:8080/scc/carreras")
+            .then(res => {
+                this.setState({ carreras: res.data });
+            });
+    }
+
+    saveAlumno(e, obj) {
+        e.preventDefault();
+        axios.post("http://localhost:8080/scc/alumnos", obj)
+            .then(res => {
+                this.setState({ resultados: [res.data], showNuevo: false });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    deleteAlumno(e, ci) {
+        e.preventDefault();
+        axios.delete("http://localhost:8080/scc/alumnos/" + ci)
+            .then(res => {
+                this.getAlumnosByFields();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    async getAlumnoFromRFID(e) {
+        e.preventDefault();
+        this.setState({ rfidReading: true });
+        let res = await axios.get("http://localhost:8080/scc/alumnos/rfid");
+        if(res.status === 200){
+            this.setState({ resultados: [res.data], rfidReading: false });
+        }
+        else{
+            this.setState({rfidReading: false});
+        }
+
+    }
+
 }
