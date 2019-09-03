@@ -14,13 +14,11 @@ export default class Home extends Component {
         };
     }
 
-    componentWillMount(){
-    }
-    
     render() {
+
         return(
             <div style={{height: "100%"}}>
-                <Header sidebarFunction={this.handleSidebar.bind(this)} />
+                <Header sidebarFunction={this.handleSidebar.bind(this)} mainPath={this.props.currentPath}/>
                 <Body showMenu={this.state.showSideBar} pathMatch={this.props.pathMatch}/>
             </div>
         );

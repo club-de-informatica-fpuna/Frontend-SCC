@@ -3,6 +3,7 @@ import {Form, Row, Col, Button, Table} from 'react-bootstrap';
 import {FaUserPlus, FaSearch, FaRegGrinBeamSweat,
         FaUserEdit, FaUserSlash} from "react-icons/fa";
 import axios from 'axios';
+import {getBackEndContext, buildQueryParams} from '../../util/generate-query-params';
 
 export default class Socio extends Component {
 
@@ -25,11 +26,11 @@ export default class Socio extends Component {
         if(res !== undefined && res.length > 0){
             tableRender = res.map((i) => (
                 <tr>
-                    <td>{i.alumno.nombres} {i.alumno.apellidos}</td>
-                    <td>{i.alumno.ci}</td> 
-                    <td>{i.alumno.telefono}</td>
-                    <td>{i.alumno.email}</td>
-                    <td>{i.alumno.idCarrera.denominacion}</td>
+                    <td>{i.ci.nombres} {i.ci.apellidos}</td>
+                    <td>{i.ci.ci}</td> 
+                    <td>{i.ci.telefono}</td>
+                    <td>{i.ci.email}</td>
+                    <td>{i.ci.idCarrera.denominacion}</td>
                     <td>
                         <Button><FaUserEdit/></Button>&nbsp;&nbsp;
                         <Button><FaUserSlash/></Button>
@@ -74,7 +75,7 @@ export default class Socio extends Component {
                             <Form.Control placeholder="Carrera" value={this.state.carreraSelected} />
                         </Col>
                         <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Button bsStyle="primary" onClick={this.getAllPartners.bind(this)}>
+                            <Button bsStyle="primary" onClick={this.getPartnersByFilter.bind(this)}>
                                 <FaSearch />
                             </Button>&nbsp;
                             <Button bsStyle="primary">
@@ -111,11 +112,20 @@ export default class Socio extends Component {
         this.setState(obj);
     }
 
-    getAllPartners(e) {
-        axios.get("http://localhost:8080/scc/socios").then(rs => {
+    getPartnersByFilter(e) {
+        e.preventDefault();
+        let params = {  cedula: this.state.cedula,
+                        nombres: this.state.nombres,
+                        apellidos: this.state.apellidos,
+                        telefono: this.state.telefono,
+                        carrera:this.state.carreraSelected
+                    };
+        let requestAddress = buildQueryParams(params, getBackEndContext("socios/filter"));
+        axios.get(requestAddress).then(rs => {
             let dataRs = rs.data;
             this.setState({ results: dataRs !== undefined ? dataRs : []});
-            console.log(dataRs);
-        });
+        }).catch(error => {
+            console.log(error);
+        })
     }
 }
