@@ -20,6 +20,6 @@ export function buildQueryParams(params, context) {
             newQueryParam.push(queryArray[i]);
         }
     }
-    let queryStr = newQueryParam.join(newQueryParam.length> 1 ? "&" : "");
+    let queryStr = newQueryParam.join(newQueryParam.length > 1 ? "&" : "");
     return context.concat("?").concat(queryStr);
 }

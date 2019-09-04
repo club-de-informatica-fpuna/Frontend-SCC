@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Form, Row, Col, Button, Table} from 'react-bootstrap';
-import {FaUserPlus, FaSearch, FaRegGrinBeamSweat,
-        FaUserEdit, FaUserSlash} from "react-icons/fa";
+import { FaSearch, FaRegGrinBeamSweat, FaUserEdit, FaUserSlash} from "react-icons/fa";
+import { FiRadio } from "react-icons/fi";
 import axios from 'axios';
 import {getBackEndContext, buildQueryParams} from '../../util/generate-query-params';
 
@@ -15,14 +15,21 @@ export default class Socio extends Component {
             apellidos: "",
             telefono: "",
             carreraSelected: undefined,
-            results: []
+            results: [],
+            carreraList: []
         }
+    }
+
+    componentWillMount(){
+        this.getCarreras();
     }
 
 
     render() {
         let res = this.state.results;
-        var tableRender = <tr><FaRegGrinBeamSweat/></tr>;
+        let tableRender = <tr><FaRegGrinBeamSweat/></tr>;
+        let optionCarreras = <option disabled={true}>- No hay carreras -</option>;
+        let carrerasRs = this.state.carreraList;
         if(res !== undefined && res.length > 0){
             tableRender = res.map((i) => (
                 <tr>
@@ -36,6 +43,12 @@ export default class Socio extends Component {
                         <Button><FaUserSlash/></Button>
                     </td>
                 </tr>
+            ));
+        }
+
+        if (carrerasRs !== undefined && carrerasRs.length > 0) {
+            optionCarreras = carrerasRs.map((i) => (
+                <option key={i.idCarrera} value={i.denominacion}>{i.denominacion}</option>
             ));
         }
         return(
@@ -72,16 +85,18 @@ export default class Socio extends Component {
                                 onChange={(e) => { this.onChangeField(e, "telefono") }} />
                         </Col>
                         <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Form.Control placeholder="Carrera" value={this.state.carreraSelected} />
+                            <Form.Control as="select"
+                            value={this.state.carreraSelected}
+                            onChange={(e)=>{this.onChangeField(e, "carreraSelected")}}>
+                                <option value="0"> - CARRERAS - </option>
+                                {optionCarreras}
+                            </Form.Control>
                         </Col>
                         <Col style={{ padding: 0, paddingLeft: "5px" }}>
                             <Button bsStyle="primary" onClick={this.getPartnersByFilter.bind(this)}>
                                 <FaSearch />
                             </Button>&nbsp;
-                            <Button bsStyle="primary">
-                                <span>Nuevo</span>&nbsp;
-                                <FaUserPlus />
-                            </Button>
+                            <div className="btn btn-primary"><FiRadio style={{"fontSize":"1.4em"}}/></div>
                         </Col>
                     </Row>
                 </Form>
@@ -121,11 +136,21 @@ export default class Socio extends Component {
                         carrera:this.state.carreraSelected
                     };
         let requestAddress = buildQueryParams(params, getBackEndContext("socios/filter"));
+        console.log(requestAddress);
         axios.get(requestAddress).then(rs => {
             let dataRs = rs.data;
             this.setState({ results: dataRs !== undefined ? dataRs : []});
         }).catch(error => {
             console.log(error);
         })
+    }
+
+    getCarreras() {
+        let requestAddress = getBackEndContext("carreras");
+        axios.get(requestAddress).then(rs => {
+            this.setState({ carreraList: rs.data });
+        }).catch(error => {
+            console.log(error);
+        });
     }
 }
