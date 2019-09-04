@@ -4,6 +4,7 @@ import { FaSearch, FaRegGrinBeamSweat, FaUserEdit, FaUserSlash} from "react-icon
 import { FiRadio } from "react-icons/fi";
 import axios from 'axios';
 import {getBackEndContext, buildQueryParams} from '../../util/generate-query-params';
+import RFIDReader from "../alumno/rfidReader";
 
 export default class Socio extends Component {
 
@@ -16,7 +17,8 @@ export default class Socio extends Component {
             telefono: "",
             carreraSelected: undefined,
             results: [],
-            carreraList: []
+            carreraList: [],
+            rfidShow:false
         }
     }
 
@@ -96,7 +98,7 @@ export default class Socio extends Component {
                             <Button bsStyle="primary" onClick={this.getPartnersByFilter.bind(this)}>
                                 <FaSearch />
                             </Button>&nbsp;
-                            <div className="btn btn-primary"><FiRadio style={{"fontSize":"1.4em"}}/></div>
+                            <div className="btn btn-primary" onClick={this.getPartnerByRFID.bind(this)}><FiRadio style={{"fontSize":"1.4em"}}/></div>
                         </Col>
                     </Row>
                 </Form>
@@ -117,6 +119,7 @@ export default class Socio extends Component {
                         </tbody>
                     </Table>
                 </section>
+                <RFIDReader show={this.state.rfidShow}/>
             </section>
         );
     }
@@ -152,5 +155,20 @@ export default class Socio extends Component {
         }).catch(error => {
             console.log(error);
         });
+    }
+
+    async getPartnerByRFID(e) {
+        e.preventDefault();
+        let requestAddress = getBackEndContext("socios/rfid");
+        this.setState({ rfidShow: true });
+
+        let rs = await axios.get(requestAddress);
+        if(rs.status === 200){
+            this.setState({ results: [rs.data], rfidShow: false });
+        }
+        else{
+            this.setState({rfidShow: false});
+        }
+
     }
 }
