@@ -223,7 +223,6 @@ export default class Alumno extends Component {
         else{
             this.setState({rfidReading: false});
         }
-
     }
 
 }

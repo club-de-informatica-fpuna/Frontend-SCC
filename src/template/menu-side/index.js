@@ -14,7 +14,7 @@ export default class Menu extends Component {
                 <Link className="list-group-item list-group-item-action list-group-item-light" to={`${this.props.pathMatch}`}>INICIO</Link>
                 <Link className="list-group-item list-group-item-action list-group-item-light" to={`${this.props.pathMatch}/alumnos`}>ALUMNOS</Link>
                 <Link className="list-group-item list-group-item-action list-group-item-light" to={`${this.props.pathMatch}/socios`}>SOCIOS</Link>
-                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>PRÉSTAMOS</Link>
+                <Link className="list-group-item list-group-item-action list-group-item-light" to={`${this.props.pathMatch}/prestamos`}>PRÉSTAMOS</Link>
                 <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>EQUIPOS</Link>
                 <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>VENTAS</Link>
                 <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>CAJA</Link>

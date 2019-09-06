@@ -3,6 +3,7 @@ import {Route, Switch} from 'react-router-dom';
 import Alumno from '../../components/alumno';
 import Socio from '../../components/socio';
 import Inicio from '../../components/inicio';
+import Prestamos from "../../components/prestamos";
 
 export default class Container extends Component {
     constructor(props, context){
@@ -16,6 +17,7 @@ export default class Container extends Component {
                 <Switch>
                     <Route path={`${this.props.pathMatch}/alumnos`} component={Alumno} />
                     <Route path={`${this.props.pathMatch}/socios`} component={Socio} />
+                    <Route path={`${this.props.pathMatch}/prestamos`} component={Prestamos} />                    
                     <Route path={`${this.props.pathMatch}`} component={Inicio} />
                 </Switch>
             </div>
