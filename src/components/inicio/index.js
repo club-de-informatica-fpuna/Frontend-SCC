@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Card } from "react-bootstrap";
-import { FaRegClock } from "react-icons/fa";
 import { TiArrowForward } from "react-icons/ti";
 
 export default class Inicio extends Component {
