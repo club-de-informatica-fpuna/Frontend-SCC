@@ -5,13 +5,13 @@ import Container from '../container';
 import './body.css';
 
 export default class Body extends Component {
-    constructor(props, context){
+    constructor(props){
         super(props);
     }
 
     render(){
         return(
-            <div style={{background: "#ebf5fb", height: "100%"}}>
+            <div style={{background: "white", height: "100%"}}>
                 <Menu showSide={this.props.showMenu} pathMatch={this.props.pathMatch}/>
                 <Container pathMatch={this.props.pathMatch} showSide={this.props.showMenu}/>
             </div>

@@ -1,11 +1,8 @@
 .side-nav {
-    height: 100%;
     width: 15%;
     position: absolute;
-    z-index: 1;
     top: 55.5;
     left: 0;
-    background-color: #343a40;
     overflow-x: hidden;
     transition: 0.5s;
 }

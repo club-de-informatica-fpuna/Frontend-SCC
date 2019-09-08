@@ -1,1 +1,10 @@
-<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="color: rgb(51, 51, 51);"><g fill-opacity=".9"><path d="M255.8 48C141 48 48 141.2 48 256s93 208 207.8 208c115 0 208.2-93.2 208.2-208S370.8 48 255.8 48zm.2 374.4c-91.9 0-166.4-74.5-166.4-166.4S164.1 89.6 256 89.6 422.4 164.1 422.4 256 347.9 422.4 256 422.4z"></path><path d="M266.4 152h-31.2v124.8l109.2 65.5 15.6-25.6-93.6-55.5V152z"></path></g></svg>
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <g>
+  <path fill="#3f3f3f" id="svg_2" d="m255.8,48c-114.8,0 -207.8,93.2 -207.8,208s93,208 207.8,208c115,0 208.2,-93.2 208.2,-208s-93.2,-208 -208.2,-208zm0.2,374.4c-91.9,0 -166.4,-74.5 -166.4,-166.4s74.5,-166.4 166.4,-166.4s166.4,74.5 166.4,166.4s-74.5,166.4 -166.4,166.4z"/>
+  <rect id="svg_4" height="124.99999" width="31" y="151" x="239" stroke-width="5" fill="#3f3f3f">
+  </rect>
+  <rect id="svg_5" width="51" y="105" x="80" stroke-width="5" fill="#3f3f3f"/>
+  <rect transform="rotate(-57.28591537475586 299.5,297) " id="svg_6" height="124.99999" width="31" y="234.5" x="284" stroke-width="5" fill="#3f3f3f"/>
+  <ellipse ry="25.26316" rx="24" id="svg_7" cy="263.8421" cx="256" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="#3f3f3f"/>
+ </g>
+</svg>

@@ -38,10 +38,10 @@ export default class Prestamos extends Component {
         if (equipos !== undefined && equipos.length > 0) {
             equiposOptions = equipos.map((i) => (
                 <option
-                    key={i.idSubcategoria.idSubcategoria}
-                    value={i.idSubcategoria.idSubcategoria}
+                    key={i.idSubcategoria}
+                    value={i.idSubcategoria}
                 >
-                    {i.idSubcategoria.denominacion}
+                    {i.denominacion}
                 </option>
             ));
         }
@@ -185,7 +185,7 @@ export default class Prestamos extends Component {
     }
 
     getEquipos() {
-        axios.get("http://localhost:8080/scc/equipos")
+        axios.get("http://localhost:8080/scc/subcategoria")
             .then(res => {
                 console.log(res.data);
                 this.setState({ equipos: res.data });
@@ -227,10 +227,17 @@ export default class Prestamos extends Component {
     fromRFCToFormat(date){
         if(date === undefined){ return ""; }
         let fecha = new Date(date);
-        return fecha.getUTCDate() + "/" + (fecha.getUTCMonth() + 1) +
-            "/" + fecha.getUTCFullYear() + " " + fecha.getUTCHours() +
-            ":" + fecha.getUTCMinutes() + ":" + fecha.getUTCSeconds();
+        return this.checkDigits(fecha.getUTCDate()) + "/" +
+            this.checkDigits((fecha.getUTCMonth() + 1)) +
+            "/" + fecha.getUTCFullYear() + " " +
+            this.checkDigits(fecha.getUTCHours()) +
+            ":" + this.checkDigits(fecha.getUTCMinutes()) +
+            ":" + this.checkDigits(fecha.getUTCSeconds());
     }
+
+    checkDigits(digit){
+        return digit < 10 ? ("0" + digit) : digit;
+    }    
 
     async getPrestamosFromRFID(e) {
         e.preventDefault();
@@ -248,12 +255,12 @@ export default class Prestamos extends Component {
     savePrestamo(e, obj) {
         e.preventDefault();
         axios.post("http://localhost:8080/scc/prestamos", obj)
-            .then(res => {
-                this.setState({ prestamos: [res.data], showNuevo: false });
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        .then(res => {
+            this.setState({ prestamos: [res.data], showNuevo: false });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }    
 
 }

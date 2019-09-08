@@ -4,9 +4,10 @@ import Alumno from '../../components/alumno';
 import Socio from '../../components/socio';
 import Inicio from '../../components/inicio';
 import Prestamos from "../../components/prestamos";
+import Equipos from "../../components/equipos";
 
 export default class Container extends Component {
-    constructor(props, context){
+    constructor(props){
         super(props);
     }
 
@@ -18,6 +19,7 @@ export default class Container extends Component {
                     <Route path={`${this.props.pathMatch}/alumnos`} component={Alumno} />
                     <Route path={`${this.props.pathMatch}/socios`} component={Socio} />
                     <Route path={`${this.props.pathMatch}/prestamos`} component={Prestamos} />                    
+                    <Route path={`${this.props.pathMatch}/equipos`} component={Equipos} />
                     <Route path={`${this.props.pathMatch}`} component={Inicio} />
                 </Switch>
             </div>
