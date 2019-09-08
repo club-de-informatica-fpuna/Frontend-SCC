@@ -33,6 +33,10 @@ export default class Menu extends Component {
                     <span>EQUIPOS</span>
                 </Link>
                 <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>
+                    <FaCubes/>&nbsp;&nbsp;&nbsp;
+                    <span>PRODUCTOS</span>
+                </Link>                
+                <Link className="list-group-item list-group-item-action list-group-item-light" to={"/"}>
                     <FaTicketAlt/>&nbsp;&nbsp;&nbsp;
                     <span>VENTAS</span>
                 </Link>

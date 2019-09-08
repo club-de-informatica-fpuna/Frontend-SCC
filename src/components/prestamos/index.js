@@ -48,7 +48,7 @@ export default class Prestamos extends Component {
         if(prestamos !== undefined && prestamos.length > 0){
             haveResults = true;
             tableResults = prestamos.map((i) => (
-                <tr>
+                <tr style={!i.hasOwnProperty("fechaDevolucion") ? {background: "#991F1F"} : {}}>
                     <td>{i.idPrestamo}</td>
                     <td>{i.alumno.nombres} {i.alumno.apellidos}</td>
                     <td><Button variant="secondary" size="sm">{i.alumno.ci}</Button></td>                    
