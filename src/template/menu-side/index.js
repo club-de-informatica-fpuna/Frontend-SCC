@@ -11,7 +11,7 @@ export default class Menu extends Component {
 
     render() {
         return (
-            <ListGroup className="side-nav" style={this.props.showSide ? { "width": 0 } : {}}>
+            <ListGroup className="side-nav" style={this.props.showSide ? { width: 0 } : {}}>
                 <Link className="list-group-item list-group-item-action list-group-item-light" to={`${this.props.pathMatch}`}>
                     <FaHome/>&nbsp;&nbsp;&nbsp;
                     <span>INICIO</span>

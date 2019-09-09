@@ -1,8 +1,8 @@
 .card-header{
-    background-image: linear-gradient(to bottom right, white, #e9e9e9);
+    background: white;
     color: #343a40;
     border: 1px solid silver;
-    border-bottom: 2px solid silver;
+    border-bottom: 1.5px solid silver;
     font-family: "Lato Bold"!important;  
     cursor: "pointer";  
 }

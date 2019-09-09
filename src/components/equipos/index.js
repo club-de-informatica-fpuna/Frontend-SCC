@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Accordion, Card, Button } from "react-bootstrap";
 import axios from "axios";
-import "./equipos.css";
+import { FaTrash, FaPen, FaPlus } from "react-icons/fa";
 import EquipoRegistrar from "./equipoRegistro";
+import CategoriaRegistrar from "./categoriaRegistro";
+import "./equipos.css";
 
 export default class Equipos extends Component {
 
@@ -10,7 +12,8 @@ export default class Equipos extends Component {
         super(props);
         this.state = {
             equipos: [],
-            showNuevoEquipo: false
+            showNuevoEquipo: false,
+            showNuevaCategoria: false
         };
     }
 
@@ -41,13 +44,21 @@ export default class Equipos extends Component {
         return (
             <>
                 <EquipoRegistrar show={this.state.showNuevoEquipo} close={this.closeNuevoEquipo.bind(this)} save={this.saveEquipo.bind(this)}/>
+                <CategoriaRegistrar show={this.state.showNuevaCategoria} close={this.closeNuevaCategoria.bind(this)} save={this.saveCategoria.bind(this)}/>
                 <h3 style={{ fontFamily: "Lato Light!important" }}>Equipos</h3>
                 <section style={{marginTop: "10px"}}>
                     <Button onClick={this.showNuevoEquipo.bind(this)}>
-                        <span>Nuevo equipo</span>
-                    </Button>&nbsp;&nbsp;           
-                    <Button>Nueva categoría</Button>&nbsp;&nbsp;
-                    <Button>Nueva subcategoría</Button>                    
+                        <span>Nuevo equipo</span>&nbsp;&nbsp;
+                        <FaPlus/>
+                    </Button>&nbsp;&nbsp;
+                    <Button onClick={this.showNuevaCategoria.bind(this)}>
+                        <span>Nueva categoría</span>&nbsp;&nbsp;
+                        <FaPlus/>
+                    </Button>&nbsp;&nbsp;
+                    <Button>
+                        <span>Nueva subcategoría</span>&nbsp;&nbsp;
+                        <FaPlus/>
+                    </Button>                    
                 </section>
                 <section className="row" style={{ display: "flex", padding: "12px"}}>
                     {categoriasMostrar}
@@ -58,16 +69,22 @@ export default class Equipos extends Component {
 
     showNuevoEquipo(e){
         e.preventDefault();
-        this.setState({
-            showNuevoEquipo: true
-        });
+        this.setState({ showNuevoEquipo: true });
+    }
+
+    showNuevaCategoria(e){
+        e.preventDefault();
+        this.setState({ showNuevaCategoria: true });
+    }
+
+    closeNuevaCategoria(e){
+        e.preventDefault();
+        this.setState({ showNuevaCategoria: false });
     }
 
     closeNuevoEquipo(e){
         e.preventDefault();
-        this.setState({
-            showNuevoEquipo: false
-        });
+        this.setState({ showNuevoEquipo: false });
     }
 
     getSubcategorias(subcategorias) {
@@ -97,7 +114,16 @@ export default class Equipos extends Component {
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="0">
                         <Card.Body>
-                            <span><b>Fecha adquisición: </b>{k.fechaAdquisicion}</span>
+                            <p><b>Fecha adquisición: </b>{this.convertDate(k.fechaAdquisicion)}</p>
+                            <p><b>Estado: </b>{k.estado ? "DISPONIBLE" : "NO DISPONIBLE"}</p>
+                            <section>
+                                <Button variant="warning" size="sm">
+                                    <FaPen/>
+                                </Button>&nbsp;&nbsp;
+                                <Button variant="danger" size="sm">
+                                    <FaTrash/>
+                                </Button>
+                            </section>
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>
@@ -105,6 +131,17 @@ export default class Equipos extends Component {
         ));
         return equiposMostrar;
     }
+
+    convertDate(date){
+        let fecha = new Date(date);
+        return this.checkDigits(fecha.getUTCDate()) + 
+        "/" + this.checkDigits(fecha.getUTCMonth()) + 
+        "/" + this.checkDigits(fecha.getUTCFullYear());
+    }
+
+    checkDigits(digit){
+        return digit < 10 ? ("0" + digit) : digit;
+    }    
 
     getEquiposByCategorias() {
         axios.get("http://localhost:8080/scc/equipos/categorias")
@@ -120,11 +157,23 @@ export default class Equipos extends Component {
         e.preventDefault();
         axios.post("http://localhost:8080/scc/equipos", obj)
         .then(res => {
-            this.getEquiposByCategorias();
+            this.setState({showNuevoEquipo: false}, this.getEquiposByCategorias());
         })
         .catch((error) => {
             console.log(error);
-        });        
+            this.setState({showNuevoEquipo: false});
+        });
+    }
+
+    saveCategoria(e, obj){
+        e.preventDefault();
+        axios.post("http://localhost:8080/scc/categoria", obj)
+        .then(res => {
+            this.setState({showNuevaCategoria: false}, this.getEquiposByCategorias());
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
 }
