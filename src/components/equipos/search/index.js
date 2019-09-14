@@ -10,6 +10,10 @@ export default class SearchEquipo extends Component {
         };
     }
 
+    componentWillReceiveProps(props){
+        this.getEquiposByCategorias();
+    }
+
     componentWillMount() {
         this.getEquiposByCategorias();
     }
@@ -79,6 +83,7 @@ export default class SearchEquipo extends Component {
                         <Card.Body>
                             <span><b>Fecha adquisición: </b>{k.fechaAdquisicion}</span>
                             <Button
+                                disabled={k.estado ? false : true}
                                 size="sm"
                                 style={{float: "right"}}
                                 variant="primary"

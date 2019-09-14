@@ -5,6 +5,8 @@ import Socio from '../../components/socio';
 import Inicio from '../../components/inicio';
 import Prestamos from "../../components/prestamos";
 import Equipos from "../../components/equipos";
+import Productos from "../../components/productos";
+import Ventas from "../../components/ventas";
 
 export default class Container extends Component {
     constructor(props){
@@ -14,12 +16,14 @@ export default class Container extends Component {
     render(){
 
         return(
-            <div className="main-container" style={{marginLeft: this.props.showSide ? "1%" : "16%"}}>
+            <div className="main-container">
                 <Switch>
                     <Route path={`${this.props.pathMatch}/alumnos`} component={Alumno} />
                     <Route path={`${this.props.pathMatch}/socios`} component={Socio} />
                     <Route path={`${this.props.pathMatch}/prestamos`} component={Prestamos} />                    
                     <Route path={`${this.props.pathMatch}/equipos`} component={Equipos} />
+                    <Route path={`${this.props.pathMatch}/productos`} component={Productos} />
+                    <Route path={`${this.props.pathMatch}/ventas`} component={Ventas} />                                      
                     <Route path={`${this.props.pathMatch}`} component={Inicio} />
                 </Switch>
             </div>

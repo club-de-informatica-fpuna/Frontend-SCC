@@ -45,7 +45,7 @@ export default class Equipos extends Component {
             <>
                 <EquipoRegistrar show={this.state.showNuevoEquipo} close={this.closeNuevoEquipo.bind(this)} save={this.saveEquipo.bind(this)}/>
                 <CategoriaRegistrar show={this.state.showNuevaCategoria} close={this.closeNuevaCategoria.bind(this)} save={this.saveCategoria.bind(this)}/>
-                <h3 style={{ fontFamily: "Lato Light!important" }}>Equipos</h3>
+                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Equipos</h3>
                 <section style={{marginTop: "10px"}}>
                     <Button onClick={this.showNuevoEquipo.bind(this)}>
                         <span>Nuevo equipo</span>&nbsp;&nbsp;

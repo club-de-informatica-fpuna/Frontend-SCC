@@ -1,3 +1,10 @@
 .cursor-style {
     cursor: pointer;
 }
+
+.validation-field{
+    color: red;
+    float: right;
+    text-align: right;
+    margin-bottom: 5px;
+}

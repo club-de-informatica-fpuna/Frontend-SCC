@@ -16,7 +16,6 @@ export default class Header extends Component {
     render() {
         return(
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand className="cursor-style" onClick={this.props.sidebarFunction}>&#9776;</Navbar.Brand>
                 <Nav className="mr-auto">
                     <Nav.Link style={{color: "white"}} href="">{this.state.currentPath}</Nav.Link>
                 </Nav>

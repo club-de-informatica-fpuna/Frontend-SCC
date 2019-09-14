@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
 import { FaUserPlus, FaSearch, FaTrash, FaUserEdit, FaUserFriends, FaRss } from "react-icons/fa";
 import AlumnoRegistrar from "./alumnoRegistrar";
+import AlumnoInfo from "./alumnoInfo";
 import RFIDReader from "./rfidReader";
 import axios from "axios";
+import Notifications, {notify} from 'react-notify-toast';
 
 export default class Alumno extends Component {
 
@@ -17,6 +19,8 @@ export default class Alumno extends Component {
             carreraSelected: 0,
             resultados: [],
             showNuevo: false,
+            showInfo: false,
+            alumno: undefined,
             carreras: [],
             rfidReading: false
         };
@@ -35,12 +39,12 @@ export default class Alumno extends Component {
             haveResults = true;
             tableResults = results.map((i) => (
                 <tr key={i.ci} style={{ cursor: "pointer" }}>
-                    <td>{i.nombres} {i.apellidos}</td>
-                    <td>{i.ci}</td>
-                    <td>{i.telefono}</td>
-                    <td>{i.email}</td>
-                    <td>{i.idCarrera.denominacion}</td>
-                    <td>
+                    <td >{i.nombres.toUpperCase()} {i.apellidos.toUpperCase()}</td>
+                    <td style={{textAlign: "center"}}><Button variant="secondary" size="sm" onClick={(e) => {this.showAlumnoInfo(e, i)}}>{i.ci}</Button></td>
+                    <td style={{textAlign: "center"}}>{i.telefono}</td>
+                    <td style={{textAlign: "center"}}>{i.email}</td>
+                    <td style={{textAlign: "center"}}>{i.idCarrera.denominacion}</td>
+                    <td style={{textAlign: "center"}}>
                         <Button
                             size="sm"
                             variant="warning"
@@ -73,13 +77,15 @@ export default class Alumno extends Component {
         }
         return (
             <section>
+                <Notifications/>
+                <AlumnoInfo show={this.state.showInfo} alumno={this.state.alumno} close={this.closeAlumnoInfo.bind(this)}/>
                 <AlumnoRegistrar
                     show={this.state.showNuevo}
                     close={this.closeNuevo.bind(this)}
                     carreras={this.state.carreras}
                     save={this.saveAlumno.bind(this)} />
                 <RFIDReader show={this.state.rfidReading}/>
-                <h3 style={{ fontFamily: "Lato Light" }}>Alumnos</h3>
+                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Alumnos</h3>
                 <Form style={{ marginTop: "10px" }}>
                     <Form.Row>
                         <Col>
@@ -126,15 +132,15 @@ export default class Alumno extends Component {
                     </Form.Row>
                 </Form>
                 <section style={{ display: haveResults ? "block" : "none", marginTop: "10px" }}>
-                    <Table hover variant="dark" responsive style={{ fontSize: "12px" }}>
-                        <thead>
+                    <Table hover responsive style={{ fontSize: "12px" }}>
+                        <thead style={{background: "#343a40", color: "white"}}>
                             <tr>
-                                <th>NOMBRES Y APELLIDOS</th>
-                                <th>N° CÉDULA</th>
-                                <th>TELÉFONO</th>
-                                <th>CORREO ELECTRÓNICO</th>
-                                <th>CARRERA</th>
-                                <th>ACCIONES</th>
+                                <th >NOMBRES Y APELLIDOS</th>
+                                <th style={{textAlign: "center"}}>N° CÉDULA</th>
+                                <th style={{textAlign: "center"}}>TELÉFONO</th>
+                                <th style={{textAlign: "center"}}>CORREO ELECTRÓNICO</th>
+                                <th style={{textAlign: "center"}}>CARRERA</th>
+                                <th style={{textAlign: "center"}}>ACCIONES</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -144,6 +150,21 @@ export default class Alumno extends Component {
                 </section>
             </section>
         );
+    }
+
+    showAlumnoInfo(e, alumno){
+        e.preventDefault();
+        this.setState({
+            alumno: alumno,
+            showInfo: true
+        });
+    }
+
+    closeAlumnoInfo(e){
+        //e.preventDefault();
+        this.setState({
+            showInfo: false
+        });
     }
 
     onChangeField(e, field) {
@@ -158,7 +179,7 @@ export default class Alumno extends Component {
     }
 
     closeNuevo(e) {
-        e.preventDefault();
+        //e.preventDefault();
         this.setState({ showNuevo: false });
     }
 
@@ -195,10 +216,13 @@ export default class Alumno extends Component {
         e.preventDefault();
         axios.post("http://localhost:8080/scc/alumnos", obj)
             .then(res => {
+                notify.show("Alumno registrado exitosamente", "success");
                 this.setState({ resultados: [res.data], showNuevo: false });
             })
             .catch((error) => {
-                console.log(error);
+                notify.show("Ha ocurrido un error al procesar la solicitud", "error");
+                console.log(error);                
+                this.setState({ showNuevo: false });                
             });
     }
 
