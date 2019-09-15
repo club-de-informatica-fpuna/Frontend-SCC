@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {FaUserGraduate} from 'react-icons/fa'
-import './tooptip-style.css';
+import './toolTip-style.css';
 
-export default class TooptipSocio extends Component {
+export default class ToolTipSocio extends Component {
 
     render(){
-        console.log({FaUserGraduate});
-        let toopTipImg = this.props.image === undefined ?  <h1><FaUserGraduate/></h1>  : <img alt="" src={"data:image/jpg;base64,"+this.props.image}/>;
+        let toolTipImg = this.props.image === undefined ?  <h1><FaUserGraduate/></h1>  : <img alt="" src={"data:image/jpg;base64,"+this.props.image}/>;
         return(
             <div className={"container "+this.props.className} style={this.props.style}>
                 <div className="row">
@@ -16,7 +15,7 @@ export default class TooptipSocio extends Component {
                                 
                             </div>
                             <div className="avatar" style={this.props.image === undefined ? {marginTop:"3em"} : {}}>
-                                {toopTipImg}
+                                {toolTipImg}
                             </div>
                             <div className="info">
                                 <div className="title"><h3>{this.props.partnerName}</h3></div>

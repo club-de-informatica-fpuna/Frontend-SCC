@@ -5,7 +5,7 @@ import { FiRadio } from "react-icons/fi";
 import axios from 'axios';
 import {getBackEndContext, buildQueryParams} from '../../util/generate-query-params';
 import RFIDReader from "../alumno/rfidReader";
-import TooptipSocio from './tooptip-profile';
+import ToolTipSocio from './toolTip-profile';
 
 export default class Socio extends Component {
 
@@ -35,12 +35,12 @@ export default class Socio extends Component {
         let carrerasRs = this.state.carreraList;
         if(res !== undefined && res.length > 0){
             tableRender = res.map((i) => {
-                let tooptipPartner = (<TooptipSocio partnerName={i.alumno.nombres} image={i.foto} career={i.alumno.idCarrera.denominacion} />);
+                let toolTipPartner = (<ToolTipSocio partnerName={i.alumno.nombres} image={i.foto} career={i.alumno.idCarrera.denominacion} />);
                 return(
                 <tr>
                     <OverlayTrigger placement="auto"
                                     delay={{ show: 250, hide: 400 }}
-                                    overlay={tooptipPartner}>
+                                    overlay={toolTipPartner}>
                         <td>{i.alumno.nombres} {i.alumno.apellidos}</td>
                     </OverlayTrigger>
                     <td>{i.alumno.ci}</td> 
@@ -149,7 +149,6 @@ export default class Socio extends Component {
         let requestAddress = buildQueryParams(params, getBackEndContext("socios/filter"));
         axios.get(requestAddress).then(rs => {
             let dataRs = rs.data;
-            console.log(dataRs);
             this.setState({ results: dataRs !== undefined ? dataRs : []});
         }).catch(error => {
             console.log(error);
