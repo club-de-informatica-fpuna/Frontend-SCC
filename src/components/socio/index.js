@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {Form, Row, Col, Button, Table} from 'react-bootstrap';
+import {Form, Row, Col, Button, Table, OverlayTrigger} from 'react-bootstrap';
 import { FaSearch, FaRegGrinBeamSweat, FaUserEdit, FaUserSlash} from "react-icons/fa";
 import { FiRadio } from "react-icons/fi";
 import axios from 'axios';
 import {getBackEndContext, buildQueryParams} from '../../util/generate-query-params';
 import RFIDReader from "../alumno/rfidReader";
+import TooptipSocio from './tooptip-profile';
 
 export default class Socio extends Component {
 
@@ -33,19 +34,26 @@ export default class Socio extends Component {
         let optionCarreras = <option disabled={true}>- No hay carreras -</option>;
         let carrerasRs = this.state.carreraList;
         if(res !== undefined && res.length > 0){
-            tableRender = res.map((i) => (
+            tableRender = res.map((i) => {
+                let tooptipPartner = (<TooptipSocio partnerName={i.alumno.nombres} image={i.foto} career={i.alumno.idCarrera.denominacion} />);
+                return(
                 <tr>
-                    <td>{i.ci.nombres} {i.ci.apellidos}</td>
-                    <td>{i.ci.ci}</td> 
-                    <td>{i.ci.telefono}</td>
-                    <td>{i.ci.email}</td>
-                    <td>{i.ci.idCarrera.denominacion}</td>
+                    <OverlayTrigger placement="auto"
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={tooptipPartner}>
+                        <td>{i.alumno.nombres} {i.alumno.apellidos}</td>
+                    </OverlayTrigger>
+                    <td>{i.alumno.ci}</td> 
+                    <td>{i.alumno.telefono}</td>
+                    <td>{i.alumno.email}</td>
+                    <td>{i.alumno.idCarrera.denominacion}</td>
                     <td>
                         <Button><FaUserEdit/></Button>&nbsp;&nbsp;
                         <Button><FaUserSlash/></Button>
                     </td>
                 </tr>
-            ));
+                );
+            });
         }
 
         if (carrerasRs !== undefined && carrerasRs.length > 0) {
@@ -90,7 +98,7 @@ export default class Socio extends Component {
                             <Form.Control as="select"
                             value={this.state.carreraSelected}
                             onChange={(e)=>{this.onChangeField(e, "carreraSelected")}}>
-                                <option value="0"> - CARRERAS - </option>
+                                <option value=""> - CARRERAS - </option>
                                 {optionCarreras}
                             </Form.Control>
                         </Col>
@@ -139,9 +147,9 @@ export default class Socio extends Component {
                         carrera:this.state.carreraSelected
                     };
         let requestAddress = buildQueryParams(params, getBackEndContext("socios/filter"));
-        console.log(requestAddress);
         axios.get(requestAddress).then(rs => {
             let dataRs = rs.data;
+            console.log(dataRs);
             this.setState({ results: dataRs !== undefined ? dataRs : []});
         }).catch(error => {
             console.log(error);
