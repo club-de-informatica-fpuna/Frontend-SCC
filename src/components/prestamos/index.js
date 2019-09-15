@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Table } from "react-bootstrap";
-import { FaSearch, FaRss, FaUserEdit, FaTrash, FaInfo } from "react-icons/fa";
-import { FiFilePlus } from "react-icons/fi";
+import { FaSearch, FaRss, FaUserEdit, FaTrash, FaReply, FaInfo } from "react-icons/fa";
 import Registrar from "./registrar";
+import AlumnoInfo from "../alumno/alumnoInfo";
+import PrestamoInfo from "./prestamoInfo";
+import EquipoInfo from "../equipos/equipoInfo";
+import DevolucionModal from "./devolucion";
 import RFIDReader from "../alumno/rfidReader";
+import Notifications, {notify} from 'react-notify-toast';
 import axios from "axios";
 
 export default class Prestamos extends Component {
@@ -21,7 +25,14 @@ export default class Prestamos extends Component {
             equipoSelected: 0,
             rfidReading: false,
             prestamos: [],
-            alumnoBuscado: undefined
+            alumnoBuscado: undefined,
+            showAlumno: false,
+            showInfo: false,
+            showEquipo: false,
+            showDevolucion: false,
+            alumno: undefined,
+            prestamo: undefined,
+            equipo: undefined
         };
     }
 
@@ -48,30 +59,44 @@ export default class Prestamos extends Component {
         if(prestamos !== undefined && prestamos.length > 0){
             haveResults = true;
             tableResults = prestamos.map((i) => (
-                <tr style={!i.hasOwnProperty("fechaDevolucion") ? {background: "#991F1F"} : {}}>
+                <tr style={!i.hasOwnProperty("fechaDevolucion") ? {background: "#D35400", color: "white"} : {background: "#229954", color: "white"}}>
                     <td>{i.idPrestamo}</td>
-                    <td>{i.alumno.nombres} {i.alumno.apellidos}</td>
-                    <td><Button variant="secondary" size="sm">{i.alumno.ci}</Button></td>                    
-                    <td><Button variant="secondary" size="sm">{i.equipo.descripcion}</Button></td>
-                    <td>{this.fromRFCToFormat(i.fechaPrestamo)}</td>
-                    <td>{this.fromRFCToFormat(i.fechaDevolucion)}</td>                    
-                    <td>
+                    <td style={{textAlign: "center"}}>{i.alumno.nombres.toUpperCase()} {i.alumno.apellidos.toUpperCase()}</td>
+                    <td style={{textAlign: "center"}}><Button variant="secondary" size="sm" onClick={(e) => {this.showAlumnoInfo(e, i.alumno)}}>{i.alumno.ci}</Button></td>
+                    <td style={{textAlign: "center"}}><Button variant="secondary" size="sm" onClick={(e) => {this.showEquipoInfo(e, i.equipo)}}>{i.equipo.descripcion}</Button></td>
+                    <td style={{textAlign: "center"}}>{this.fromRFCToFormat(i.fechaPrestamo)}</td>
+                    <td style={{textAlign: "center"}}>{i.fechaDevolucion === undefined ? "NO DEVUELTO" : this.fromRFCToFormat(i.fechaDevolucion)}</td>
+                    <td style={{textAlign: "center"}}>
                         <Button
+                            style={{border: "2px solid white"}}
                             size="sm"
                             variant="warning"
                             title="Editar">
                             <FaUserEdit />
                         </Button>&nbsp;&nbsp;
                         <Button
+                            style={{border: "2px solid white"}}
+                            onClick={(e)=> {this.deletePrestamo(e, i.idPrestamo)}}
                             size="sm"
                             variant="danger"                            
                             title="Eliminar">
                             <FaTrash />
                         </Button>&nbsp;&nbsp;
                         <Button
+                            disabled={i.estado}
+                            style={{border: "2px solid white"}}
+                            size="sm"
+                            onClick={(e) => {this.showDevolucion(e, i)}}
+                            variant="success"
+                            title="Devolver">
+                            <FaReply />
+                        </Button>&nbsp;&nbsp;                        
+                        <Button
+                            style={{border: "2px solid white"}}
+                            onClick={(e) => {this.showInfo(e, i)}}
                             size="sm"
                             variant="info"                            
-                            title="Editar">
+                            title="Info">
                             <FaInfo />
                         </Button>                        
                     </td>                    
@@ -81,13 +106,18 @@ export default class Prestamos extends Component {
 
         return (
             <section>
+                <Notifications/>
+                <AlumnoInfo show={this.state.showAlumno} alumno={this.state.alumno} close={this.closeAlumnoInfo.bind(this)}/>
+                <PrestamoInfo show={this.state.showInfo} prestamo={this.state.prestamo} close={this.closeInfo.bind(this)}/>                
+                <EquipoInfo show={this.state.showEquipo} equipo={this.state.equipo} close={this.closeEquipoInfo.bind(this)} />
+                <DevolucionModal show={this.state.showDevolucion} prestamo={this.state.prestamo} close={this.closeDevolucion.bind(this)} save={this.devolver.bind(this)}/>
                 <Registrar
                     show={this.state.showNuevo}
                     close={this.closeNuevo.bind(this)}
                     save={this.savePrestamo.bind(this)}
                 />
                 <RFIDReader show={this.state.rfidReading}/>
-                <h3 style={{ fontFamily: "Lato Light" }}>Préstamos</h3>
+                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Préstamos</h3>
                 <Form style={{ marginTop: "10px" }}>
                     <Form.Row>
                         <Col md="2">
@@ -134,16 +164,16 @@ export default class Prestamos extends Component {
                 </Form>
 
                 <section style={{ display: haveResults ? "block" : "none", marginTop: "10px" }}>
-                    <Table hover variant="dark" responsive style={{ fontSize: "12px" }}>
-                        <thead>
+                    <Table hover responsive style={{ fontSize: "12px" }}>
+                        <thead style={{background: "#343a40", color: "white"}}>
                             <tr>
                                 <th>ID</th>
-                                <th>NOMBRES Y APELLIDOS</th>
-                                <th>N° CÉDULA</th>
-                                <th>EQUIPO</th>
-                                <th>INICIO</th>
-                                <th>DEVOLUCIÓN</th>
-                                <th>ACCIONES</th>
+                                <th style={{textAlign: "center"}}>NOMBRES Y APELLIDOS</th>
+                                <th style={{textAlign: "center"}}>N° CÉDULA</th>
+                                <th style={{textAlign: "center"}}>EQUIPO</th>
+                                <th style={{textAlign: "center"}}>INICIO</th>
+                                <th style={{textAlign: "center"}}>DEVOLUCIÓN</th>
+                                <th style={{textAlign: "center"}}>ACCIONES</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -156,13 +186,70 @@ export default class Prestamos extends Component {
         );
     }
 
+    showAlumnoInfo(e, alumno){
+        e.preventDefault();
+        this.setState({
+            alumno: alumno,
+            showAlumno: true
+        });
+    }
+
+    showEquipoInfo(e, equipo){
+        e.preventDefault();
+        this.setState({
+            equipo: equipo,
+            showEquipo: true
+        });
+    }
+
+    showDevolucion(e, prestamo){
+        e.preventDefault();
+        this.setState({
+            prestamo: prestamo,
+            showDevolucion: true
+        });
+    }
+
+    showInfo(e, prestamo){
+        e.preventDefault();
+        this.setState({
+            prestamo: prestamo,
+            showInfo: true
+        });
+    }
+
+    closeInfo(e){
+        this.setState({
+            showInfo: false
+        });
+    }
+
+    closeAlumnoInfo(e){
+        //e.preventDefault();
+        this.setState({
+            showAlumno: false
+        });
+    }
+
+    closeDevolucion(e){
+        this.setState({
+            showDevolucion: false
+        });
+    }
+
+    closeEquipoInfo(e){
+        this.setState({
+            showEquipo: false
+        });
+    }
+
     showNuevo(e) {
         e.preventDefault();
         this.setState({ showNuevo: true });
     }    
 
     closeNuevo(e) {
-        e.preventDefault();
+        //e.preventDefault();
         this.setState({ showNuevo: false });
     }
 
@@ -256,11 +343,40 @@ export default class Prestamos extends Component {
         e.preventDefault();
         axios.post("http://localhost:8080/scc/prestamos", obj)
         .then(res => {
+            notify.show("Se ha realizado correctamente el préstamo", "success");
             this.setState({ prestamos: [res.data], showNuevo: false });
         })
         .catch((error) => {
+            notify.show("Ha ocurrido un error al realizar la operación", "error");
+            this.setState({ showNuevo: false });
+        });
+    }
+
+    deletePrestamo(e, idPrestamo) {
+        e.preventDefault();
+        axios.delete("http://localhost:8080/scc/prestamos/" + idPrestamo)
+        .then(res => {
+            notify.show("Se ha eliminado correctamente el préstamo", "success");
+            this.getPrestamosByFields(e);
+        })
+        .catch((error) => {
+            notify.show("Ha ocurrido un error al eliminar el préstamo", "error");
             console.log(error);
         });
-    }    
+    }
+
+    devolver(e, obj){
+        e.preventDefault();
+        axios.post("http://localhost:8080/scc/prestamos/devolucion", obj)
+        .then(res => {
+            notify.show("Se ha realizado la operación correctamente", "success");
+            this.setState({ showDevolucion: false}, this.getPrestamosByFields(e));
+        })
+        .catch((error) => {
+            notify.show("Ha ocurrido un error al realizar la operación", "error");            
+            console.log(error);
+            this.setState({ showDevolucion: false});
+        });        
+    }
 
 }

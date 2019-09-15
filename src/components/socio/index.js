@@ -63,7 +63,7 @@ export default class Socio extends Component {
         }
         return(
             <section>
-                <h3 style={{ fontFamily: "Lato Light" }}>Socios</h3>
+                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Socios</h3>
                 <Form>
                     <Row>
                         <Col style={{ paddingRight: 0 }}>

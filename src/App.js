@@ -11,7 +11,7 @@ class App extends Component {
     const { path } = this.props.match;
     let currentPath = this.props.location;
     return (
-      <Home pathMatch={path} currentPath={currentPath.pathname}/>
+      <Home pathMatch={path} history={this.props.history} currentPath={currentPath.pathname}/>
     );
   }
 }

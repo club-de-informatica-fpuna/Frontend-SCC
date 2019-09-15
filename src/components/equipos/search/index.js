@@ -10,6 +10,10 @@ export default class SearchEquipo extends Component {
         };
     }
 
+    componentWillReceiveProps(props){
+        this.getEquiposByCategorias();
+    }
+
     componentWillMount() {
         this.getEquiposByCategorias();
     }
@@ -21,7 +25,7 @@ export default class SearchEquipo extends Component {
             categoriasMostrar = equipos.map((i) => (
                 <Accordion defaultActiveKey="0" style={{borderBottom: "1px solid silver", marginBottom: "10px"}}>
                     <Card>
-                        <Accordion.Toggle as={Card.Header} eventKey="0">
+                        <Accordion.Toggle className="card-header-title" as={Card.Header} eventKey="0">
                             {i.denominacion}
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="0">
@@ -79,6 +83,7 @@ export default class SearchEquipo extends Component {
                         <Card.Body>
                             <span><b>Fecha adquisición: </b>{k.fechaAdquisicion}</span>
                             <Button
+                                disabled={k.estado ? false : true}
                                 size="sm"
                                 style={{float: "right"}}
                                 variant="primary"

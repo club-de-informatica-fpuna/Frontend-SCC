@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Accordion, Card, Button } from "react-bootstrap";
+import { Accordion, Card, Button, Image } from "react-bootstrap";
 import axios from "axios";
 import { FaTrash, FaPen, FaPlus } from "react-icons/fa";
 import EquipoRegistrar from "./equipoRegistro";
+import EquipoEditar from "./equipoEdit";
 import CategoriaRegistrar from "./categoriaRegistro";
 import "./equipos.css";
 
@@ -13,7 +14,9 @@ export default class Equipos extends Component {
         this.state = {
             equipos: [],
             showNuevoEquipo: false,
-            showNuevaCategoria: false
+            showNuevaCategoria: false,
+            showEditarEquipo: false,
+            equipo: undefined
         };
     }
 
@@ -33,7 +36,7 @@ export default class Equipos extends Component {
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="0">
                             <Card.Body className="card-body">
-                                {this.getSubcategorias(i.subcategorias)}
+                                {this.getSubcategorias(i.subcategorias, i)}
                             </Card.Body>
                         </Accordion.Collapse>
                     </Card>
@@ -43,9 +46,10 @@ export default class Equipos extends Component {
 
         return (
             <>
+                <EquipoEditar show={this.state.showEditarEquipo} close={this.closeEditarEquipo.bind(this)} update={this.updateEquipo.bind(this)} equipo={this.state.equipo}/>
                 <EquipoRegistrar show={this.state.showNuevoEquipo} close={this.closeNuevoEquipo.bind(this)} save={this.saveEquipo.bind(this)}/>
                 <CategoriaRegistrar show={this.state.showNuevaCategoria} close={this.closeNuevaCategoria.bind(this)} save={this.saveCategoria.bind(this)}/>
-                <h3 style={{ fontFamily: "Lato Light!important" }}>Equipos</h3>
+                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Equipos</h3>
                 <section style={{marginTop: "10px"}}>
                     <Button onClick={this.showNuevoEquipo.bind(this)}>
                         <span>Nuevo equipo</span>&nbsp;&nbsp;
@@ -67,9 +71,70 @@ export default class Equipos extends Component {
         );
     }
 
+    getSubcategorias(subcategorias, categoria) {
+        let subcategoriasMostrar = subcategorias.map((j) => (
+            <Accordion defaultActiveKey="0" style={{ borderBottom: "1px solid silver", marginBottom: "10px" }}>
+                <Card>
+                    <Accordion.Toggle as={Card.Header} eventKey="0">
+                        <b>{j.denominacion}</b>
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey="0">
+                        <Card.Body>
+                            {this.getEquipos(j.equipos, j, categoria)}
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
+            </Accordion>
+        ));
+        return subcategoriasMostrar;
+    }
+
+    getEquipos(equipos, subcategoria, categoria) {
+        let equiposMostrar = equipos.map((k) => (
+            <Accordion defaultActiveKey="0" style={{ borderBottom: "1px solid silver", marginBottom: "10px" }}>
+                <Card>
+                    <Accordion.Toggle as={Card.Header} eventKey="0">
+                        <b>{k.descripcion}</b>
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey="0">
+                        <Card.Body>
+                            <section style={{display: "inline-block"}}>
+                                <p><b>Fecha adquisición: </b>{this.convertDate(k.fechaAdquisicion)}</p>
+                                <p><b>Estado: </b>{k.estado ? "DISPONIBLE" : "NO DISPONIBLE"}</p>
+                                    <Button variant="warning" size="sm" onClick={(e) => {this.showEditarEquipo(e, k, subcategoria, categoria)}}>
+                                        <FaPen/>
+                                    </Button>&nbsp;&nbsp;
+                                    <Button variant="danger" size="sm">
+                                        <FaTrash/>
+                                    </Button>
+                            </section>
+                            <section style={{display: "inline-block", float: "right"}} hidden={k.foto != undefined ? false : true}>
+                                <Image src={("data:image/png;base64," + k.foto)} width="100" thumbnail/>
+                            </section>                            
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
+            </Accordion>
+        ));
+        return equiposMostrar;
+    }
+
     showNuevoEquipo(e){
         e.preventDefault();
         this.setState({ showNuevoEquipo: true });
+    }
+
+    showEditarEquipo(e, equipo, subcategoria, categoria){
+        e.preventDefault();
+        equipo["subcategoria"] = subcategoria;
+        equipo["categoria"] = categoria;
+        console.log(equipo);
+        this.setState({ showEditarEquipo: true, equipo: equipo });
+    }
+
+    closeEditarEquipo(e){
+        e.preventDefault();
+        this.setState({ showEditarEquipo: false });
     }
 
     showNuevaCategoria(e){
@@ -85,52 +150,7 @@ export default class Equipos extends Component {
     closeNuevoEquipo(e){
         e.preventDefault();
         this.setState({ showNuevoEquipo: false });
-    }
-
-    getSubcategorias(subcategorias) {
-        let subcategoriasMostrar = subcategorias.map((j) => (
-            <Accordion defaultActiveKey="0" style={{ borderBottom: "1px solid silver", marginBottom: "10px" }}>
-                <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="0">
-                        <b>{j.denominacion}</b>
-                    </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="0">
-                        <Card.Body>
-                            {this.getEquipos(j.equipos)}
-                        </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-            </Accordion>
-        ));
-        return subcategoriasMostrar;
-    }
-
-    getEquipos(equipos) {
-        let equiposMostrar = equipos.map((k) => (
-            <Accordion defaultActiveKey="0" style={{ borderBottom: "1px solid silver", marginBottom: "10px" }}>
-                <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="0">
-                        <b>{k.descripcion}</b>
-                    </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="0">
-                        <Card.Body>
-                            <p><b>Fecha adquisición: </b>{this.convertDate(k.fechaAdquisicion)}</p>
-                            <p><b>Estado: </b>{k.estado ? "DISPONIBLE" : "NO DISPONIBLE"}</p>
-                            <section>
-                                <Button variant="warning" size="sm">
-                                    <FaPen/>
-                                </Button>&nbsp;&nbsp;
-                                <Button variant="danger" size="sm">
-                                    <FaTrash/>
-                                </Button>
-                            </section>
-                        </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-            </Accordion>
-        ));
-        return equiposMostrar;
-    }
+    }    
 
     convertDate(date){
         let fecha = new Date(date);
@@ -155,6 +175,7 @@ export default class Equipos extends Component {
 
     saveEquipo(e, obj){
         e.preventDefault();
+        console.log(obj);
         axios.post("http://localhost:8080/scc/equipos", obj)
         .then(res => {
             this.setState({showNuevoEquipo: false}, this.getEquiposByCategorias());
@@ -165,8 +186,22 @@ export default class Equipos extends Component {
         });
     }
 
+    updateEquipo(e, obj){
+        e.preventDefault();
+        console.log(obj);
+        axios.put("http://localhost:8080/scc/equipos", obj)
+        .then(res => {
+            this.setState({showEditarEquipo: false}, this.getEquiposByCategorias());
+        })
+        .catch((error) => {
+            console.log(error);
+            this.setState({showEditarEquipo: false});
+        });
+    }    
+
     saveCategoria(e, obj){
         e.preventDefault();
+        console.log(obj);
         axios.post("http://localhost:8080/scc/categoria", obj)
         .then(res => {
             this.setState({showNuevaCategoria: false}, this.getEquiposByCategorias());

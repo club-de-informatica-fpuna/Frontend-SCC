@@ -43,7 +43,7 @@ export default class Registrar extends Component {
                     close={this.closeEquipos.bind(this)}
                     selector={this.selectEquipo.bind(this)}
                 />
-                <Modal show={this.props.show}>
+                <Modal show={this.props.show} onHide={this.props.close.bind(this)}>
                     <Modal.Header closeButton>
                         <Modal.Title>Nuevo préstamo</Modal.Title>
                     </Modal.Header>

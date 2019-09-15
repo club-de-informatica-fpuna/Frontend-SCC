@@ -1,0 +1,23 @@
+.path-selected{
+    color: blue!important;
+    border: 1px solid blue;
+    background: white;
+}
+
+.path-selected:active {
+    background: white!important;    
+}
+
+.path-normal:hover{
+    color: blue!important;
+    border: 1px solid blue;
+    background: white!important;
+}
+
+.path-normal:focus{
+    background: white!important;    
+}
+
+.path-normal:active{
+    background: white!important;    
+}

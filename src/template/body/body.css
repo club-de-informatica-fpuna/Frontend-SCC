@@ -1,15 +1,4 @@
-.side-nav {
-    width: 15%;
-    position: absolute;
-    top: 55.5;
-    left: 0;
-    overflow-x: hidden;
-    transition: 0.5s;
-}
-
 .main-container {
-    transition: margin-left .5s;
-    margin-left: 25%;
-    margin-right: 1%;
-    padding-top: 1%;
+    padding: 30px;
+    justify-content: center;
 }
