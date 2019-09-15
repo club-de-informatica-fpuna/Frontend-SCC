@@ -18,7 +18,7 @@ export default class PrestamoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                        <Image src={logo} width="150" roundedCircle />
+                        <Image src={prestamo.equipo.foto != undefined ? ("data:image/png;base64," + prestamo.equipo.foto) : logo} width="150" roundedCircle />
                     </p>
                     <p><strong>NOMBRES Y APELLIDOS: </strong>{prestamo.alumno.nombres + " " + prestamo.alumno.apellidos}</p>
                     <p><strong>N° DOCUMENTO: </strong>{prestamo.alumno.ci}</p>

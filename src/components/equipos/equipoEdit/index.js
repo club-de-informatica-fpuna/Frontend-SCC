@@ -7,14 +7,30 @@ export default class EquipoRegistrar extends Component {
     constructor(props){
         super(props);
         this.state = {
+            idEquipo: undefined,
             descripcion: "",
-            fechaAdquisicion: this.now(),
+            fechaAdquisicion: "",
             categoriaSelected: 0,
             subcategoriaSelected: 0,
             categorias: [],
             subcategorias: [],
             file: undefined
         };
+    }
+
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps);
+        if(nextProps.equipo !== undefined){
+            this.getSubcategorias(nextProps.equipo.categoria.idCategoria);
+            this.setState({
+                idEquipo: nextProps.equipo.idEquipo,
+                descripcion: nextProps.equipo.descripcion,
+                fechaAdquisicion: nextProps.equipo.fechaAdquisicion,
+                categoriaSelected: nextProps.equipo.categoria.idCategoria,
+                subcategoriaSelected: nextProps.equipo.subcategoria.idSubcategoria,
+                file: nextProps.equipo.foto
+            });
+        }
     }
 
     now(){
@@ -33,7 +49,7 @@ export default class EquipoRegistrar extends Component {
     }
 
     render() {
-
+        console.log(this.props.equipo);
         let categorias = this.state.categorias;
         let subcategorias = this.state.subcategorias;
         let optionsSubcategorias = <option value="-1" disabled>No hay subcategorias</option>;
@@ -55,7 +71,7 @@ export default class EquipoRegistrar extends Component {
         return (
             <Modal show={this.props.show}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Nuevo equipo</Modal.Title>
+                    <Modal.Title>Editar equipo</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -71,7 +87,7 @@ export default class EquipoRegistrar extends Component {
                         <Form.Group controlId="formAdquisicion">
                             <Form.Label>Fecha adquisición</Form.Label>
                             <Form.Control
-                                type="datetime-local"
+                                type="date"
                                 value={this.state.fechaAdquisicion}
                                 onChange={(e)=>{this.changeField(e, "fechaAdquisicion")}}                                
                             />
@@ -157,13 +173,14 @@ export default class EquipoRegistrar extends Component {
     handleSave(e){
         e.preventDefault();
         var obj = {
+            idEquipo: this.state.idEquipo,
             descripcion: this.state.descripcion,
             estado: true,
             fechaAdquisicion: this.state.fechaAdquisicion,
             idSubcategoria: this.state.subcategoriaSelected,
             foto: this.state.file
         }
-        if(true){ this.props.save(e, obj); }
+        if(true){ this.props.update(e, obj); }
     }
 
 }

@@ -18,7 +18,7 @@ export default class EquipoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                        <Image src={logo} width="150" roundedCircle />
+                        <Image src={ equipo.foto != undefined ? ("data:image/png;base64," + equipo.foto) : logo} width="150" roundedCircle />
                     </p>
                     <p><strong>DESCRIPCIÓN: </strong>{equipo.descripcion}</p>
                     <p><strong>FECHA ADQUISICIÓN: </strong>{this.fromRFCToFormat(equipo.fechaAdquisicion)}</p>

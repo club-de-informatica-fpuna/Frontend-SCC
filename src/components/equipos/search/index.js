@@ -25,7 +25,7 @@ export default class SearchEquipo extends Component {
             categoriasMostrar = equipos.map((i) => (
                 <Accordion defaultActiveKey="0" style={{borderBottom: "1px solid silver", marginBottom: "10px"}}>
                     <Card>
-                        <Accordion.Toggle as={Card.Header} eventKey="0">
+                        <Accordion.Toggle className="card-header-title" as={Card.Header} eventKey="0">
                             {i.denominacion}
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="0">
