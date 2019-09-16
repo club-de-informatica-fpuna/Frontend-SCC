@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {Form, Row, Col, Button, Table, OverlayTrigger} from 'react-bootstrap';
-import { FaSearch, FaRegGrinBeamSweat, FaUserEdit, FaUserSlash} from "react-icons/fa";
+import { FaSearch, FaRegGrinBeamSweat, FaUserEdit, FaUserSlash, FaInfo} from "react-icons/fa";
 import { FiRadio } from "react-icons/fi";
 import axios from 'axios';
 import {getBackEndContext, buildQueryParams} from '../../util/generate-query-params';
 import RFIDReader from "../alumno/rfidReader";
 import ToolTipSocio from './toolTip-profile';
+import SocioInf from './socio-inf';
 
 export default class Socio extends Component {
 
@@ -19,7 +20,9 @@ export default class Socio extends Component {
             carreraSelected: undefined,
             results: [],
             carreraList: [],
-            rfidShow:false
+            rfidShow:false,
+            showInfModal:false,
+            partnerDetails: undefined
         }
     }
 
@@ -48,8 +51,9 @@ export default class Socio extends Component {
                     <td>{i.alumno.email}</td>
                     <td>{i.alumno.idCarrera.denominacion}</td>
                     <td>
-                        <Button><FaUserEdit/></Button>&nbsp;&nbsp;
-                        <Button><FaUserSlash/></Button>
+                        <Button size="sm" variant="warning"><FaUserEdit/></Button>&nbsp;&nbsp;
+                        <Button size="sm" variant="danger"><FaUserSlash/></Button>&nbsp;&nbsp;
+                        <Button size="sm" variant="info" onClick={(e)=>{this.handleShowInf(e, i)}}><FaInfo /></Button>
                     </td>
                 </tr>
                 );
@@ -111,8 +115,8 @@ export default class Socio extends Component {
                     </Row>
                 </Form>
                 <section style={{display: res.length > 0 ? "block" : "none", marginTop: "10px"}}>
-                    <Table variant="dark" size="sm" hover responsive striped>
-                        <thead>
+                    <Table hover responsive size="sm" style={{ fontSize: "12px" }}>
+                        <thead style={{background: "#343a40", color: "white"}}>
                             <tr>
                                 <th>NOMBRES Y APELLIDOS</th>
                                 <th>N° CÉDULA</th>
@@ -128,6 +132,7 @@ export default class Socio extends Component {
                     </Table>
                 </section>
                 <RFIDReader show={this.state.rfidShow}/>
+                <SocioInf show={this.state.showInfModal} showFunction={this.handleShowInf.bind(this)} partnerInf={this.state.partnerDetails}/>
             </section>
         );
     }
@@ -177,5 +182,9 @@ export default class Socio extends Component {
             this.setState({rfidShow: false});
         }
 
+    }
+
+    handleShowInf(e, partnerInf){
+        this.setState({showInfModal: !this.state.showInfModal, partnerDetails: partnerInf});
     }
 }
