@@ -22,7 +22,7 @@ export default class Registrar extends Component {
 
     now(){
         let date = new Date();
-        let stringDate = date.getUTCFullYear() + "-" + this.checkDigits(date.getUTCMonth()+1) + "-" + this.checkDigits(date.getUTCDate());
+        let stringDate = date.getFullYear() + "-" + this.checkDigits(date.getMonth()+1) + "-" + this.checkDigits(date.getDate());
         let time = this.checkDigits(date.getHours()) + ":" + this.checkDigits(date.getUTCMinutes());
         return stringDate + "T" + time;
     }
@@ -50,7 +50,7 @@ export default class Registrar extends Component {
 
                     <Modal.Body>
                         <Form>
-                            <Form.Label>N° Documento</Form.Label>
+                            <Form.Label><b>N° Documento</b></Form.Label>
                             <Form.Group as={Row} controlId="formDocumento" >
                                 <Col style={{ paddingRight: "0px" }}>
                                     <Form.Control
@@ -70,7 +70,7 @@ export default class Registrar extends Component {
                                 </Col>
                             </Form.Group>
                             <Form.Group controlId="formNombres">
-                                <Form.Label>Nombre y Apellido</Form.Label>
+                                <Form.Label><b>Nombre y Apellido</b></Form.Label>
                                 <Form.Control
                                     type="text"
                                     value={alumno !== undefined ? (alumno.nombres + " " + alumno.apellidos) : ""}
@@ -78,10 +78,10 @@ export default class Registrar extends Component {
                                 />
                             </Form.Group>
                             <Form.Group controlId="formTelefono">
-                                <Form.Label>Fecha préstamo</Form.Label>
+                                <Form.Label><b>Fecha préstamo</b></Form.Label>
                                 <Form.Control type="datetime-local" value={this.state.fechaPrestamo}/>
                             </Form.Group>
-                            <Form.Label>Equipo</Form.Label>
+                            <Form.Label><b>Equipo</b></Form.Label>
                             <Form.Group controlId="formCarrera" as={Row}>
                                 <Col style={{ paddingRight: "0px" }}>
                                     <Form.Control

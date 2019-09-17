@@ -18,13 +18,15 @@ export default class EquipoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                        <Image src={ equipo.foto != undefined ? ("data:image/png;base64," + equipo.foto) : logo} width="150" roundedCircle />
+                        <Image className="representative-image" src={ equipo.foto != undefined ? ("data:image/png;base64," + equipo.foto) : logo} width="150" thumbnail />
                     </p>
-                    <p><strong>DESCRIPCIÓN: </strong>{equipo.descripcion}</p>
-                    <p><strong>FECHA ADQUISICIÓN: </strong>{this.fromRFCToFormat(equipo.fechaAdquisicion)}</p>
-                    <p><strong>ESTADO: </strong>{equipo.estado ? "DISPONIBLE" : "NO DISPONIBLE"}</p>
-                    <p><strong>CATEGORÍA: </strong>{equipo.idSubcategoria.idCategoria.denominacion}</p>
-                    <p><strong>SUBCATEGORÍA: </strong>{equipo.idSubcategoria.denominacion}</p>
+                    <section className="modal-info-fields">
+                        <p><strong>DESCRIPCIÓN: </strong>{equipo.descripcion}</p>
+                        <p><strong>FECHA ADQUISICIÓN: </strong>{this.fromRFCToFormat(equipo.fechaAdquisicion)}</p>
+                        <p><strong>ESTADO: </strong>{equipo.estado ? "DISPONIBLE" : "NO DISPONIBLE"}</p>
+                        <p><strong>CATEGORÍA: </strong>{equipo.idSubcategoria.idCategoria.denominacion}</p>
+                        <p><strong>SUBCATEGORÍA: </strong>{equipo.idSubcategoria.denominacion}</p>
+                    </section>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.close.bind(this)}>Cerrar</Button>

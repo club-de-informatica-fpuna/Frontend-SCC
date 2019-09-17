@@ -5,6 +5,7 @@ import Registrar from "./registrar";
 import AlumnoInfo from "../alumno/alumnoInfo";
 import PrestamoInfo from "./prestamoInfo";
 import EquipoInfo from "../equipos/equipoInfo";
+import TiempoPrestado from "./tiempoPrestado";
 import DevolucionModal from "./devolucion";
 import RFIDReader from "../alumno/rfidReader";
 import Notifications, {notify} from 'react-notify-toast';
@@ -30,9 +31,12 @@ export default class Prestamos extends Component {
             showInfo: false,
             showEquipo: false,
             showDevolucion: false,
+            showTiempoPrestado: false,
             alumno: undefined,
             prestamo: undefined,
-            equipo: undefined
+            equipo: undefined,
+            fechaPrestamo: undefined,
+            fechaDevolucion: undefined
         };
     }
 
@@ -59,13 +63,17 @@ export default class Prestamos extends Component {
         if(prestamos !== undefined && prestamos.length > 0){
             haveResults = true;
             tableResults = prestamos.map((i) => (
-                <tr style={!i.hasOwnProperty("fechaDevolucion") ? {background: "#D35400", color: "white"} : {background: "#229954", color: "white"}}>
+                <tr>
                     <td>{i.idPrestamo}</td>
                     <td style={{textAlign: "center"}}>{i.alumno.nombres.toUpperCase()} {i.alumno.apellidos.toUpperCase()}</td>
                     <td style={{textAlign: "center"}}><Button variant="secondary" size="sm" onClick={(e) => {this.showAlumnoInfo(e, i.alumno)}}>{i.alumno.ci}</Button></td>
                     <td style={{textAlign: "center"}}><Button variant="secondary" size="sm" onClick={(e) => {this.showEquipoInfo(e, i.equipo)}}>{i.equipo.descripcion}</Button></td>
                     <td style={{textAlign: "center"}}>{this.fromRFCToFormat(i.fechaPrestamo)}</td>
-                    <td style={{textAlign: "center"}}>{i.fechaDevolucion === undefined ? "NO DEVUELTO" : this.fromRFCToFormat(i.fechaDevolucion)}</td>
+                    <td style={{textAlign: "center"}}>
+                        <Button onClick={(e) => {this.showTiempoPrestado(e, i.fechaPrestamo, i.fechaDevolucion)}} size="sm" style={!i.hasOwnProperty("fechaDevolucion") ? {background: "#dc3545", border: "1px solid #dc3545", color: "white"} : {background: "#229954", border: "1px solid #229954", color: "white"}}>
+                            {i.fechaDevolucion === undefined ? "NO DEVUELTO" : this.fromRFCToFormat(i.fechaDevolucion)}                  
+                        </Button>
+                    </td>
                     <td style={{textAlign: "center"}}>
                         <Button
                             style={{border: "2px solid white"}}
@@ -107,6 +115,7 @@ export default class Prestamos extends Component {
         return (
             <section>
                 <Notifications/>
+                <TiempoPrestado show={this.state.showTiempoPrestado} close={this.closeTiempoPrestado.bind(this)} inicio={this.state.fechaPrestamo} fin={this.state.fechaDevolucion}/>
                 <AlumnoInfo show={this.state.showAlumno} alumno={this.state.alumno} close={this.closeAlumnoInfo.bind(this)}/>
                 <PrestamoInfo show={this.state.showInfo} prestamo={this.state.prestamo} close={this.closeInfo.bind(this)}/>                
                 <EquipoInfo show={this.state.showEquipo} equipo={this.state.equipo} close={this.closeEquipoInfo.bind(this)} />
@@ -184,6 +193,20 @@ export default class Prestamos extends Component {
 
             </section>
         );
+    }
+
+    closeTiempoPrestado(e){
+        //e.preventDefault();
+        this.setState({showTiempoPrestado: false});
+    }
+
+    showTiempoPrestado(e, inicio, devolucion){
+        e.preventDefault();
+        this.setState({
+            showTiempoPrestado: true,
+            fechaPrestamo: inicio,
+            fechaDevolucion: devolucion
+        });
     }
 
     showAlumnoInfo(e, alumno){
@@ -341,6 +364,7 @@ export default class Prestamos extends Component {
 
     savePrestamo(e, obj) {
         e.preventDefault();
+        console.log(obj);
         axios.post("http://localhost:8080/scc/prestamos", obj)
         .then(res => {
             notify.show("Se ha realizado correctamente el préstamo", "success");

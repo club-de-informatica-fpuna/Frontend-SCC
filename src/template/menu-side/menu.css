@@ -1,6 +1,6 @@
 .path-selected{
-    color: blue!important;
-    border: 1px solid blue;
+    color: #1f61c0!important;
+    border: 1px solid #1f61c0;
     background: white;
 }
 
@@ -9,8 +9,8 @@
 }
 
 .path-normal:hover{
-    color: blue!important;
-    border: 1px solid blue;
+    color: #1f61c0!important;
+    border: 1px solid #1f61c0;
     background: white!important;
 }
 

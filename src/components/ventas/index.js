@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Col, Button, Table } from "react-bootstrap";
-import { FaSearch, FaPlus, FaUserEdit, FaTrash, FaInfo } from "react-icons/fa";
-import { FiFilePlus } from "react-icons/fi";
+import { Button, Table } from "react-bootstrap";
+import { FaPlus, FaUserEdit, FaTrash, FaInfo } from "react-icons/fa";
+import Notifications, {notify} from 'react-notify-toast';
 import axios from "axios";
 
 export default class Ventas extends Component {
@@ -36,6 +36,7 @@ export default class Ventas extends Component {
                             <FaUserEdit />
                         </Button>&nbsp;&nbsp;
                         <Button
+                            onClick={(e) => {this.deleteVenta(e, i.idVenta)}}
                             size="sm"
                             variant="danger"
                             title="Eliminar">
@@ -54,6 +55,7 @@ export default class Ventas extends Component {
 
         return (
             <section>
+                <Notifications/>
                 <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Ventas</h3>
                 <Button>
                     <FaPlus />&nbsp;&nbsp;
@@ -92,6 +94,18 @@ export default class Ventas extends Component {
         })
         .catch(error => {
             console.log(error);
+        });
+    }
+
+    deleteVenta(e, id){
+        e.preventDefault();
+        axios.delete("http://localhost:8080/scc/ventas/" + id)
+        .then(res => {
+            notify.show("Se ha eliminado exitosamente", "success");
+            this.getVentas();
+        })
+        .catch(error => {
+            notify.show("Ha ocurrido un error al eliminar la venta", "error");
         });
     }
 
