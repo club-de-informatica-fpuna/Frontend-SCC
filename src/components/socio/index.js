@@ -41,7 +41,7 @@ export default class Socio extends Component {
                 let toolTipPartner = (<ToolTipSocio partnerName={i.alumno.nombres} image={i.foto} career={i.alumno.idCarrera.denominacion} />);
                 return(
                 <tr>
-                    <OverlayTrigger placement="auto"
+                    <OverlayTrigger placement="auto-start"
                                     delay={{ show: 250, hide: 400 }}
                                     overlay={toolTipPartner}>
                         <td>{i.alumno.nombres} {i.alumno.apellidos}</td>

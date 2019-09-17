@@ -17,8 +17,9 @@ export default class SocioInf extends Component {
     if (partnerInf === undefined) {
       return <></>;
     }
-
+    console.log(partnerInf);
     let image = partnerInf.foto === undefined ?  <h1 className="twPc-avatarImg" style={{color:"#343a40", border:"13px solid #fff"}}><FaUserGraduate/></h1>  : <img className="twPc-avatarImg" src={"data:image/jpg;base64,"+partnerInf.foto}/>;
+    let a = <FormControl type="file" accept=".jpg, .png" onChange={this.handleImgChange}  />;
     return (
       <Modal show={this.props.show} onHide={this.handleCloseModal.bind(this)} size="lg">
         <div className="container">
@@ -57,24 +58,22 @@ export default class SocioInf extends Component {
                         <span className="twPc-StatValue">{partnerInf.fechaIngreso}</span>
                       </a>
                     </li>
-                    <li className="twPc-ArrangeSizeFit"style={{paddingRight: "2em"}}>
+                    <li className="twPc-ArrangeSizeFit" style={{paddingRight: "2em"}}>
                       <a title="Telefono">
                         <span className="twPc-StatLabel twPc-block">Telefono</span>
                         <span className="twPc-StatValue">{partnerInf.alumno.telefono}</span>
                       </a>
                     </li>
-                    <li className="twPc-ArrangeSizeFit">
+                    <li className="twPc-ArrangeSizeFit" style={{paddingRight: "2em"}}>
                       <a title="Correo">
                         <span className="twPc-StatLabel twPc-block">Correo</span>
                         <span className="twPc-StatValue">{partnerInf.alumno.email}</span>
                       </a>
                     </li>
-                    <li className="twPc-ArrangeSizeFit" style={!this.state.editDisabled ? {display:"none"} : {}}>
-                      <a title="Imagen">
-                        <span className="twPc-StatLabel twPc-block">Subir imagen</span>
-                        <span className="twPc-StatValue">
-                          <FormControl type="file" accept=".jpg, .png" onChange={this.handleImgChange}  />
-                        </span>
+                    <li className="twPc-ArrangeSizeFit">
+                      <a title="UUID">
+                        <span className="twPc-StatLabel twPc-block">UUID</span>
+                        <span className="twPc-StatValue">{partnerInf.uuid}</span>
                       </a>
                     </li>
                   </ul>

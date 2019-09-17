@@ -192,9 +192,10 @@
 }
 
 .card.hovercard .cardheader {
-    background: url("../../../static/font.png");
+    background: url("../../../static/font2.jpg");
     background-size: cover;
-    height: 135px;
+    height: 100px;/*135px*/
+    width: 300px;
 }
 
 .card.hovercard .avatar {
