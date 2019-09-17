@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import {Form, Row, Col, Button, Table} from 'react-bootstrap';
-import { FaSearch, FaRegGrinBeamSweat, FaUserEdit, FaUserSlash} from "react-icons/fa";
+import {Form, Row, Col, Button, Table, OverlayTrigger} from 'react-bootstrap';
+import { FaSearch, FaRegGrinBeamSweat, FaUserEdit, FaUserSlash, FaInfo} from "react-icons/fa";
 import { FiRadio } from "react-icons/fi";
 import axios from 'axios';
 import {getBackEndContext, buildQueryParams} from '../../util/generate-query-params';
 import RFIDReader from "../alumno/rfidReader";
+import ToolTipSocio from './toolTip-profile';
+import SocioInf from './socio-inf';
 
 export default class Socio extends Component {
 
@@ -18,7 +20,9 @@ export default class Socio extends Component {
             carreraSelected: undefined,
             results: [],
             carreraList: [],
-            rfidShow:false
+            rfidShow:false,
+            showInfModal:false,
+            partnerDetails: undefined
         }
     }
 
@@ -33,19 +37,27 @@ export default class Socio extends Component {
         let optionCarreras = <option disabled={true}>- No hay carreras -</option>;
         let carrerasRs = this.state.carreraList;
         if(res !== undefined && res.length > 0){
-            tableRender = res.map((i) => (
+            tableRender = res.map((i) => {
+                let toolTipPartner = (<ToolTipSocio partnerName={i.alumno.nombres} image={i.foto} career={i.alumno.idCarrera.denominacion} />);
+                return(
                 <tr>
-                    <td>{i.ci.nombres} {i.ci.apellidos}</td>
-                    <td>{i.ci.ci}</td> 
-                    <td>{i.ci.telefono}</td>
-                    <td>{i.ci.email}</td>
-                    <td>{i.ci.idCarrera.denominacion}</td>
+                    <OverlayTrigger placement="auto-start"
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={toolTipPartner}>
+                        <td>{i.alumno.nombres} {i.alumno.apellidos}</td>
+                    </OverlayTrigger>
+                    <td>{i.alumno.ci}</td> 
+                    <td>{i.alumno.telefono}</td>
+                    <td>{i.alumno.email}</td>
+                    <td>{i.alumno.idCarrera.denominacion}</td>
                     <td>
-                        <Button><FaUserEdit/></Button>&nbsp;&nbsp;
-                        <Button><FaUserSlash/></Button>
+                        <Button size="sm" variant="warning"><FaUserEdit/></Button>&nbsp;&nbsp;
+                        <Button size="sm" variant="danger"><FaUserSlash/></Button>&nbsp;&nbsp;
+                        <Button size="sm" variant="info" onClick={(e)=>{this.handleShowInf(e, i)}}><FaInfo /></Button>
                     </td>
                 </tr>
-            ));
+                );
+            });
         }
 
         if (carrerasRs !== undefined && carrerasRs.length > 0) {
@@ -90,7 +102,7 @@ export default class Socio extends Component {
                             <Form.Control as="select"
                             value={this.state.carreraSelected}
                             onChange={(e)=>{this.onChangeField(e, "carreraSelected")}}>
-                                <option value="0"> - CARRERAS - </option>
+                                <option value=""> - CARRERAS - </option>
                                 {optionCarreras}
                             </Form.Control>
                         </Col>
@@ -103,8 +115,8 @@ export default class Socio extends Component {
                     </Row>
                 </Form>
                 <section style={{display: res.length > 0 ? "block" : "none", marginTop: "10px"}}>
-                    <Table variant="dark" size="sm" hover responsive striped>
-                        <thead>
+                    <Table hover responsive size="sm" style={{ fontSize: "12px" }}>
+                        <thead style={{background: "#343a40", color: "white"}}>
                             <tr>
                                 <th>NOMBRES Y APELLIDOS</th>
                                 <th>N° CÉDULA</th>
@@ -120,6 +132,7 @@ export default class Socio extends Component {
                     </Table>
                 </section>
                 <RFIDReader show={this.state.rfidShow}/>
+                <SocioInf show={this.state.showInfModal} showFunction={this.handleShowInf.bind(this)} partnerInf={this.state.partnerDetails}/>
             </section>
         );
     }
@@ -139,7 +152,6 @@ export default class Socio extends Component {
                         carrera:this.state.carreraSelected
                     };
         let requestAddress = buildQueryParams(params, getBackEndContext("socios/filter"));
-        console.log(requestAddress);
         axios.get(requestAddress).then(rs => {
             let dataRs = rs.data;
             this.setState({ results: dataRs !== undefined ? dataRs : []});
@@ -170,5 +182,9 @@ export default class Socio extends Component {
             this.setState({rfidShow: false});
         }
 
+    }
+
+    handleShowInf(e, partnerInf){
+        this.setState({showInfModal: !this.state.showInfModal, partnerDetails: partnerInf});
     }
 }
