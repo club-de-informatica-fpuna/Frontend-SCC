@@ -23,8 +23,8 @@ export default class ProductoInfo extends Component {
                     <section className="modal-info-fields">
                         <p><strong>DENOMINACION: </strong>{producto.denominacion}</p>
                         <p><strong>PRECIO: </strong>{producto.precio + " GS."}</p>
-                        <p><strong>CANTIDAD: </strong>{}</p>
-                        <p><strong>ESTADO: </strong>{producto.estado ? "DISPONIBLE" : "AGOTADO"}</p>
+                        <p><strong>CANTIDAD: </strong>{producto.cantidad}</p>
+                        <p><strong>ESTADO: </strong>{producto.cantidad > 0 ? "DISPONIBLE" : "AGOTADO"}</p>
                     </section>
                 </Modal.Body>
                 <Modal.Footer>

@@ -34,7 +34,7 @@ export default class Productos extends Component {
                     </td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.denominacion}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.precio + " GS."}</td>
-                    <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.estado ? "DISPONIBLE" : "NO DISPONIBLE"}</td>
+                    <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.cantidad > 0 ? "DISPONIBLE" : "AGOTADO"}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.cantidad}</td>                  
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>
                         <Button
