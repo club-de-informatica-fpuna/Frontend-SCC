@@ -3,7 +3,8 @@ import { Button, Table } from "react-bootstrap";
 import { FaPlus, FaInfo } from "react-icons/fa";
 import Notifications, {notify} from 'react-notify-toast';
 import axios from "axios";
-import VentaDetalle from './ventaDetalle';
+import VentaDetalle from "./ventaDetalle";
+import VentaRegistro from "./ventaRegistro";
 
 export default class Ventas extends Component {
 
@@ -12,6 +13,7 @@ export default class Ventas extends Component {
         this.state = {
             ventas: [],
             venta: undefined,
+            showNuevaVenta: false,
             showDetalle: false
         };
     }
@@ -54,11 +56,11 @@ export default class Ventas extends Component {
 
         return (
             <section>
+                <VentaRegistro show={this.state.showNuevaVenta} close={this.closeNuevaVenta.bind(this)} save={this.saveVenta.bind(this)}/>
                 <VentaDetalle show={this.state.showDetalle} venta={this.state.venta} close={this.closeVentaDetalle.bind(this)}/>
                 <Notifications/>
                 <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Ventas</h3>
-                <Button>
-                    <FaPlus />&nbsp;&nbsp;
+                <Button onClick={this.showNuevaVenta.bind(this)}>
                     <b>Nuevo</b>
                 </Button>
                 <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }}>
@@ -79,6 +81,15 @@ export default class Ventas extends Component {
                 </Table>
             </section>
         );
+    }
+
+    showNuevaVenta(e){
+        e.preventDefault();
+        this.setState({ showNuevaVenta: true });
+    }
+
+    closeNuevaVenta(e){
+        this.setState({ showNuevaVenta: false });
     }
 
     showVentaDetalle(e, i){
@@ -119,6 +130,27 @@ export default class Ventas extends Component {
         })
         .catch(error => {
             console.log(error);
+        });
+    }
+
+    getVentaById(id){
+        axios.get("http://localhost:8080/scc/ventas/" + id)
+        .then(res => {
+            this.setState({ ventas: [res.data] });
+        })
+        .catch(error => {
+            console.log(error);
+        });        
+    }
+
+    saveVenta(e, obj){
+        axios.post("http://localhost:8080/scc/ventas", obj)
+        .then(res => {
+            this.setState({ showNuevaVenta: false }, this.getVentaById(res.data.id));
+        })
+        .catch(error => {
+            console.log(error);
+            this.setState({ showNuevaVenta: false });
         });
     }
 

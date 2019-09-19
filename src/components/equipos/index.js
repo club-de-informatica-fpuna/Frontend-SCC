@@ -5,6 +5,7 @@ import { FaTrash, FaPen, FaPlus } from "react-icons/fa";
 import EquipoRegistrar from "./equipoRegistro";
 import EquipoEditar from "./equipoEdit";
 import CategoriaRegistrar from "./categoriaRegistro";
+import SubcategoriaRegistrar from "./subcategoriaRegistro";
 import "./equipos.css";
 
 export default class Equipos extends Component {
@@ -15,6 +16,7 @@ export default class Equipos extends Component {
             equipos: [],
             showNuevoEquipo: false,
             showNuevaCategoria: false,
+            showNuevaSubcategoria: false,
             showEditarEquipo: false,
             equipo: undefined
         };
@@ -49,6 +51,7 @@ export default class Equipos extends Component {
                 <EquipoEditar show={this.state.showEditarEquipo} close={this.closeEditarEquipo.bind(this)} update={this.updateEquipo.bind(this)} equipo={this.state.equipo}/>
                 <EquipoRegistrar show={this.state.showNuevoEquipo} close={this.closeNuevoEquipo.bind(this)} save={this.saveEquipo.bind(this)}/>
                 <CategoriaRegistrar show={this.state.showNuevaCategoria} close={this.closeNuevaCategoria.bind(this)} save={this.saveCategoria.bind(this)}/>
+                <SubcategoriaRegistrar show={this.state.showNuevaSubcategoria} close={this.closeNuevaSubcategoria.bind(this)} save={this.saveSubcategoria.bind(this)}/>
                 <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Equipos</h3>
                 <section style={{marginTop: "10px"}}>
                     <Button onClick={this.showNuevoEquipo.bind(this)}>
@@ -57,7 +60,9 @@ export default class Equipos extends Component {
                     <Button onClick={this.showNuevaCategoria.bind(this)}>
                         <b>Nueva categoría</b>
                     </Button>&nbsp;&nbsp;
-                    <Button><b>Nueva subcategoría</b></Button>
+                    <Button onClick={this.showNuevaSubcategoria.bind(this)}>
+                        <b>Nueva subcategoría</b>
+                    </Button>
                 </section>
                 <section className="row" style={{ display: "flex", padding: "12px"}}>
                     {categoriasMostrar}
@@ -119,6 +124,11 @@ export default class Equipos extends Component {
         this.setState({ showNuevoEquipo: true });
     }
 
+    showNuevaSubcategoria(e){
+        e.preventDefault();
+        this.setState({ showNuevaSubcategoria: true });
+    }
+
     showEditarEquipo(e, equipo, subcategoria, categoria){
         e.preventDefault();
         equipo["subcategoria"] = subcategoria;
@@ -138,14 +148,18 @@ export default class Equipos extends Component {
     }
 
     closeNuevaCategoria(e){
-        e.preventDefault();
+        //e.preventDefault();
         this.setState({ showNuevaCategoria: false });
     }
 
-    closeNuevoEquipo(e){
-        e.preventDefault();
-        this.setState({ showNuevoEquipo: false });
+    closeNuevaSubcategoria(e){
+        this.setState({ showNuevaSubcategoria: false });
     }    
+
+    closeNuevoEquipo(e){
+        //e.preventDefault();
+        this.setState({ showNuevoEquipo: false });
+    }
 
     convertDate(date){
         let fecha = new Date(date);
@@ -205,5 +219,17 @@ export default class Equipos extends Component {
             console.log(error);
         });
     }
+
+    saveSubcategoria(e, obj){
+        e.preventDefault();
+        console.log(obj);
+        axios.post("http://localhost:8080/scc/subcategoria", obj)
+        .then(res => {
+            this.setState({showNuevaSubcategoria: false}, this.getEquiposByCategorias());
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }    
 
 }
