@@ -52,17 +52,12 @@ export default class Equipos extends Component {
                 <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Equipos</h3>
                 <section style={{marginTop: "10px"}}>
                     <Button onClick={this.showNuevoEquipo.bind(this)}>
-                        <span>Nuevo equipo</span>&nbsp;&nbsp;
-                        <FaPlus/>
+                        <b>Nuevo equipo</b>
                     </Button>&nbsp;&nbsp;
                     <Button onClick={this.showNuevaCategoria.bind(this)}>
-                        <span>Nueva categoría</span>&nbsp;&nbsp;
-                        <FaPlus/>
+                        <b>Nueva categoría</b>
                     </Button>&nbsp;&nbsp;
-                    <Button>
-                        <span>Nueva subcategoría</span>&nbsp;&nbsp;
-                        <FaPlus/>
-                    </Button>                    
+                    <Button><b>Nueva subcategoría</b></Button>
                 </section>
                 <section className="row" style={{ display: "flex", padding: "12px"}}>
                     {categoriasMostrar}

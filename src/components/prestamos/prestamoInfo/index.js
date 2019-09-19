@@ -18,15 +18,17 @@ export default class PrestamoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                        <Image src={prestamo.equipo.foto != undefined ? ("data:image/png;base64," + prestamo.equipo.foto) : logo} width="150" roundedCircle />
+                        <Image className="representative-image" src={prestamo.equipo.foto != undefined ? ("data:image/png;base64," + prestamo.equipo.foto) : logo} width="150" roundedCircle />
                     </p>
-                    <p><strong>NOMBRES Y APELLIDOS: </strong>{prestamo.alumno.nombres + " " + prestamo.alumno.apellidos}</p>
-                    <p><strong>N° DOCUMENTO: </strong>{prestamo.alumno.ci}</p>
-                    <p><strong>CARRERA: </strong>{prestamo.alumno.idCarrera.denominacion}</p>
-                    <p><strong>EQUIPO PRESTADO: </strong>{prestamo.equipo.descripcion}</p>
-                    <p><strong>FECHA PRÉSTAMO: </strong>{this.fromRFCToFormat(prestamo.fechaPrestamo)}</p>
-                    <p><strong>FECHA DEVOLUCIÓN: </strong>{prestamo.fechaDevolucion === undefined ? "NO DEVUELTO" : this.fromRFCToFormat(prestamo.fechaDevolucion)}</p>
-                    <p><strong>ESTADO: </strong>{prestamo.fechaDevolucion === undefined ? "PENDIENTE" : "DEVUELTO"}</p>
+                    <section className="modal-info-fields">
+                        <p><strong>NOMBRES Y APELLIDOS: </strong>{prestamo.alumno.nombres + " " + prestamo.alumno.apellidos}</p>
+                        <p><strong>N° DOCUMENTO: </strong>{prestamo.alumno.ci}</p>
+                        <p><strong>CARRERA: </strong>{prestamo.alumno.idCarrera.denominacion}</p>
+                        <p><strong>EQUIPO PRESTADO: </strong>{prestamo.equipo.descripcion}</p>
+                        <p><strong>FECHA PRÉSTAMO: </strong>{this.fromRFCToFormat(prestamo.fechaPrestamo)}</p>
+                        <p><strong>FECHA DEVOLUCIÓN: </strong>{prestamo.fechaDevolucion === undefined ? "NO DEVUELTO" : this.fromRFCToFormat(prestamo.fechaDevolucion)}</p>
+                        <p><strong>ESTADO: </strong>{prestamo.fechaDevolucion === undefined ? "PENDIENTE" : "DEVUELTO"}</p>                    
+                    </section>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.close.bind(this)}>Cerrar</Button>

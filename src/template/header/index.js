@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Navbar, Nav, Form} from 'react-bootstrap';
+import {Navbar, Image, Nav, Form} from 'react-bootstrap';
 
 export default class Header extends Component {
     constructor(props, context){
@@ -14,12 +14,15 @@ export default class Header extends Component {
     }
 
     render() {
+        var logo = require("./scc.svg");
         return(
-            <Navbar bg="dark" variant="dark">
+            <Navbar bg="dark" style={{backgroundImage: "linear-gradient(to bottom right, #0a0989, #0d77e5)"}}>
                 <Nav className="mr-auto">
-                    <Nav.Link style={{color: "white"}} href="">{this.state.currentPath}</Nav.Link>
+                    <Nav.Link style={{color: "white"}} href="">
+                        <Image src={logo} height={50}/>
+                    </Nav.Link>
                 </Nav>
-                <Form inline>
+                <Form inline style={{fontSize: "15px"}}>
                     <Nav.Link style={{color: "white"}} href="#home">CONFIGURACIÓN</Nav.Link>
                     <Nav.Link style={{color: "white"}} href="#home">ACERCA DE</Nav.Link>
                     <Nav.Link style={{color: "white"}} href="#home">SALIR</Nav.Link>

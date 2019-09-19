@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { Form, Col, Button, Table } from "react-bootstrap";
-import { FaSearch, FaPlus, FaUserEdit, FaTrash, FaInfo } from "react-icons/fa";
-import { FiFilePlus } from "react-icons/fi";
+import { Button, Table } from "react-bootstrap";
+import { FaPlus, FaInfo } from "react-icons/fa";
+import Notifications, {notify} from 'react-notify-toast';
 import axios from "axios";
+import VentaDetalle from './ventaDetalle';
 
 export default class Ventas extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            ventas: []
+            ventas: [],
+            venta: undefined,
+            showDetalle: false
         };
     }
 
@@ -23,24 +26,21 @@ export default class Ventas extends Component {
         if (ventas !== undefined && ventas.length > 0) {
             tableResults = ventas.map((i) => (
                 <tr>
-                    <td style={{textAlign: "center"}}>{i.idVenta}</td>
-                    <td style={{textAlign: "center"}}>{i.idProducto.denominacion}</td>
-                    <td style={{textAlign: "center"}}>{i.fecha}</td>
-                    <td style={{textAlign: "center"}}>{i.cantidad}</td>
-                    <td style={{textAlign: "center"}}>{i.importe}</td>                    
+                    <td style={{textAlign: "center"}}>{i.id}</td>
+                    <td style={{textAlign: "center"}}>{i.clienteNombre}</td>
+                    <td style={{textAlign: "center"}}>{i.clienteDocumento}</td>
                     <td style={{textAlign: "center"}}>
                         <Button
+                            onClick={(e)=>{this.showVentaDetalle(e, i)}}
                             size="sm"
-                            variant="warning"
-                            title="Editar">
-                            <FaUserEdit />
-                        </Button>&nbsp;&nbsp;
-                        <Button
-                            size="sm"
-                            variant="danger"
-                            title="Eliminar">
-                            <FaTrash />
-                        </Button>&nbsp;&nbsp;
+                            variant="info"
+                            title="Info">
+                            <span>Ver items</span>
+                        </Button>
+                    </td>                    
+                    <td style={{textAlign: "center"}}>{this.fromRFCToFormat(i.fecha)}</td>
+                    <td style={{textAlign: "center"}}>{this.formatoMoneda(i.importeTotal) + " GS."}</td>                    
+                    <td style={{textAlign: "center"}}>
                         <Button
                             size="sm"
                             variant="info"
@@ -54,6 +54,8 @@ export default class Ventas extends Component {
 
         return (
             <section>
+                <VentaDetalle show={this.state.showDetalle} venta={this.state.venta} close={this.closeVentaDetalle.bind(this)}/>
+                <Notifications/>
                 <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Ventas</h3>
                 <Button>
                     <FaPlus />&nbsp;&nbsp;
@@ -63,9 +65,10 @@ export default class Ventas extends Component {
                     <thead style={{background: "#343a40", color: "white"}}>
                         <tr>
                             <th style={{textAlign: "center"}}>ID</th>
-                            <th style={{textAlign: "center"}}>PRODUCTO</th>
-                            <th style={{textAlign: "center"}}>FECHA</th>                            
-                            <th style={{textAlign: "center"}}>CANTIDAD</th>
+                            <th style={{textAlign: "center"}}>NOMBRE DEL CLIENTE</th>
+                            <th style={{textAlign: "center"}}>N° DOCUMENTO</th>
+                            <th style={{textAlign: "center"}}>DETALLE</th>
+                            <th style={{textAlign: "center"}}>FECHA</th>
                             <th style={{textAlign: "center"}}>TOTAL</th>
                             <th style={{textAlign: "center"}}>ACCIONES</th>
                         </tr>
@@ -77,6 +80,30 @@ export default class Ventas extends Component {
             </section>
         );
     }
+
+    showVentaDetalle(e, i){
+        e.preventDefault();
+        this.setState({showDetalle: true, venta: i});
+    }
+
+    closeVentaDetalle(e){
+        this.setState({showDetalle: false});
+    }
+
+    fromRFCToFormat(date){
+        if(date === undefined){ return ""; }
+        let fecha = new Date(date);
+        return this.checkDigits(fecha.getUTCDate()) + "/" +
+            this.checkDigits((fecha.getUTCMonth() + 1)) +
+            "/" + fecha.getUTCFullYear() + " " +
+            this.checkDigits(fecha.getUTCHours()) +
+            ":" + this.checkDigits(fecha.getUTCMinutes()) +
+            ":" + this.checkDigits(fecha.getUTCSeconds());
+    }
+
+    checkDigits(digit){
+        return digit < 10 ? ("0" + digit) : digit;
+    }      
 
     onChangeField(e, field) {
         var obj = {};
@@ -94,5 +121,21 @@ export default class Ventas extends Component {
             console.log(error);
         });
     }
+
+    deleteVenta(e, id){
+        e.preventDefault();
+        axios.delete("http://localhost:8080/scc/ventas/" + id)
+        .then(res => {
+            notify.show("Se ha eliminado exitosamente", "success");
+            this.getVentas();
+        })
+        .catch(error => {
+            notify.show("Ha ocurrido un error al eliminar la venta", "error");
+        });
+    }
+
+    formatoMoneda(number){
+        return new Intl.NumberFormat('de-DE').format(number);
+    }    
 
 }

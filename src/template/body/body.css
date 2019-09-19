@@ -2,3 +2,11 @@
     padding: 30px;
     justify-content: center;
 }
+
+.representative-image{
+    transition: transform .2s; /* Animation */
+}
+
+.representative-image:hover{
+    transform: scale(2);     
+}

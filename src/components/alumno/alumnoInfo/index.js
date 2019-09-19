@@ -18,15 +18,17 @@ export default class AlumnoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                        <Image src={logo} width="150" roundedCircle />
+                        <Image className="representative-image" src={logo} width="150" roundedCircle />
                     </p>
-                    <p><strong>NOMBRES: </strong>{alumno.nombres}</p>
-                    <p><strong>APELLIDOS: </strong>{alumno.apellidos}</p>
-                    <p><strong>N° DOCUMENTO: </strong>{alumno.ci}</p>
-                    <p><strong>TELÉFONO o CELULAR: </strong>{alumno.telefono}</p>
-                    <p><strong>CORREO ELECTRÓNICO: </strong>{alumno.email}</p> 
-                    <p><strong>CARRERA: </strong>{alumno.idCarrera.denominacion}</p>
-                    <p><strong>ASOCIADO: </strong>{alumno.asociado ? "SÍ" : "NO"}</p>                    
+                    <section className="modal-info-fields">
+                        <p><strong>NOMBRES: </strong>{alumno.nombres}</p>
+                        <p><strong>APELLIDOS: </strong>{alumno.apellidos}</p>
+                        <p><strong>N° DOCUMENTO: </strong>{alumno.ci}</p>
+                        <p><strong>TELÉFONO o CELULAR: </strong>{alumno.telefono}</p>
+                        <p><strong>CORREO ELECTRÓNICO: </strong>{alumno.email}</p> 
+                        <p><strong>CARRERA: </strong>{alumno.idCarrera.denominacion}</p>
+                        <p><strong>ASOCIADO: </strong>{alumno.asociado ? "SÍ" : "NO"}</p>                                        
+                    </section>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.close.bind(this)}>Cerrar</Button>

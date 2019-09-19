@@ -37,7 +37,7 @@ export default class AlumnoRegistrar extends Component {
                 <Modal.Body>
                     <Form>
                         <Form.Group controlId="formNombres">
-                            <Form.Label>Nombres</Form.Label>
+                            <Form.Label><b>Nombres</b></Form.Label>
                             <span className="validation-field" hidden={this.validateField(this.state.nombres, 15, 3)}>Nombre inválido</span>
                             <Form.Control
                                 type="text"
@@ -47,7 +47,7 @@ export default class AlumnoRegistrar extends Component {
                                 onChange={(e)=>{this.changeField(e, "nombres")}}/>
                         </Form.Group>
                         <Form.Group controlId="formApellidos">
-                            <Form.Label>Apellidos</Form.Label>
+                            <Form.Label><b>Apellidos</b></Form.Label>
                             <span className="validation-field" hidden={this.validateField(this.state.apellidos, 15, 3)}>Apellido inválido</span>                            
                             <Form.Control
                                 type="text"
@@ -57,7 +57,7 @@ export default class AlumnoRegistrar extends Component {
                                 onChange={(e)=>{this.changeField(e, "apellidos")}}/>
                         </Form.Group>
                         <Form.Group controlId="formDocumento">
-                            <Form.Label>N° Documento</Form.Label>
+                            <Form.Label><b>N° Documento</b></Form.Label>
                             <span className="validation-field" hidden={this.validateNumber(this.state.documento, 99999999, 99999)}>N° de documento inválida</span>
                             <Form.Control
                                 type="number"
@@ -67,7 +67,7 @@ export default class AlumnoRegistrar extends Component {
                                 onChange={(e)=>{this.changeField(e, "documento")}}/>
                         </Form.Group>
                         <Form.Group controlId="formTelefono">
-                            <Form.Label>N° Teléfono o Celular</Form.Label>
+                            <Form.Label><b>N° Teléfono o Celular</b></Form.Label>
                             <span className="validation-field" hidden={this.validateField(this.state.telefono, 20, 7)}>N° de celular inválido</span>                            
                             <Form.Control
                                 type="text"
@@ -77,7 +77,7 @@ export default class AlumnoRegistrar extends Component {
                                 onChange={(e)=>{this.changeField(e, "telefono")}}/>
                         </Form.Group>
                         <Form.Group controlId="formEmail">
-                            <Form.Label>Correo electrónico</Form.Label>
+                            <Form.Label><b>Correo electrónico</b></Form.Label>
                             <span className="validation-field" hidden={this.validateEmail(this.state.email)}>Email inválido</span>                            
                             <Form.Control
                                 type="email"
@@ -87,7 +87,7 @@ export default class AlumnoRegistrar extends Component {
                                 onChange={(e)=>{this.changeField(e, "email")}}/>
                         </Form.Group>
                         <Form.Group controlId="formCarrera">
-                            <Form.Label>Carrera</Form.Label>
+                            <Form.Label><b>Carrera</b></Form.Label>
                             <span className="validation-field" hidden={this.validateSelect(this.state.carreraSelected)}>Debes seleccionar una carrera</span>                            
                             <Form.Control
                                 as="select"

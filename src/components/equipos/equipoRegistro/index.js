@@ -60,7 +60,7 @@ export default class EquipoRegistrar extends Component {
                 <Modal.Body>
                     <Form>
                         <Form.Group controlId="formDescripcion">
-                            <Form.Label>Descripción</Form.Label>
+                            <Form.Label><b>Descripción</b></Form.Label>
                             <Form.Control
                                 type="text"
                                 value={this.state.descripcion}
@@ -69,7 +69,7 @@ export default class EquipoRegistrar extends Component {
                             />
                         </Form.Group>
                         <Form.Group controlId="formAdquisicion">
-                            <Form.Label>Fecha adquisición</Form.Label>
+                            <Form.Label><b>Fecha adquisición</b></Form.Label>
                             <Form.Control
                                 type="datetime-local"
                                 value={this.state.fechaAdquisicion}
@@ -77,7 +77,7 @@ export default class EquipoRegistrar extends Component {
                             />
                         </Form.Group>
                         <Form.Group controlId="formDocumento">
-                            <Form.Label>Categoría</Form.Label>
+                            <Form.Label><b>Categoría</b></Form.Label>
                             <Form.Control
                                 as="select"
                                 value={this.state.categoriaSelected}
@@ -87,7 +87,7 @@ export default class EquipoRegistrar extends Component {
                             </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="formDocumento">
-                            <Form.Label>Subcategoría</Form.Label>
+                            <Form.Label><b>Subcategoría</b></Form.Label>
                             <Form.Control
                                 as="select"
                                 value={this.state.subcategoriaSelected}
@@ -97,7 +97,7 @@ export default class EquipoRegistrar extends Component {
                             </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="formEmail">
-                            <Form.Label>Fotografía</Form.Label>
+                            <Form.Label><b>Fotografía</b></Form.Label>
                             <Form.Control
                                 type="file"
                                 placeholder="Ingrese la imagen"

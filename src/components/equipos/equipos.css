@@ -19,3 +19,11 @@
     color: #20262a;
     font-family: "Lato Light";
 }
+
+.modal-info-fields p{
+    margin: 0;
+}
+
+.modal-info-fields {
+    margin-top: 20px;
+}

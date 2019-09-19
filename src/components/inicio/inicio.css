@@ -1,19 +1,19 @@
 
 
 .card-header-shortcuts {
-    background: #00309e!important;
+    background: #1f61c0!important;
     color: white!important;
     font-weight: bold;
     text-align: center;
-    border: 1px solid #00309e!important;
+    border: 1px solid #1f61c0!important;
 }
 
 .card-footer-shortcuts {
-    background: #00309e!important;
+    background: #1f61c0!important;
     color: white!important;
     font-weight: bold;
     text-align: left;
-    border: 1px solid #00309e!important;
+    border: 1px solid #1f61c0!important;
 }
 
 .card-footer-shortcuts a {
@@ -21,7 +21,7 @@
 }
 
 .card-shortcuts{
-    border: 1px solid #00309e;
+    border: 1px solid #1f61c0;
     display: inline-block;
     padding: 0;
 }
