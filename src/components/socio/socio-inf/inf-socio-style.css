@@ -1,48 +1,50 @@
-
+* {
+    margin: 0px;
+    padding: 0px;
+}
 
 /* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
+Author's custom styles
+========================================================================== */
 
-   .fb-profile img.fb-image-lg{
-       z-index: 0;
-       width: 100%;  
-       margin-bottom: 10px;
-   }
-   
-   .fb-image-profile
-   {
-       margin: -90px 10px 0px 50px;
-       z-index: 9;
-       width: 20%; 
-   }
-   
-   @media (max-width:768px)
-   {
-       
-   .fb-profile-text>h1{
-       font-weight: 700;
-       font-size:16px;
-   }
-   
-   .fb-image-profile
-   {
-       margin: -45px 10px 0px 25px;
-       z-index: 9;
-       width: 20%; 
-   }
-   }
+.fb-profile img.fb-image-lg {
+    z-index: 0;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.fb-image-profile {
+    margin: -90px 10px 0px 50px;
+    z-index: 9;
+    width: 20%;
+}
+
+@media (max-width:768px) {
+
+    .fb-profile-text>h1 {
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .fb-image-profile {
+        margin: -45px 10px 0px 25px;
+        z-index: 9;
+        width: 20%;
+    }
+}
+
 /* ==========================================================================
-   twitter
-   ========================================================================== */
-   .twPc-div {
+twitter
+========================================================================== */
+.twPc-div {
     background: #fff none repeat scroll 0 0;
     border: 1px solid #e1e8ed;
     border-radius: 6px;
     height: 200px;
     width: 100%;
 }
-   .twPc-bg {
+
+.twPc-bg {
     background-image: url("../../../static/font1.jpg");
     background-position: 0 50%;
     background-size: 100% auto;
@@ -51,6 +53,7 @@
     height: 95px;
     width: 100%;
 }
+
 .twPc-block {
     display: block !important;
 }
@@ -60,6 +63,7 @@
     text-align: right;
     width: 100%;
 }
+
 .twPc-avatarLink {
     background-color: #fff;
     border-radius: 6px;
@@ -70,6 +74,7 @@
     padding: 1px;
     vertical-align: bottom;
 }
+
 .twPc-avatarImg {
     border: 2px solid #fff;
     border-radius: 7px;
@@ -78,21 +83,26 @@
     height: 72px;
     width: 72px;
 }
+
 .twPc-divUser {
     margin: 5px 0 0;
 }
+
 .twPc-divName {
     font-size: 18px;
     font-weight: 700;
     line-height: 21px;
 }
+
 .twPc-divName a {
     color: inherit !important;
 }
+
 .twPc-divStats {
     margin-left: 11px;
     padding: 10px 0;
 }
+
 .twPc-Arrange {
     box-sizing: border-box;
     display: table;
@@ -101,25 +111,30 @@
     padding: 0;
     table-layout: auto;
 }
+
 ul.twPc-Arrange {
     list-style: outside none none;
     margin: 0;
     padding: 0;
 }
+
 .twPc-ArrangeSizeFit {
     display: inline-grid;
     padding: 0;
     vertical-align: top;
 }
+
 .twPc-ArrangeSizeFit a:hover {
     text-decoration: none;
 }
+
 .twPc-StatValue {
     display: block;
     font-size: 18px;
     font-weight: 500;
     transition: color 0.15s ease-in-out 0s;
 }
+
 .twPc-StatLabel {
     color: #8899a6;
     font-size: 10px;
@@ -127,4 +142,37 @@ ul.twPc-Arrange {
     overflow: hidden;
     text-transform: uppercase;
     transition: color 0.15s ease-in-out 0s;
+}
+
+.input-div-container {
+    position: relative;
+    padding: 10px;
+    width: 90px;
+    height: 45px;
+    background-color: #2499e3;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -webkit-box-shadow: 0px 3px 0px #1a71a9;
+    -o-box-shadow: 0px 3px 0px #1a71a9;
+    -moz-box-shadow: 0px 3px 0px #1a71a9;
+    -ms-box-shadow: 0px 3px 0px #1a71a9;
+}
+
+.input-file {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.title {
+    text-align: center;
+    color: #fff;
+
 }
