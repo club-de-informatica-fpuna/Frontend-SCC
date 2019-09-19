@@ -2,14 +2,21 @@ import React, { Component } from "react";
 import { Modal, Button, FormGroup, FormControl } from "react-bootstrap";
 import { FaRegEdit, FaUserGraduate } from "react-icons/fa";
 import {MdClose} from 'react-icons/md';
+import student from '../../../static/student.svg';
 import "./inf-socio-style.css";
 
 export default class SocioInf extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editDisabled: false
+      editDisabled: false,
+      partnerImg:undefined
     };
+  }
+
+  componentWillReceiveProps(next){
+    let photo = next.partnerInf !== undefined && next.partnerInf.foto !== undefined ? next.partnerInf.foto : student;
+    this.setState({partnerImg: photo});
   }
 
   render() {
@@ -17,14 +24,12 @@ export default class SocioInf extends Component {
     if (partnerInf === undefined) {
       return <></>;
     }
-    console.log(partnerInf);
-    let image = partnerInf.foto === undefined ?  <h1 className="twPc-avatarImg" style={{color:"#343a40", border:"13px solid #fff"}}><FaUserGraduate/></h1>  : <img className="twPc-avatarImg" src={"data:image/jpg;base64,"+partnerInf.foto}/>;
-    let a = <FormControl type="file" accept=".jpg, .png" onChange={this.handleImgChange}  />;
+
     return (
       <Modal show={this.props.show} onHide={this.handleCloseModal.bind(this)} size="lg">
         <div className="container">
           <div className="row">
-            <div className="twPc-div">
+            <div className="twPc-div" style={this.state.editDisabled ? {height: "16em"}: {} }>
               <a className="twPc-bg twPc-block"></a>
 
               <div>
@@ -33,7 +38,7 @@ export default class SocioInf extends Component {
                   <Button variant="danger" onClick={this.handleCloseModal.bind(this)}><MdClose/></Button>
                 </div>
 
-                <a className="twPc-avatarLink">{image}</a>
+                <a className="twPc-avatarLink"><img className="twPc-avatarImg" src={this.state.partnerImg}/></a>
 
                 <div className="twPc-divUser">
                   <div className="twPc-divName">
@@ -47,13 +52,13 @@ export default class SocioInf extends Component {
                 <div className="twPc-divStats">
                   <ul className="twPc-Arrange">
                     <li className="twPc-ArrangeSizeFit" style={{paddingRight: "2em"}}>
-                    <a title="CI">
+                      <a title="CI">
                         <span className="twPc-StatLabel twPc-block">Cedula de identidad</span>
                         <span className="twPc-StatValue">{partnerInf.alumno.ci}</span>
                       </a>
                     </li>
                     <li className="twPc-ArrangeSizeFit" style={{paddingRight: "2em"}}>
-                    <a title="Fecha de Ingreso">
+                      <a title="Fecha de Ingreso">
                         <span className="twPc-StatLabel twPc-block">Fecha de Ingreso</span>
                         <span className="twPc-StatValue">{partnerInf.fechaIngreso}</span>
                       </a>
@@ -70,11 +75,17 @@ export default class SocioInf extends Component {
                         <span className="twPc-StatValue">{partnerInf.alumno.email}</span>
                       </a>
                     </li>
-                    <li className="twPc-ArrangeSizeFit">
+                    <li className="twPc-ArrangeSizeFit" style={{paddingRight: "1em"}}>
                       <a title="UUID">
                         <span className="twPc-StatLabel twPc-block">UUID</span>
                         <span className="twPc-StatValue">{partnerInf.uuid}</span>
                       </a>
+                    </li>
+                    <li className="twPc-ArrangeSizeFit" style={!this.state.editDisabled ? {display: "none"}: {} }>
+                      <div className="input-div-container" style={{marginTop: "5px"}}>
+		                    <p className="title">Agg img</p>
+		                    <input className="input-file" type="file" accept=".jpg, .png" onChange={this.handleImgChange.bind(this)}/>
+	                    </div> 
                     </li>
                   </ul>
                 </div>
@@ -92,10 +103,20 @@ export default class SocioInf extends Component {
 
   handleDisableEdit(e){
     e.preventDefault();
-    this.setState({editDisabled:true});
+    this.setState({editDisabled:!this.state.editDisabled});
   }
 
   handleImgChange(e){
-    console.log(e.target.files);
+    //window.btoa(str) encripta
+    //window.atob(photo)
+    e.preventDefault();
+    var file = e.target.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+      this.setState({partnerImg:reader.result});
+    }.bind(this);
+
   }
+  
 }
