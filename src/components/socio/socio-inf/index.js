@@ -110,13 +110,14 @@ export default class SocioInf extends Component {
     //window.btoa(str) encripta
     //window.atob(photo)
     e.preventDefault();
-    var file = e.target.files[0];
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function() {
-      this.setState({partnerImg:reader.result});
-    }.bind(this);
-
+    var file = e.target.files;
+    if(file.length > 0){
+      var reader = new FileReader();
+      reader.readAsDataURL(file[0]);
+      reader.onload = function() {
+        this.setState({partnerImg:reader.result});
+      }.bind(this);
+    }
   }
   
 }
