@@ -40,16 +40,16 @@ export default class Socio extends Component {
             tableRender = res.map((i) => {
                 let toolTipPartner = (<ToolTipSocio partnerName={i.alumno.nombres} image={i.foto} career={i.alumno.idCarrera.denominacion} />);
                 return(
-                <tr>
+                <tr key={i.alumno.ci}>
                     <OverlayTrigger placement="auto-start"
                                     delay={{ show: 250, hide: 400 }}
                                     overlay={toolTipPartner}>
-                        <td>{i.alumno.nombres} {i.alumno.apellidos}</td>
+                        <td>{i.alumno.nombres.toUpperCase()} {i.alumno.apellidos.toUpperCase()}</td>
                     </OverlayTrigger>
                     <td>{i.alumno.ci}</td> 
                     <td>{i.alumno.telefono}</td>
                     <td>{i.alumno.email}</td>
-                    <td>{i.alumno.idCarrera.denominacion}</td>
+                    <td>{i.alumno.idCarrera.denominacion.toUpperCase()}</td>
                     <td>
                         <Button size="sm" variant="warning"><FaUserEdit/></Button>&nbsp;&nbsp;
                         <Button size="sm" variant="danger"><FaUserSlash/></Button>&nbsp;&nbsp;
@@ -132,7 +132,7 @@ export default class Socio extends Component {
                     </Table>
                 </section>
                 <RFIDReader show={this.state.rfidShow}/>
-                <SocioInf show={this.state.showInfModal} showFunction={this.handleShowInf.bind(this)} partnerInf={this.state.partnerDetails}/>
+                <SocioInf mode={true} show={this.state.showInfModal} showFunction={this.handleShowInf.bind(this)} partnerInf={this.state.partnerDetails}/>
             </section>
         );
     }

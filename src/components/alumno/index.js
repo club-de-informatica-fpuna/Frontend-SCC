@@ -6,8 +6,7 @@ import AlumnoInfo from "./alumnoInfo";
 import RFIDReader from "./rfidReader";
 import axios from "axios";
 import Notifications, {notify} from 'react-notify-toast';
-import {getBackEndContext} from '../../util/generate-query-params';
-import PartnerUp from './associate-student';
+import SocioInf from '../socio/socio-inf'
 
 export default class Alumno extends Component {
 
@@ -89,7 +88,7 @@ export default class Alumno extends Component {
                     carreras={this.state.carreras}
                     save={this.saveAlumno.bind(this)} alumno={this.state.alumno}/>
                 <RFIDReader show={this.state.rfidReading} />
-                <PartnerUp show={this.state.partnerUpShow}  showCloseFunction={(e) => {this.setState({partnerUpShow : !this.state.partnerUpShow})}}/>
+                <SocioInf mode={false} show={this.state.partnerUpShow} showFunction={this.handleShowParner.bind(this)} partnerInf={this.state.alumno}/>
                 <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Alumnos</h3>
                 <Form style={{ marginTop: "10px" }}>
                     <Form.Row>
@@ -255,30 +254,12 @@ export default class Alumno extends Component {
     }
 
     handleShowParner(){
-        this.setState({partnerUpShow : this.state.partnerUpShow});
+        this.setState({partnerUpShow : !this.state.partnerUpShow});
     }
 
     associateStudent(e, student){
         e.preventDefault();
-        console.log(student);
-        this.setState({alumno : student, partnerUpShow : true})
-        
-        let endPoint = getBackEndContext("socios");
-
-        let studentPost = {
-            ci: student.ci,
-            estado: true,
-            fechaIngreso: "2019-09-20T13:58:05.586Z",
-            foto: null,
-            uuid: "string"
-        }
-
-        //axios.post(endPoint, studentPost).then(rs => {
-            
-        //}).catch(error => {
-        //    console.log(error);
-        //})
-
+        this.setState({alumno : student, partnerUpShow : true});
     }
 
 }
