@@ -6,6 +6,7 @@ import AlumnoInfo from "./alumnoInfo";
 import RFIDReader from "./rfidReader";
 import axios from "axios";
 import Notifications, {notify} from 'react-notify-toast';
+import SocioInf from '../socio/socio-inf'
 
 export default class Alumno extends Component {
 
@@ -22,7 +23,8 @@ export default class Alumno extends Component {
             showInfo: false,
             alumno: undefined,
             carreras: [],
-            rfidReading: false
+            rfidReading: false,
+            partnerUpShow: false
         };
     }
 
@@ -61,6 +63,7 @@ export default class Alumno extends Component {
                         <Button
                             size="sm"
                             variant="info"
+                            onClick={(e) => {this.associateStudent(e, i)}}
                             title="Asociar">
                             <FaUserFriends />
                         </Button>
@@ -70,7 +73,7 @@ export default class Alumno extends Component {
         }
         let optionsCarreras = <option disabled={true}> - No hay carreras - </option>
         let carreras = this.state.carreras;
-        if (carreras != undefined && carreras.length > 0) {
+        if (carreras !== undefined && carreras.length > 0) {
             optionsCarreras = carreras.map((i) => (
                 <option key={i.idCarrera} value={i.idCarrera}>{i.denominacion}</option>
             ));
@@ -83,9 +86,11 @@ export default class Alumno extends Component {
                     show={this.state.showNuevo}
                     close={this.closeNuevo.bind(this)}
                     carreras={this.state.carreras}
-                    save={this.saveAlumno.bind(this)} />
-                <RFIDReader show={this.state.rfidReading}/>
-                <Form>
+                    save={this.saveAlumno.bind(this)} alumno={this.state.alumno}/>
+                <RFIDReader show={this.state.rfidReading} />
+                <SocioInf mode={false} show={this.state.partnerUpShow} showFunction={this.handleShowParner.bind(this)} partnerInf={this.state.alumno}/>
+                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Alumnos</h3>
+                <Form style={{ marginTop: "10px" }}>
                     <Form.Row>
                         <Col>
                             <Form.Control
@@ -246,6 +251,15 @@ export default class Alumno extends Component {
         else{
             this.setState({rfidReading: false});
         }
+    }
+
+    handleShowParner(){
+        this.setState({partnerUpShow : !this.state.partnerUpShow});
+    }
+
+    associateStudent(e, student){
+        e.preventDefault();
+        this.setState({alumno : student, partnerUpShow : true});
     }
 
 }

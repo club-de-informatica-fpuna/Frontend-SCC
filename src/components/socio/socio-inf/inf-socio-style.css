@@ -146,18 +146,10 @@ ul.twPc-Arrange {
 
 .input-div-container {
     position: relative;
-    padding: 10px;
-    width: 90px;
-    height: 45px;
-    background-color: #2499e3;
     -webkit-border-radius: 5px;
     -o-border-radius: 5px;
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;
-    -webkit-box-shadow: 0px 3px 0px #1a71a9;
-    -o-box-shadow: 0px 3px 0px #1a71a9;
-    -moz-box-shadow: 0px 3px 0px #1a71a9;
-    -ms-box-shadow: 0px 3px 0px #1a71a9;
 }
 
 .input-file {
