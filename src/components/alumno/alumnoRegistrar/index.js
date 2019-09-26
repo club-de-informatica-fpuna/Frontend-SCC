@@ -40,6 +40,7 @@ export default class AlumnoRegistrar extends Component {
                             <Form.Label><b>Nombres</b></Form.Label>
                             <span className="validation-field" hidden={this.validateField(this.state.nombres, 15, 3)}>Nombre inválido</span>
                             <Form.Control
+                                className={this.validateField(this.state.nombres, 15, 3) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="text"
                                 placeholder="Ingrese sus nombres"
                                 value={this.state.nombres}
@@ -50,6 +51,7 @@ export default class AlumnoRegistrar extends Component {
                             <Form.Label><b>Apellidos</b></Form.Label>
                             <span className="validation-field" hidden={this.validateField(this.state.apellidos, 15, 3)}>Apellido inválido</span>                            
                             <Form.Control
+                                className={this.validateField(this.state.apellidos, 15, 3) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="text"
                                 placeholder="Ingrese sus apellidos"
                                 autoComplete="off"
@@ -58,10 +60,11 @@ export default class AlumnoRegistrar extends Component {
                         </Form.Group>
                         <Form.Group controlId="formDocumento">
                             <Form.Label><b>N° Documento</b></Form.Label>
-                            <span className="validation-field" hidden={this.validateNumber(this.state.documento, 99999999, 99999)}>N° de documento inválida</span>
+                            <span className="validation-field" hidden={this.validateNumber(this.state.documento, 99999999, 99999)}>N° de documento inválido</span>
                             <Form.Control
+                                className={this.validateNumber(this.state.documento, 99999999, 99999) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="number"
-                                placeholder="Ingrese su documento"
+                                placeholder="Ingrese su número de documento"
                                 autoComplete="off"
                                 value={this.state.documento}
                                 onChange={(e)=>{this.changeField(e, "documento")}}/>
@@ -70,6 +73,7 @@ export default class AlumnoRegistrar extends Component {
                             <Form.Label><b>N° Teléfono o Celular</b></Form.Label>
                             <span className="validation-field" hidden={this.validateField(this.state.telefono, 20, 7)}>N° de celular inválido</span>                            
                             <Form.Control
+                                className={this.validateField(this.state.telefono, 20, 7) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="text"
                                 placeholder="N° de Teléfono o Celular"
                                 autoComplete="off"
@@ -78,8 +82,9 @@ export default class AlumnoRegistrar extends Component {
                         </Form.Group>
                         <Form.Group controlId="formEmail">
                             <Form.Label><b>Correo electrónico</b></Form.Label>
-                            <span className="validation-field" hidden={this.validateEmail(this.state.email)}>Email inválido</span>                            
+                            <span className="validation-field" hidden={this.validateEmail(this.state.email)}>Email inválido</span>
                             <Form.Control
+                                className={this.validateEmail(this.state.email) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="email"
                                 placeholder="Ingrese su email"
                                 autoComplete="off"
@@ -90,6 +95,7 @@ export default class AlumnoRegistrar extends Component {
                             <Form.Label><b>Carrera</b></Form.Label>
                             <span className="validation-field" hidden={this.validateSelect(this.state.carreraSelected)}>Debes seleccionar una carrera</span>                            
                             <Form.Control
+                                className={this.validateSelect(this.state.carreraSelected) ? "input-validate-field-success" : "input-validate-field-error"}
                                 as="select"
                                 value={this.state.carreraSelected}
                                 onChange={(e)=>{this.changeField(e, "carreraSelected")}}>

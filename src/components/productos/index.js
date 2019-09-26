@@ -3,6 +3,7 @@ import { Image, Button, Table } from "react-bootstrap";
 import { FaUserEdit, FaTrash, FaInfo } from "react-icons/fa";
 import ProductoRegistro from "./registro";
 import ProductoInfo from "./productoInfo";
+import StockRegistro from "./registroStock";
 import Notifications, {notify} from 'react-notify-toast';
 import axios from "axios";
 
@@ -14,9 +15,11 @@ export default class Productos extends Component {
             productos: [],
             producto: undefined,
             showNuevo: false,
-            showProducto: false
+            showProducto: false,
+            showStock: false
         };
     }
+    
 
     componentWillMount() {
         this.getProductos();
@@ -65,10 +68,11 @@ export default class Productos extends Component {
         return (
             <section>
                 <Notifications/>
+                <StockRegistro show={this.state.showStock} close={this.closeStock.bind(this)} save={this.saveStock.bind(this)} productos={this.state.productos}/>
                 <ProductoRegistro show={this.state.showNuevo} close={this.closeNuevoProducto.bind(this)} save={this.saveProducto.bind(this)}/>
                 <ProductoInfo show={this.state.showProducto} producto={this.state.producto} close={this.closeProducto.bind(this)}/>
-                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Productos</h3>
-                <Button onClick={this.showNuevoProducto.bind(this)}><b>Nuevo</b></Button>
+                <Button onClick={this.showNuevoProducto.bind(this)}><b>Nuevo</b></Button>&nbsp;&nbsp;
+                <Button onClick={this.showAumentarStock.bind(this)}><b>Aumentar stock</b></Button>
                 <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }}>
                     <thead style={{background: "#343a40", color: "white"}}>
                         <tr>
@@ -87,6 +91,19 @@ export default class Productos extends Component {
                 </Table>
             </section>
         );
+    }
+
+    showAumentarStock(e){
+        e.preventDefault();
+        this.setState({
+            showStock: true
+        });
+    }
+
+    closeStock(e){
+        this.setState({
+            showStock: false
+        });
     }
 
     showNuevoProducto(e){
@@ -124,7 +141,7 @@ export default class Productos extends Component {
     }
 
     getProductos() {
-        axios.get("http://localhost:8080/scc/productos")
+        axios.get(process.env.REACT_APP_API_URL + "/productos")
         .then(res => {
             this.setState({ productos: res.data });
         })
@@ -136,7 +153,7 @@ export default class Productos extends Component {
 
     deleteProducto(e, id){
         e.preventDefault();
-        axios.delete("http://localhost:8080/scc/productos/" + id)
+        axios.delete(process.env.REACT_APP_API_URL + "/productos/" + id)
         .then(res => {
             notify.show("Se ha eliminado exitosamente", "success");
             this.getProductos();
@@ -148,7 +165,7 @@ export default class Productos extends Component {
 
     saveProducto(e, obj){
         e.preventDefault();
-        axios.post("http://localhost:8080/scc/productos", obj)
+        axios.post(process.env.REACT_APP_API_URL + "/productos", obj)
         .then(res => {
             notify.show("Se ha registrado el producto exitosamente", "success");
             this.setState({ productos: [res.data], showNuevo: false });
@@ -157,6 +174,20 @@ export default class Productos extends Component {
             notify.show("Ha ocurrido un error al registrar el producto", "error");
             console.log(error);
             this.setState({showNuevo: false});
+        });        
+    }
+
+    saveStock(e, obj){
+        e.preventDefault();
+        axios.post(process.env.REACT_APP_API_URL + "/productos/stock", obj)
+        .then(res => {
+            notify.show("Se ha registrado el stock exitosamente", "success");
+            this.setState({ showStock: false }, this.getProductos());
+        })
+        .catch(error => {
+            notify.show("Ha ocurrido un error al registrar el stock", "error");
+            console.log(error);
+            this.setState({showStock: false});
         });        
     }
 

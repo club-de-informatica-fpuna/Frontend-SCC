@@ -59,7 +59,6 @@ export default class Ventas extends Component {
                 <VentaRegistro show={this.state.showNuevaVenta} close={this.closeNuevaVenta.bind(this)} save={this.saveVenta.bind(this)}/>
                 <VentaDetalle show={this.state.showDetalle} venta={this.state.venta} close={this.closeVentaDetalle.bind(this)}/>
                 <Notifications/>
-                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Ventas</h3>
                 <Button onClick={this.showNuevaVenta.bind(this)}>
                     <b>Nuevo</b>
                 </Button>
@@ -124,7 +123,7 @@ export default class Ventas extends Component {
     }
 
     getVentas() {
-        axios.get("http://localhost:8080/scc/ventas")
+        axios.get(process.env.REACT_APP_API_URL + "/ventas")
         .then(res => {
             this.setState({ ventas: res.data });
         })
@@ -134,7 +133,7 @@ export default class Ventas extends Component {
     }
 
     getVentaById(id){
-        axios.get("http://localhost:8080/scc/ventas/" + id)
+        axios.get(process.env.REACT_APP_API_URL + "/ventas/" + id)
         .then(res => {
             this.setState({ ventas: [res.data] });
         })
@@ -144,7 +143,8 @@ export default class Ventas extends Component {
     }
 
     saveVenta(e, obj){
-        axios.post("http://localhost:8080/scc/ventas", obj)
+        console.log(obj);
+        axios.post(process.env.REACT_APP_API_URL + "/ventas", obj)
         .then(res => {
             this.setState({ showNuevaVenta: false }, this.getVentaById(res.data.id));
         })
@@ -156,7 +156,7 @@ export default class Ventas extends Component {
 
     deleteVenta(e, id){
         e.preventDefault();
-        axios.delete("http://localhost:8080/scc/ventas/" + id)
+        axios.delete(process.env.REACT_APP_API_URL + "/ventas/" + id)
         .then(res => {
             notify.show("Se ha eliminado exitosamente", "success");
             this.getVentas();

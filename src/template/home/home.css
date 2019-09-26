@@ -3,8 +3,34 @@
 }
 
 .validation-field{
-    color: red;
+    color: #dc3545;
     float: right;
     text-align: right;
     margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.input-validate-field-error {
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+.input-validate-field-error::placeholder{
+    color: #dc3545;
+}
+
+.input-validate-field-success {
+    color: #28a745;
+    border: 1px solid #28a745;
+}
+
+.input-file-field{
+    border: 1px solid #6c757d;
+    background: #6c757d;
+    border-radius: 7px;
+    padding: 7px;
+    color: white;
+    font-weight: bolder;
+    display: block;
+    cursor: pointer;
 }

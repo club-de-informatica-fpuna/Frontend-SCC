@@ -107,7 +107,7 @@ export default class SearchEquipo extends Component {
     }
 
     getEquiposByCategorias() {
-        axios.get("http://localhost:8080/scc/equipos/categorias")
+        axios.get(process.env.REACT_APP_API_URL + "/equipos/categorias")
             .then(res => {
                 this.setState({ equipos: res.data });
             })

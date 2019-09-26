@@ -126,8 +126,7 @@ export default class Prestamos extends Component {
                     save={this.savePrestamo.bind(this)}
                 />
                 <RFIDReader show={this.state.rfidReading}/>
-                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Préstamos</h3>
-                <Form style={{ marginTop: "10px" }}>
+                <Form>
                     <Form.Row>
                         <Col md="2">
                             <Form.Control
@@ -284,7 +283,7 @@ export default class Prestamos extends Component {
     }
 
     getPrestamos() {
-        axios.get("http://localhost:8080/scc/prestamos")
+        axios.get(process.env.REACT_APP_API_URL + "/prestamos")
             .then(res => {
                 console.log(res.data);
                 this.setState({ prestamos: res.data });
@@ -295,7 +294,7 @@ export default class Prestamos extends Component {
     }
 
     getEquipos() {
-        axios.get("http://localhost:8080/scc/subcategoria")
+        axios.get(process.env.REACT_APP_API_URL + "/subcategoria")
             .then(res => {
                 console.log(res.data);
                 this.setState({ equipos: res.data });
@@ -313,7 +312,7 @@ export default class Prestamos extends Component {
         let hasta = this.convertDate(this.state.hasta);
         let queryParams = this.makeQuery(cedula, subcategoria, desde, hasta);
         console.log(queryParams);
-        axios.get("http://localhost:8080/scc/prestamos/fields" + queryParams)
+        axios.get(process.env.REACT_APP_API_URL + "/prestamos/fields" + queryParams)
             .then(res => {
                 this.setState({ prestamos: res.data });
             });
@@ -352,7 +351,7 @@ export default class Prestamos extends Component {
     async getPrestamosFromRFID(e) {
         e.preventDefault();
         this.setState({ rfidReading: true });
-        let res = await axios.get("http://localhost:8080/scc/prestamos/rfid");
+        let res = await axios.get(process.env.REACT_APP_API_URL + "/prestamos/rfid");
         if(res.status === 200){
             this.setState({ prestamos: res.data, rfidReading: false });
         }
@@ -365,7 +364,7 @@ export default class Prestamos extends Component {
     savePrestamo(e, obj) {
         e.preventDefault();
         console.log(obj);
-        axios.post("http://localhost:8080/scc/prestamos", obj)
+        axios.post(process.env.REACT_APP_API_URL + "/prestamos", obj)
         .then(res => {
             notify.show("Se ha realizado correctamente el préstamo", "success");
             this.setState({ prestamos: [res.data], showNuevo: false });
@@ -378,7 +377,7 @@ export default class Prestamos extends Component {
 
     deletePrestamo(e, idPrestamo) {
         e.preventDefault();
-        axios.delete("http://localhost:8080/scc/prestamos/" + idPrestamo)
+        axios.delete(process.env.REACT_APP_API_URL + "/prestamos/" + idPrestamo)
         .then(res => {
             notify.show("Se ha eliminado correctamente el préstamo", "success");
             this.getPrestamosByFields(e);
@@ -391,7 +390,7 @@ export default class Prestamos extends Component {
 
     devolver(e, obj){
         e.preventDefault();
-        axios.post("http://localhost:8080/scc/prestamos/devolucion", obj)
+        axios.post(process.env.REACT_APP_API_URL + "/prestamos/devolucion", obj)
         .then(res => {
             notify.show("Se ha realizado la operación correctamente", "success");
             this.setState({ showDevolucion: false}, this.getPrestamosByFields(e));

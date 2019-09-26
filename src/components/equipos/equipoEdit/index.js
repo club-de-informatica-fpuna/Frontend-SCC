@@ -145,14 +145,14 @@ export default class EquipoRegistrar extends Component {
     }
 
     getCategorias() {
-        axios.get("http://localhost:8080/scc/categoria")
+        axios.get(process.env.REACT_APP_API_URL + "/categoria")
         .then(res => {
             this.setState({ categorias: res.data });
         });
     }
 
     getSubcategorias(categoria){
-        axios.get("http://localhost:8080/scc/subcategoria/categoria/" + categoria)
+        axios.get(process.env.REACT_APP_API_URL + "/subcategoria/categoria/" + categoria)
         .then(res => {
             this.setState({ subcategorias: res.data });
         });

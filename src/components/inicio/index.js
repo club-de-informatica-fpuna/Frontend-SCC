@@ -6,9 +6,9 @@ import "./inicio.css";
 export default class Inicio extends Component {
 
     render() {
-        var pendients = require("./pendients.gif");
-        var faltantes = require("./faltantes.gif");
-        var equipos = require("./equipos.gif");
+        var pendients = require("./pendients.png");
+        var faltantes = require("./faltantes.jpg");
+        var equipos = require("./equipos.png");
         return (
             <section className="col-md-12" style={{textAlign: "center"}}>
                 <a href="/home/prestamos/pendientes">

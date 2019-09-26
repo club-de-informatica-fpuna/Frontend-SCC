@@ -16,7 +16,7 @@ export default class Header extends Component {
     render() {
         var logo = require("./scc.svg");
         return(
-            <Navbar bg="dark" style={{backgroundImage: "linear-gradient(to bottom right, #0a0989, #0d77e5)"}}>
+            <Navbar bg="dark" style={{backgroundImage: "linear-gradient(to bottom right, #373737, black)"}}>
                 <Nav className="mr-auto">
                     <Nav.Link style={{color: "white"}} href="">
                         <Image src={logo} height={50}/>

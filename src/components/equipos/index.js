@@ -6,6 +6,7 @@ import EquipoRegistrar from "./equipoRegistro";
 import EquipoEditar from "./equipoEdit";
 import CategoriaRegistrar from "./categoriaRegistro";
 import SubcategoriaRegistrar from "./subcategoriaRegistro";
+import Notifications, {notify} from 'react-notify-toast';
 import "./equipos.css";
 
 export default class Equipos extends Component {
@@ -33,8 +34,8 @@ export default class Equipos extends Component {
             categoriasMostrar = equipos.map((i) => (
                 <Accordion className="col-md-12" defaultActiveKey="0" style={{ marginBottom: "10px", padding: 0}}>
                     <Card style={{borderBottom: "1px solid silver"}}>
-                        <Accordion.Toggle className="card-header-title" as={Card.Header} eventKey="0">
-                            <b>{i.denominacion}</b>
+                        <Accordion.Toggle className="card-header-title" as={Card.Header} eventKey="0" style={{cursor: "pointer"}}>
+                            <b>{i.denominacion.toUpperCase()}</b>
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="0">
                             <Card.Body className="card-body">
@@ -48,12 +49,12 @@ export default class Equipos extends Component {
 
         return (
             <>
+                <Notifications/>
                 <EquipoEditar show={this.state.showEditarEquipo} close={this.closeEditarEquipo.bind(this)} update={this.updateEquipo.bind(this)} equipo={this.state.equipo}/>
                 <EquipoRegistrar show={this.state.showNuevoEquipo} close={this.closeNuevoEquipo.bind(this)} save={this.saveEquipo.bind(this)}/>
                 <CategoriaRegistrar show={this.state.showNuevaCategoria} close={this.closeNuevaCategoria.bind(this)} save={this.saveCategoria.bind(this)}/>
                 <SubcategoriaRegistrar show={this.state.showNuevaSubcategoria} close={this.closeNuevaSubcategoria.bind(this)} save={this.saveSubcategoria.bind(this)}/>
-                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Equipos</h3>
-                <section style={{marginTop: "10px"}}>
+                <section>
                     <Button onClick={this.showNuevoEquipo.bind(this)}>
                         <b>Nuevo equipo</b>
                     </Button>&nbsp;&nbsp;
@@ -75,8 +76,8 @@ export default class Equipos extends Component {
         let subcategoriasMostrar = subcategorias.map((j) => (
             <Accordion defaultActiveKey="0" style={{ borderBottom: "1px solid silver", marginBottom: "10px" }}>
                 <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="0">
-                        <b>{j.denominacion}</b>
+                    <Accordion.Toggle as={Card.Header} eventKey="0" style={{background: "#666666", color: "white", cursor: "pointer"}}>
+                        <b>{j.denominacion.toUpperCase()}</b>
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="0">
                         <Card.Body>
@@ -93,8 +94,8 @@ export default class Equipos extends Component {
         let equiposMostrar = equipos.map((k) => (
             <Accordion defaultActiveKey="0" style={{ borderBottom: "1px solid silver", marginBottom: "10px" }}>
                 <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="0">
-                        <b>{k.descripcion}</b>
+                    <Accordion.Toggle as={Card.Header} eventKey="0" style={{cursor: "pointer"}}>
+                        <b>{k.descripcion.toUpperCase()}</b>
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="0">
                         <Card.Body>
@@ -138,7 +139,7 @@ export default class Equipos extends Component {
     }
 
     closeEditarEquipo(e){
-        e.preventDefault();
+        //e.preventDefault();
         this.setState({ showEditarEquipo: false });
     }
 
@@ -173,7 +174,7 @@ export default class Equipos extends Component {
     }    
 
     getEquiposByCategorias() {
-        axios.get("http://localhost:8080/scc/equipos/categorias")
+        axios.get(process.env.REACT_APP_API_URL + "/equipos/categorias")
         .then(res => {
             this.setState({ equipos: res.data });
         })
@@ -185,12 +186,14 @@ export default class Equipos extends Component {
     saveEquipo(e, obj){
         e.preventDefault();
         console.log(obj);
-        axios.post("http://localhost:8080/scc/equipos", obj)
+        axios.post(process.env.REACT_APP_API_URL + "/equipos", obj)
         .then(res => {
+            notify.show("Equipo registrado exitosamente", "success");            
             this.setState({showNuevoEquipo: false}, this.getEquiposByCategorias());
         })
         .catch((error) => {
             console.log(error);
+            notify.show("Ha ocurrido un error al registrar el equipo", "error");
             this.setState({showNuevoEquipo: false});
         });
     }
@@ -198,11 +201,13 @@ export default class Equipos extends Component {
     updateEquipo(e, obj){
         e.preventDefault();
         console.log(obj);
-        axios.put("http://localhost:8080/scc/equipos", obj)
+        axios.put(process.env.REACT_APP_API_URL + "/equipos", obj)
         .then(res => {
+            notify.show("Equipo actualizado exitosamente", "success");
             this.setState({showEditarEquipo: false}, this.getEquiposByCategorias());
         })
         .catch((error) => {
+            notify.show("Ha ocurrido un error al actualizar el equipo", "error");
             console.log(error);
             this.setState({showEditarEquipo: false});
         });
@@ -211,25 +216,29 @@ export default class Equipos extends Component {
     saveCategoria(e, obj){
         e.preventDefault();
         console.log(obj);
-        axios.post("http://localhost:8080/scc/categoria", obj)
+        axios.post(process.env.REACT_APP_API_URL + "/categoria", obj)
         .then(res => {
+            notify.show("Categoría registrada exitosamente", "success");
             this.setState({showNuevaCategoria: false}, this.getEquiposByCategorias());
         })
         .catch((error) => {
-            console.log(error);
+            notify.show("Ha ocurrido un error al registrar la categoría", "error");
+            this.setState({showNuevaCategoria: false});
         });
     }
 
     saveSubcategoria(e, obj){
         e.preventDefault();
         console.log(obj);
-        axios.post("http://localhost:8080/scc/subcategoria", obj)
+        axios.post(process.env.REACT_APP_API_URL + "/subcategoria", obj)
         .then(res => {
+            notify.show("Subcategoría registrada exitosamente", "success");
             this.setState({showNuevaSubcategoria: false}, this.getEquiposByCategorias());
         })
-        .catch((error) => {
-            console.log(error);
+        .catch((error) => {            
+            notify.show("Ha ocurrido un error al registrar la subcategoría", "error");
+            this.setState({showNuevaSubcategoria: false});
         });
-    }    
+    }
 
 }

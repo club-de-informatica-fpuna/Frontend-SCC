@@ -47,7 +47,23 @@ export default class VentaRegistro extends Component {
                 <tr>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.concepto}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.precio}</td>
-                    <td style={{textAlign: "center", verticalAlign: "middle"}}><Form.Control type="number" value={i.cantidad} /></td>
+                    <td style={{textAlign: "center", verticalAlign: "middle", textAlign: "center"}}>
+                        <input
+                            disabled
+                            type="number"
+                            defaultValue={i.cantidad}
+                            min="1"
+                            max="100"
+                            style={{
+                                width: "5em",
+                                margin: "0px!important",
+                                padding: "5px",
+                                borderRadius: "7px",
+                                border: "1px solid silver",
+                                textAlign: "center"
+                            }}
+                        />
+                    </td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.subtotal}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>
                         <Button  size="sm" variant="danger" onClick={(e)=>{this.deleteFromDetails(e, i)}}>
@@ -118,20 +134,26 @@ export default class VentaRegistro extends Component {
                                     disabled
                                     placeholder="Precio del producto"
                                     type="number"
+                                    style={{textAlign: "right"}}
                                     value={this.state.itemPrecio}/>
                             </Col>
                             <Col>
                                 <Form.Control
                                     type="number"
+                                    style={{textAlign: "right"}}
                                     onChange={this.changeCurrentItemCantidad.bind(this)}
                                     value={this.state.itemCantidad}/>
                             </Col>
                             <Col>
                                 <Form.Control
                                     type="number"
+                                    style={{textAlign: "right"}}
                                     disabled value={this.state.itemSubtotal}/>
                             </Col>
-                            <Button style={{marginRight: "15px"}} onClick={this.addToItems.bind(this)}>Agregar</Button>
+                            <Button
+                                disabled={this.state.itemProductoSelected === 0 ? true : false}
+                                style={{marginRight: "15px"}}
+                                onClick={this.addToItems.bind(this)}>Agregar</Button>
                         </Form.Group>
                     </Form>
                     <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }}>
@@ -190,9 +212,10 @@ export default class VentaRegistro extends Component {
 
     addToItems(e){
         e.preventDefault();
+        var selectedProduct = JSON.parse(this.state.itemProductoSelected);
         var obj = {
             cantidad: this.state.itemCantidad,
-            idProducto: this.state.itemProductoSelected,
+            idProducto: selectedProduct.idProducto,
             concepto: this.state.itemProductoConcepto,
             precio: this.state.itemPrecio,
             subtotal: this.state.itemSubtotal
@@ -214,7 +237,7 @@ export default class VentaRegistro extends Component {
         let item = JSON.parse(e.target.value);
         console.log(item);
         this.setState({
-            itemProductoSelected: item.idProducto,
+            itemProductoSelected: JSON.stringify(item),
             itemProductoConcepto: item.denominacion,
             itemPrecio: item.precio,
             itemSubtotal: item.precio * this.state.itemCantidad
@@ -222,7 +245,7 @@ export default class VentaRegistro extends Component {
     }
 
     getProductos() {
-        axios.get("http://localhost:8080/scc/productos")
+        axios.get(process.env.REACT_APP_API_URL + "/productos")
         .then(res => {
             this.setState({ productos: res.data });
         })

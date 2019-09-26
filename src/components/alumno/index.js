@@ -85,8 +85,7 @@ export default class Alumno extends Component {
                     carreras={this.state.carreras}
                     save={this.saveAlumno.bind(this)} />
                 <RFIDReader show={this.state.rfidReading}/>
-                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Alumnos</h3>
-                <Form style={{ marginTop: "10px" }}>
+                <Form>
                     <Form.Row>
                         <Col>
                             <Form.Control
@@ -199,14 +198,14 @@ export default class Alumno extends Component {
         let nombres = this.state.nombres === "" ? null : this.state.nombres;
         let apellidos = this.state.apellidos === "" ? null : this.state.apellidos;
         let queryParams = this.makeQuery(cedula, carrera, nombres, apellidos);
-        axios.get("http://localhost:8080/scc/alumnos/fields" + queryParams)
+        axios.get(process.env.REACT_APP_API_URL + "/alumnos/fields" + queryParams)
             .then(res => {
                 this.setState({ resultados: res.data });
             });
     }
 
     getCarreras() {
-        axios.get("http://localhost:8080/scc/carreras")
+        axios.get(process.env.REACT_APP_API_URL + "/carreras")
             .then(res => {
                 this.setState({ carreras: res.data });
             });
@@ -214,7 +213,7 @@ export default class Alumno extends Component {
 
     saveAlumno(e, obj) {
         e.preventDefault();
-        axios.post("http://localhost:8080/scc/alumnos", obj)
+        axios.post(process.env.REACT_APP_API_URL + "/alumnos", obj)
             .then(res => {
                 notify.show("Alumno registrado exitosamente", "success");
                 this.setState({ resultados: [res.data], showNuevo: false });
@@ -228,7 +227,7 @@ export default class Alumno extends Component {
 
     deleteAlumno(e, ci) {
         e.preventDefault();
-        axios.delete("http://localhost:8080/scc/alumnos/" + ci)
+        axios.delete(process.env.REACT_APP_API_URL + "/alumnos/" + ci)
             .then(res => {
                 this.getAlumnosByFields();
             })
@@ -240,7 +239,7 @@ export default class Alumno extends Component {
     async getAlumnoFromRFID(e) {
         e.preventDefault();
         this.setState({ rfidReading: true });
-        let res = await axios.get("http://localhost:8080/scc/alumnos/rfid");
+        let res = await axios.get(process.env.REACT_APP_API_URL + "/alumnos/rfid");
         if(res.status === 200){
             this.setState({ resultados: [res.data], rfidReading: false });
         }

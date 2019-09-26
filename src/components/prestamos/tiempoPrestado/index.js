@@ -20,21 +20,22 @@ export default class TiempoPrestado extends Component {
             console.log(inicio, current);
             let millis = current - inicio;
             console.log(millis);
-            let time = new Date(millis);
-            let hours = this.checkDigits(time.getUTCHours() + (time.getUTCDate() * 24 ));
-            let minutes = this.checkDigits(time.getUTCMinutes());
-            let seconds = this.checkDigits(time.getUTCSeconds());
+            let hours = ((((millis / 1000) / 60) / 60));
+            let minutes = (hours - Math.floor(hours)) * 60;
+            let seconds = (minutes - Math.floor(minutes)) * 60;
             this.setState({
-                hours: hours,
-                minutes: minutes,
-                seconds: seconds
+                hours: this.checkDigits(Math.floor(hours)),
+                minutes: this.checkDigits(Math.floor(minutes)),
+                seconds: this.checkDigits(Math.floor(seconds))
             });
         }
     }
 
     convert(date){
-        date = new Date(date).toLocaleString();
-        return date;
+        console.log(date);
+        var res = date.substring(0, date.length-1);        
+        res += "-0400";
+        return new Date(res);
     }
 
     now(){

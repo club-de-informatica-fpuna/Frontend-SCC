@@ -12,7 +12,7 @@ export default class DevolucionModal extends Component {
 
     now(){
         let date = new Date();
-        let stringDate = date.getUTCFullYear() + "-" + this.checkDigits(date.getUTCMonth()+1) + "-" + this.checkDigits(date.getUTCDate());
+        let stringDate = date.getFullYear() + "-" + this.checkDigits(date.getMonth()+1) + "-" + this.checkDigits(date.getDate());
         let time = this.checkDigits(date.getHours()) + ":" + this.checkDigits(date.getUTCMinutes());
         return stringDate + "T" + time;
     }
@@ -92,13 +92,18 @@ export default class DevolucionModal extends Component {
         this.setState(obj);
     }
 
+    convertDate(date){
+        if(date === undefined){ return null; }
+        return date + ":00Z";
+    }
+
     handleSave(e){
         e.preventDefault();
         let prestamo = this.props.prestamo;
         var obj = {
             ciAlumno: prestamo.alumno.ci,
             estado: true,
-            fechaDevolucion: this.state.devolucion,
+            fechaDevolucion: this.convertDate(this.state.devolucion),
             fechaPrestamo: prestamo.fechaPrestamo,
             idEquipo: prestamo.equipo.idEquipo,
             idPrestamo: prestamo.idPrestamo 
