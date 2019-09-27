@@ -10,7 +10,7 @@ export default class ToolTipSocio extends Component {
             <div className={this.props.className} style={this.props.style}>
                 <div style={{textAlign: "-webkit-right"}}>
                     <div className="col-md-7">
-                        <div className="card hovercard">
+                        <div className="card-tooltip hovercard">
                             <div className="cardheader">
                                 
                             </div>
