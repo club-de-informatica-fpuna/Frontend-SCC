@@ -33,7 +33,7 @@ export default class Productos extends Component {
                 <tr>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.idProducto}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>
-                        <Image height={100} src={i.foto != undefined ? ("data:image/png;base64," + i.foto) : i.foto}/>
+                        <Image height={100} src={i.foto !== undefined ? ("data:image/png;base64," + i.foto) : i.foto}/>
                     </td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.denominacion}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.precio + " GS."}</td>

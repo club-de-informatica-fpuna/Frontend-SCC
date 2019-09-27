@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, Modal, Form, Row, Col, Table } from "react-bootstrap";
-import { FaUserEdit, FaTrash, FaInfo } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import axios from "axios";
 
 export default class VentaRegistro extends Component {
@@ -202,7 +202,7 @@ export default class VentaRegistro extends Component {
         e.preventDefault();
         var items = this.state.items;
         console.log(items);        
-        items = items.filter(item => item.idProducto != obj.idProducto);
+        items = items.filter(item => item.idProducto !== obj.idProducto);
         console.log(items);
         this.setState({
             items: items,

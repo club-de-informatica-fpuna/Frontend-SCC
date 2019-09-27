@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Table } from "react-bootstrap";
-import { FaPlus, FaInfo } from "react-icons/fa";
+import { FaInfo } from "react-icons/fa";
 import Notifications, {notify} from 'react-notify-toast';
 import axios from "axios";
 import VentaDetalle from "./ventaDetalle";

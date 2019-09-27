@@ -45,8 +45,8 @@ export default class SocioInf extends Component {
                   <Button variant="success" onClick={this.upPartner.bind(this)} style={{display: this.props.mode ? "none" :"" }}>
                     <MdExposurePlus1/>
                   </Button>
-                  &nbsp;&nbsp;
-                  <Button variant="info" style={{display: this.props.mode ? "" :"none" }}>
+                  &nbsp;
+                  <Button variant="info" style={{display: this.props.mode && this.state.editDisabled? "" :"none" }}>
                     <MdRefresh/>
                   </Button>
                   &nbsp;&nbsp;
@@ -192,7 +192,7 @@ export default class SocioInf extends Component {
     let personInf = {
       ci: "Nada que mostrar",
       fechaIngreso: new Date().toJSON().slice(0,19),
-      uuid: "Nada que mostrar",
+      uuid: "Ninguno",
       nombres: "Nada que mostrar",
       apellidos: "Nada que mostrar",
       denominacion: "Nada que mostrar",
@@ -200,7 +200,6 @@ export default class SocioInf extends Component {
       email: "Nada que mostrar",
       estado: true
     };
-    console.log(inf);
     if (this.props.mode && inf !== undefined) {
       personInf.ci           = inf.alumno.ci;
       personInf.fechaIngreso = inf.fechaIngreso;

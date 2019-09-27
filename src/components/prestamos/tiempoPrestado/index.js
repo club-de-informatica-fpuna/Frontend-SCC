@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal, Button, Image } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import "./timer.css";
 
 export default class TiempoPrestado extends Component {
