@@ -1,0 +1,9 @@
+.notification-button {
+    background: transparent;
+    border: 1px solid transparent;
+    -moz-appearance: none;
+}
+
+.notification-button::after {
+    border: 1px solid transparent;
+}

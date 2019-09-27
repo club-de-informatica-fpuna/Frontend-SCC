@@ -89,7 +89,6 @@ export default class Alumno extends Component {
                     save={this.saveAlumno.bind(this)} alumno={this.state.alumno}/>
                 <RFIDReader show={this.state.rfidReading} />
                 <SocioInf mode={false} show={this.state.partnerUpShow} showFunction={this.handleShowParner.bind(this)} partnerInf={this.state.alumno}/>
-                <h3 style={{ fontFamily: "Lato Light", textAlign: "left" }}>Alumnos</h3>
                 <Form style={{ marginTop: "10px" }}>
                     <Form.Row>
                         <Col>
