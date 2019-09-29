@@ -14,7 +14,7 @@ export default class SocioInf extends Component {
       editDisabled: false,
       partnerImg: undefined,
       person: undefined,
-      waitForRFID:false
+      waitForRFID: false
     };
   }
 
@@ -38,19 +38,19 @@ export default class SocioInf extends Component {
         <div className="container">
           <div className="row">
             <div className="twPc-div" style={{ height: "16em" }}>
-              <a className="twPc-bg twPc-block"></a>
+              <section className="twPc-bg twPc-block"></section>
 
               <div>
                 <div className="twPc-button">
-                  <Button variant="success" onClick={this.upPartner.bind(this)} style={{display: this.props.mode ? "none" :"" }}>
-                    <MdExposurePlus1/>
+                  <Button variant="success" onClick={this.upPartner.bind(this)} style={{ display: this.props.mode ? "none" : "" }}>
+                    <MdExposurePlus1 />
                   </Button>
                   &nbsp;
-                  <Button variant="info" style={{display: this.props.mode && this.state.editDisabled? "" :"none" }}>
-                    <MdRefresh/>
+                  <Button variant="info" style={{ display: this.props.mode && this.state.editDisabled ? "" : "none" }}>
+                    <MdRefresh />
                   </Button>
                   &nbsp;&nbsp;
-                  <Button variant="warning" onClick={this.handleDisableEdit.bind(this)} style={{display: this.props.mode ? "" :"none" }}>
+                  <Button variant="warning" onClick={this.handleDisableEdit.bind(this)} style={{ display: this.props.mode ? "" : "none" }}>
                     <FaRegEdit />
                   </Button>
                   &nbsp;&nbsp;
@@ -59,107 +59,94 @@ export default class SocioInf extends Component {
                   </Button>
                 </div>
 
-                <a className="twPc-avatarLink">
-                  <img className="twPc-avatarImg" src={this.state.partnerImg} />
-                </a>
+                <section className="twPc-avatarLink">
+                  <img alt="Partner" className="twPc-avatarImg" src={this.state.partnerImg} />
+                </section>
 
                 <div className="twPc-divUser">
                   <div className="twPc-divName">
-                    <a>{this.state.person.nombres} {this.state.person.apellidos}</a>
+                    <span>{this.state.person.nombres} {this.state.person.apellidos}</span>
                   </div>
-                  <span>
-                    <a><span>{this.state.person.denominacion}</span></a>
-                  </span>
+                  <span>{this.state.person.denominacion}</span>
                 </div>
 
                 <div className="twPc-divStats">
                   <ul className="twPc-Arrange">
                     <li className="twPc-ArrangeSizeFit" style={{ paddingRight: "2em" }}>
-                      <a title="CI">
-                        <span className="twPc-StatLabel twPc-block">
-                          Cedula de identidad
+
+                      <span className="twPc-StatLabel twPc-block">
+                        Cedula de identidad
                         </span>
-                        <span className="twPc-StatValue">
-                          <Form.Control style={{background: "transparent",border: "transparent",paddingLeft: "0em"}}
-                            type="text"
-                            placeholder={this.state.person.ci}
-                            disabled
-                          />
-                        </span>
-                      </a>
+                      <span className="twPc-StatValue">
+                        <Form.Control style={{ background: "transparent", border: "transparent", paddingLeft: "0em" }}
+                          type="text"
+                          placeholder={this.state.person.ci}
+                          disabled
+                        />
+                      </span>
+
                     </li>
                     <li className="twPc-ArrangeSizeFit" style={{ paddingRight: "2em" }}>
-                      <a title="Fecha de Ingreso">
+                      
                         <span className="twPc-StatLabel twPc-block">
                           Fecha de Ingreso
                         </span>
                         <span className="twPc-StatValue">
-                        <Form.Control style={{background: "transparent",border: "transparent",paddingLeft: "0em"}}
+                          <Form.Control style={{ background: "transparent", border: "transparent", paddingLeft: "0em" }}
                             type="text"
                             placeholder={this.state.person.fechaIngreso}
                             disabled={this.state.editDisabled}
                           />
                         </span>
-                      </a>
                     </li>
                     <li className="twPc-ArrangeSizeFit" style={{ paddingRight: "2em" }}>
-                      <a title="Telefono">
                         <span className="twPc-StatLabel twPc-block">
                           Telefono
                         </span>
                         <span className="twPc-StatValue">
-                        <Form.Control style={{background: "transparent",border: "transparent",paddingLeft: "0em"}}
+                          <Form.Control style={{ background: "transparent", border: "transparent", paddingLeft: "0em" }}
                             type="text"
                             placeholder={this.state.person.telefono}
                             disabled
                           />
                         </span>
-                      </a>
                     </li>
                     <li className="twPc-ArrangeSizeFit" style={{ paddingRight: "2em" }}>
-                      <a title="Correo">
                         <span className="twPc-StatLabel twPc-block">
                           Correo
                         </span>
                         <span className="twPc-StatValue">
-                        <Form.Control style={{background: "transparent",border: "transparent",paddingLeft: "0em"}}
+                          <Form.Control style={{ background: "transparent", border: "transparent", paddingLeft: "0em" }}
                             type="text"
                             placeholder={this.state.person.email}
-                            disabled/>
+                            disabled />
                         </span>
-                      </a>
                     </li>
                     <li className="twPc-ArrangeSizeFit" style={{ paddingRight: "2em" }}>
-                      <a title="UUID">
                         <span className="twPc-StatLabel twPc-block">UUID</span>
                         <span className="twPc-StatValue">
-                        <Form.Control style={{background: "transparent",border: "transparent",paddingLeft: "0em"}}
+                          <Form.Control style={{ background: "transparent", border: "transparent", paddingLeft: "0em" }}
                             type="text"
                             value={this.state.person.uuid}
                             placeholder={this.state.person.uuid}
                             disabled={this.state.editDisabled}
                           />
                         </span>
-                      </a>
                     </li>
-                    <li className="twPc-ArrangeSizeFit" style={{ paddingRight: "2em", display: this.props.mode && !this.state.editDisabled ? "none" :"" }}>
-                      <a title="UUID-BUTTON" style={{paddingTop:".5em"}}>
-                          <Button variant="primary" disabled={false} onClick={this.getCodeRFID.bind(this)}>
+                    <li className="twPc-ArrangeSizeFit" style={{ paddingRight: "2em", display: this.props.mode && !this.state.editDisabled ? "none" : "" }}>
+                        <Button variant="primary" disabled={false} onClick={this.getCodeRFID.bind(this)}>
                           RFID
-                          <Spinner style={{display: this.state.waitForRFID ? "" : "none"}} as="span" animation="grow" size="sm" role="status" aria-hidden="true"/>
+                          <Spinner style={{ display: this.state.waitForRFID ? "" : "none" }} as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
                         </Button>
-                      </a>
                     </li>
-                    <li className="twPc-ArrangeSizeFit" style={{ display:this.props.mode && !this.state.editDisabled ? "none" :"" }}>
-                      <a style={{paddingTop:".5em"}}>
-                      <Button className="input-div-container" variant="primary" disabled={false}>
-                        IMAGEN
+                    <li className="twPc-ArrangeSizeFit" style={{ display: this.props.mode && !this.state.editDisabled ? "none" : "" }}>
+                        <Button className="input-div-container" variant="primary" disabled={false}>
+                          IMAGEN
                         <input className="input-file" type="file"
-                          accept=".jpg, .png, .jpeg"
-                          onChange={this.handleImgChange.bind(this)}
-                        />
-                      </Button>
-                      </a>
+                            accept=".jpg, .png, .jpeg"
+                            onChange={this.handleImgChange.bind(this)}
+                          />
+                        </Button>
                     </li>
                   </ul>
                 </div>
@@ -180,7 +167,7 @@ export default class SocioInf extends Component {
     this.setState({ editDisabled: !this.state.editDisabled });
   }
 
-  changeManager(e, fileName){
+  changeManager(e, fileName) {
     e.preventDefault();
     let obj = {};
     console.log(e.target.value);
@@ -191,32 +178,32 @@ export default class SocioInf extends Component {
   setInfShow(inf) {
     let personInf = {
       ci: "Nada que mostrar",
-      fechaIngreso: new Date().toJSON().slice(0,19),
+      fechaIngreso: new Date().toJSON().slice(0, 19),
       uuid: "Ninguno",
       nombres: "Nada que mostrar",
       apellidos: "Nada que mostrar",
       denominacion: "Nada que mostrar",
-      telefono:  "Nada que mostrar",
+      telefono: "Nada que mostrar",
       email: "Nada que mostrar",
       estado: true
     };
     if (this.props.mode && inf !== undefined) {
-      personInf.ci           = inf.alumno.ci;
+      personInf.ci = inf.alumno.ci;
       personInf.fechaIngreso = inf.fechaIngreso;
-      personInf.uuid         = inf.uuid;
-      personInf.nombres      = inf.alumno.nombres.toUpperCase();
-      personInf.apellidos    = inf.alumno.apellidos.toUpperCase();
+      personInf.uuid = inf.uuid;
+      personInf.nombres = inf.alumno.nombres.toUpperCase();
+      personInf.apellidos = inf.alumno.apellidos.toUpperCase();
       personInf.denominacion = inf.alumno.idCarrera.denominacion;
-      personInf.telefono     = inf.alumno.telefono;
-      personInf.email        = inf.alumno.email;
-      personInf.estado       = inf.estado;
+      personInf.telefono = inf.alumno.telefono;
+      personInf.email = inf.alumno.email;
+      personInf.estado = inf.estado;
     } else if (inf !== undefined) {
-      personInf.ci           = inf.ci;
-      personInf.nombres      = inf.nombres.toUpperCase();
-      personInf.apellidos    = inf.apellidos.toUpperCase();
+      personInf.ci = inf.ci;
+      personInf.nombres = inf.nombres.toUpperCase();
+      personInf.apellidos = inf.apellidos.toUpperCase();
       personInf.denominacion = inf.idCarrera.denominacion;
-      personInf.telefono     = inf.telefono;
-      personInf.email        = inf.email;
+      personInf.telefono = inf.telefono;
+      personInf.email = inf.email;
     }
     this.setState({ person: personInf });
   }
@@ -229,7 +216,7 @@ export default class SocioInf extends Component {
     if (file.length > 0) {
       var reader = new FileReader();
       reader.readAsDataURL(file[0]);
-      reader.onload = function() {
+      reader.onload = function () {
         this.setState({ partnerImg: reader.result });
       }.bind(this);
     }
@@ -238,18 +225,18 @@ export default class SocioInf extends Component {
   async getCodeRFID(e) {
     e.preventDefault();
     let endPoint = getBackEndContext("socios/rfid/code");
-    this.setState({waitForRFID:true});
+    this.setState({ waitForRFID: true });
     await axios.get(endPoint).then(rs => {
       let personUpdateInf = this.state.person;
       personUpdateInf.uuid = rs.data;
-      this.setState({person:personUpdateInf, waitForRFID:false});
+      this.setState({ person: personUpdateInf, waitForRFID: false });
     }).catch(ex => {
       console.error(ex);
-      this.setState({waitForRFID:false});
+      this.setState({ waitForRFID: false });
     });
   }
 
-  upPartner(e){
+  upPartner(e) {
     e.preventDefault();
     let endPoint = getBackEndContext("socios");
     let studentPost = {
@@ -263,7 +250,7 @@ export default class SocioInf extends Component {
     axios.post(endPoint, studentPost).then(rs => {
 
     }).catch(error => {
-        console.log(error);
+      console.log(error);
     })
   }
 

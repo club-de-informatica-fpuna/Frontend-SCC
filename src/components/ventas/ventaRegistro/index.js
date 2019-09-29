@@ -49,7 +49,7 @@ export default class VentaRegistro extends Component {
                 <tr>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.concepto}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.precio}</td>
-                    <td style={{textAlign: "center", verticalAlign: "middle", textAlign: "center"}}>
+                    <td style={{textAlign: "center", verticalAlign: "middle"}}>
                         <input
                             disabled
                             type="number"

@@ -133,19 +133,19 @@ export default class Alumno extends Component {
                                 {optionsCarreras}
                             </Form.Control>
                         </Col>
-                        <Button bsStyle="primary" onClick={this.getAlumnosByFields.bind(this)}>
+                        <Button variant="primary" onClick={this.getAlumnosByFields.bind(this)}>
                             <FaSearch />
                         </Button>&nbsp;
-                        <Button bsStyle="primary" onClick={this.getAlumnoFromRFID.bind(this)}>
+                        <Button variant="primary" onClick={this.getAlumnoFromRFID.bind(this)}>
                             <FaRss />
                         </Button>&nbsp;
-                        <Button bsStyle="primary" onClick={this.showNuevo.bind(this)}>
+                        <Button variant="primary" onClick={this.showNuevo.bind(this)}>
                             <span>Nuevo</span>&nbsp;
                             <FaUserPlus />
                         </Button>&nbsp;
                     </Form.Row>
                 </Form>
-                <img hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
+                <img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
                 <section style={{ display: haveResults ? "block" : "none", marginTop: "10px" }}>
                     <Table hover responsive style={{ fontSize: "12px" }}>
                         <thead style={{background: "#343a40", color: "white"}}>

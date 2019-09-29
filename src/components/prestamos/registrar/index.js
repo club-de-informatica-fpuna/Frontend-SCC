@@ -65,10 +65,10 @@ export default class Registrar extends Component {
                                     />
                                 </Col>
                                 <Col md="3" style={{ textAlign: "right" }}>
-                                    <Button bsStyle="primary" onClick={this.getAlumnoByCI.bind(this)}>
+                                    <Button variant="primary" onClick={this.getAlumnoByCI.bind(this)}>
                                         <FaSearch />
                                     </Button>&nbsp;
-                                    <Button bsStyle="primary" onClick={this.getAlumnoFromRFID.bind(this)}>
+                                    <Button variant="primary" onClick={this.getAlumnoFromRFID.bind(this)}>
                                         <FaRss />
                                     </Button>
                                 </Col>
@@ -102,7 +102,7 @@ export default class Registrar extends Component {
                                     />
                                 </Col>
                                 <Col md="2" style={{ textAlign: "right" }}>
-                                    <Button bsStyle="primary" onClick={this.showEquipos.bind(this)}>
+                                    <Button variant="primary" onClick={this.showEquipos.bind(this)}>
                                         <FaSearch />
                                     </Button>
                                 </Col>

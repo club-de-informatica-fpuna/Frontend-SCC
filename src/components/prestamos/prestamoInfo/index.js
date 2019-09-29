@@ -3,10 +3,6 @@ import { Modal, Button, Image } from "react-bootstrap";
 
 export default class PrestamoInfo extends Component {
 
-    constructor(props){
-        super(props);
-    }
-
     render() {
         var logo = require("./equip.png");
         var prestamo = this.props.prestamo;
@@ -18,7 +14,7 @@ export default class PrestamoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                    <Image className="representative-image" src={prestamo.equipo.foto != undefined ? ("data:image/png;base64," + prestamo.equipo.foto) : logo} width="150" thumbnail />
+                    <Image className="representative-image" src={prestamo.equipo.foto ? ("data:image/png;base64," + prestamo.equipo.foto) : logo} width="150" thumbnail />
                     </p>
                     <section className="modal-info-fields">
                         <table>

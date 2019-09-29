@@ -81,10 +81,6 @@ export default class DevolucionModal extends Component {
             ":" + this.checkDigits(fecha.getUTCSeconds());
     }
 
-    checkDigits(digit){
-        return digit < 10 ? ("0" + digit) : digit;
-    } 
-
     changeField(e, field) {
         e.preventDefault();
         let obj = {};

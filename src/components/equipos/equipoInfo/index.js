@@ -3,10 +3,6 @@ import { Modal, Button, Image } from "react-bootstrap";
 
 export default class EquipoInfo extends Component {
 
-    constructor(props){
-        super(props);
-    }
-
     render() {
         var logo = require("./equip.png");
         var equipo = this.props.equipo;
@@ -18,7 +14,7 @@ export default class EquipoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                        <Image className="representative-image" src={ equipo.foto != undefined ? ("data:image/png;base64," + equipo.foto) : logo} width="150" thumbnail />
+                        <Image className="representative-image" src={ equipo.foto ? ("data:image/png;base64," + equipo.foto) : logo} width="150" thumbnail />
                     </p>
                     <section className="modal-info-fields">
                         <p><strong>DESCRIPCIÓN: </strong>{equipo.descripcion}</p>

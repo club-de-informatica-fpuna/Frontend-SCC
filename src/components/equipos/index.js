@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Accordion, Card, Button, Image } from "react-bootstrap";
 import axios from "axios";
-import { FaTrash, FaPen, FaPlus } from "react-icons/fa";
+import { FaTrash, FaPen } from "react-icons/fa";
 import EquipoRegistrar from "./equipoRegistro";
 import EquipoEditar from "./equipoEdit";
 import CategoriaRegistrar from "./categoriaRegistro";
@@ -68,7 +68,7 @@ export default class Equipos extends Component {
                         <b>Nueva subcategoría</b>
                     </Button>
                 </section>
-                <img hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
+                <img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
                 <section className="row" style={{ display: "flex", padding: "12px"}} hidden={!havingResults}>
                     {categoriasMostrar}
                 </section>
@@ -113,7 +113,7 @@ export default class Equipos extends Component {
                                         <FaTrash/>
                                     </Button>
                             </section>
-                            <section style={{display: "inline-block", float: "right"}} hidden={k.foto != undefined ? false : true}>
+                            <section style={{display: "inline-block", float: "right"}} hidden={!k.foto}>
                                 <Image src={("data:image/png;base64," + k.foto)} width="100" thumbnail/>
                             </section>                            
                         </Card.Body>

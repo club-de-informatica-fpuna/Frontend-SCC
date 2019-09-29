@@ -36,7 +36,7 @@ export default class AlumnoEditar extends Component {
 
         let optionsCarreras = <option disabled={true}> - No hay carreras - </option>
         let carreras = this.props.carreras;
-        if(carreras != undefined && carreras.length > 0){
+        if(carreras !== undefined && carreras.length > 0){
             optionsCarreras = carreras.map((i) => (
               <option key={i.idCarrera} value={i.idCarrera}>{i.denominacion}</option>
             ));

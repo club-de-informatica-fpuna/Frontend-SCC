@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Row, Col, Button, Table, OverlayTrigger} from 'react-bootstrap';
-import { FaSearch, FaRegGrinBeamSweat, FaUserEdit, FaUserSlash, FaInfo} from "react-icons/fa";
+import { FaSearch, FaRegGrinBeamSweat, FaUserSlash, FaInfo} from "react-icons/fa";
 import { FiRadio } from "react-icons/fi";
 import axios from 'axios';
 import {getBackEndContext, buildQueryParams} from '../../util/generate-query-params';
@@ -106,7 +106,7 @@ export default class Socio extends Component {
                             </Form.Control>
                         </Col>
                         <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Button bsStyle="primary" onClick={this.getPartnersByFilter.bind(this)}>
+                            <Button variant="primary" onClick={this.getPartnersByFilter.bind(this)}>
                                 <FaSearch />
                             </Button>&nbsp;
                             <div className="btn btn-primary" onClick={this.getPartnerByRFID.bind(this)}><FiRadio style={{"fontSize":"1.4em"}}/></div>

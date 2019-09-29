@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import {validateField, validateNumber, validateSelect, validateDate} from "../../../util/validators";
+import {validateNumber, validateSelect, validateDate} from "../../../util/validators";
 
 export default class StockRegistro extends Component {
 

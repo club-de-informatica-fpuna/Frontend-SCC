@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Navbar, Image, Nav, Form, Dropdown } from 'react-bootstrap';
-import { FaBell, FaTimes, FaQuestion } from "react-icons/fa";
-import { GoInfo } from "react-icons/go";
+import { FaBell } from "react-icons/fa";
 import axios from "axios";
 import "./header.css";
 

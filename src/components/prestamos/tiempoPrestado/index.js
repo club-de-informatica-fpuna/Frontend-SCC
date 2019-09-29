@@ -74,10 +74,6 @@ export default class TiempoPrestado extends Component {
             this.checkDigits(fecha.getUTCHours()) +
             ":" + this.checkDigits(fecha.getUTCMinutes()) +
             ":" + this.checkDigits(fecha.getUTCSeconds());
-    }
-
-    checkDigits(digit){
-        return digit < 10 ? ("0" + digit) : digit;
-    }        
+    }       
 
 }

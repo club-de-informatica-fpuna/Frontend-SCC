@@ -3,10 +3,6 @@ import { Modal, Button, Table } from "react-bootstrap";
 
 export default class VentaDetalle extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         var venta = this.props.venta;
         if(venta === undefined){ return (<></>); }

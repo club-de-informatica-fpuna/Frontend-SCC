@@ -3,10 +3,6 @@ import { Modal, Button, Image } from "react-bootstrap";
 
 export default class AlumnoInfo extends Component {
 
-    constructor(props){
-        super(props);
-    }
-
     render() {
         var logo = require("./user.png");
         var alumno = this.props.alumno;

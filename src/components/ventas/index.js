@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button, Table } from "react-bootstrap";
-import { FaInfo } from "react-icons/fa";
 import Notifications, {notify} from 'react-notify-toast';
 import axios from "axios";
 import VentaDetalle from "./ventaDetalle";
@@ -58,7 +57,7 @@ export default class Ventas extends Component {
                     <strong>Nueva venta</strong>
                 </Button>
                 <br/>
-                <img hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
+                <img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
                 <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }} hidden={!havingResults}>
                     <thead style={{background: "#343a40", color: "white"}}>
                         <tr>

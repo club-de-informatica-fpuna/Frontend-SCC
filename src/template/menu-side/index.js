@@ -6,10 +6,6 @@ import "./menu.css";
 
 export default class Menu extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         var current = this.props.history.location.pathname;
         return (

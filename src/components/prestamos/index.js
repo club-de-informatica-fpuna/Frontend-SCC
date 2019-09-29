@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Table } from "react-bootstrap";
-import { FaSearch, FaRss, FaUserEdit, FaTrash, FaReply, FaInfo } from "react-icons/fa";
+import { FaSearch, FaRss, FaTrash, FaReply, FaInfo } from "react-icons/fa";
 import Registrar from "./registrar";
 import AlumnoInfo from "../alumno/alumnoInfo";
 import PrestamoInfo from "./prestamoInfo";
@@ -153,18 +153,18 @@ export default class Prestamos extends Component {
                                 {equiposOptions}
                             </Form.Control>
                         </Col>
-                        <Button bsStyle="primary" onClick={this.getPrestamosByFields.bind(this)}>
+                        <Button variant="primary" onClick={this.getPrestamosByFields.bind(this)}>
                             <FaSearch />
                         </Button>&nbsp;
-                        <Button bsStyle="primary" onClick={this.getPrestamosFromRFID.bind(this)}>
+                        <Button variant="primary" onClick={this.getPrestamosFromRFID.bind(this)}>
                             <FaRss />
                         </Button>&nbsp;
-                        <Button bsStyle="primary" onClick={this.showNuevo.bind(this)}>
+                        <Button variant="primary" onClick={this.showNuevo.bind(this)}>
                             <span>Nuevo</span>
                         </Button>
                     </Form.Row>
                 </Form>
-                <img hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
+                <img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
                 <section style={{ display: haveResults ? "block" : "none", marginTop: "10px" }}>
                     <Table hover responsive style={{ fontSize: "12px" }}>
                         <thead style={{background: "#343a40", color: "white"}}>

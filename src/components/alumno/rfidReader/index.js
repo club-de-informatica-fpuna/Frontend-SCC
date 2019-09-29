@@ -2,11 +2,7 @@ import React, { Component } from "react";
 import { Modal, Image } from "react-bootstrap";
 
 export default class RFIDReader extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
+    
     render() {
         let loading = require("./loadingRFID.gif");
         return (

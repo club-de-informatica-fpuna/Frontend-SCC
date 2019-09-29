@@ -9,9 +9,6 @@ import Productos from "../../components/productos";
 import Ventas from "../../components/ventas";
 
 export default class Container extends Component {
-    constructor(props){
-        super(props);
-    }
 
     render(){
 

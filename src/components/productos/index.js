@@ -81,7 +81,7 @@ export default class Productos extends Component {
                 <Button onClick={this.showNuevoProducto.bind(this)}><b>Nuevo producto</b></Button>&nbsp;&nbsp;
                 <Button onClick={this.showAumentarStock.bind(this)}><b>Aumentar stock</b></Button>&nbsp;&nbsp;
                 <Button><b>Disminuir stock</b></Button>
-                <br/><img hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
+                <br/><img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
                 <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }} hidden={!havingResults}>
                     <thead style={{background: "#343a40", color: "white"}}>
                         <tr>
