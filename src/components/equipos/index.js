@@ -19,7 +19,8 @@ export default class Equipos extends Component {
             showNuevaCategoria: false,
             showNuevaSubcategoria: false,
             showEditarEquipo: false,
-            equipo: undefined
+            equipo: undefined,
+            loading: false
         };
     }
 
@@ -30,7 +31,9 @@ export default class Equipos extends Component {
     render() {
         let equipos = this.state.equipos;
         let categoriasMostrar = <span>No hay equipos</span>;
+        var havingResults = false;
         if (equipos !== undefined && equipos.length > 0) {
+            havingResults = true;
             categoriasMostrar = equipos.map((i) => (
                 <Accordion className="col-md-12" defaultActiveKey="0" style={{ marginBottom: "10px", padding: 0}}>
                     <Card style={{borderBottom: "1px solid silver"}}>
@@ -65,7 +68,8 @@ export default class Equipos extends Component {
                         <b>Nueva subcategoría</b>
                     </Button>
                 </section>
-                <section className="row" style={{ display: "flex", padding: "12px"}}>
+                <img hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
+                <section className="row" style={{ display: "flex", padding: "12px"}} hidden={!havingResults}>
                     {categoriasMostrar}
                 </section>
             </>
@@ -174,12 +178,13 @@ export default class Equipos extends Component {
     }    
 
     getEquiposByCategorias() {
+        this.setState({ loading: true });
         axios.get(process.env.REACT_APP_API_URL + "/equipos/categorias")
         .then(res => {
-            this.setState({ equipos: res.data });
+            this.setState({ equipos: res.data, loading: false });
         })
         .catch(res => {
-            this.setState({ equipos: undefined });
+            this.setState({ equipos: undefined, loading: false });
         })
     }
 

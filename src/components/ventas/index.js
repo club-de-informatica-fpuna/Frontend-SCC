@@ -14,7 +14,8 @@ export default class Ventas extends Component {
             ventas: [],
             venta: undefined,
             showNuevaVenta: false,
-            showDetalle: false
+            showDetalle: false,
+            loading: false
         };
     }
 
@@ -25,31 +26,25 @@ export default class Ventas extends Component {
     render() {
         var ventas = this.state.ventas;
         let tableResults = <div></div>;
+        var havingResults = false;
         if (ventas !== undefined && ventas.length > 0) {
+            havingResults = true;
             tableResults = ventas.map((i) => (
                 <tr>
                     <td style={{textAlign: "center"}}>{i.id}</td>
                     <td style={{textAlign: "center"}}>{i.clienteNombre}</td>
                     <td style={{textAlign: "center"}}>{i.clienteDocumento}</td>
+                    <td style={{textAlign: "center"}}>{this.fromRFCToFormat(i.fecha)}</td>
+                    <td style={{textAlign: "center"}}>{this.formatoMoneda(i.importeTotal) + " GS."}</td>
                     <td style={{textAlign: "center"}}>
                         <Button
                             onClick={(e)=>{this.showVentaDetalle(e, i)}}
                             size="sm"
                             variant="info"
                             title="Info">
-                            <span>Ver items</span>
+                            <strong>Ver items</strong>
                         </Button>
                     </td>                    
-                    <td style={{textAlign: "center"}}>{this.fromRFCToFormat(i.fecha)}</td>
-                    <td style={{textAlign: "center"}}>{this.formatoMoneda(i.importeTotal) + " GS."}</td>                    
-                    <td style={{textAlign: "center"}}>
-                        <Button
-                            size="sm"
-                            variant="info"
-                            title="Info">
-                            <FaInfo />
-                        </Button>
-                    </td>
                 </tr>
             ));
         }
@@ -60,15 +55,16 @@ export default class Ventas extends Component {
                 <VentaDetalle show={this.state.showDetalle} venta={this.state.venta} close={this.closeVentaDetalle.bind(this)}/>
                 <Notifications/>
                 <Button onClick={this.showNuevaVenta.bind(this)}>
-                    <b>Nuevo</b>
+                    <strong>Nueva venta</strong>
                 </Button>
-                <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }}>
+                <br/>
+                <img hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
+                <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }} hidden={!havingResults}>
                     <thead style={{background: "#343a40", color: "white"}}>
                         <tr>
                             <th style={{textAlign: "center"}}>ID</th>
                             <th style={{textAlign: "center"}}>NOMBRE DEL CLIENTE</th>
                             <th style={{textAlign: "center"}}>N° DOCUMENTO</th>
-                            <th style={{textAlign: "center"}}>DETALLE</th>
                             <th style={{textAlign: "center"}}>FECHA</th>
                             <th style={{textAlign: "center"}}>TOTAL</th>
                             <th style={{textAlign: "center"}}>ACCIONES</th>
@@ -123,11 +119,13 @@ export default class Ventas extends Component {
     }
 
     getVentas() {
+        this.setState({loading: true});
         axios.get(process.env.REACT_APP_API_URL + "/ventas")
         .then(res => {
-            this.setState({ ventas: res.data });
+            this.setState({ ventas: res.data, loading: false });
         })
         .catch(error => {
+            this.setState({loading: false});
             console.log(error);
         });
     }
@@ -146,9 +144,11 @@ export default class Ventas extends Component {
         console.log(obj);
         axios.post(process.env.REACT_APP_API_URL + "/ventas", obj)
         .then(res => {
+            notify.show("Venta registrada exitosamente", "success");
             this.setState({ showNuevaVenta: false }, this.getVentaById(res.data.id));
         })
         .catch(error => {
+            notify.show("Ha ocurrido un error al registrar la venta", "error");
             console.log(error);
             this.setState({ showNuevaVenta: false });
         });

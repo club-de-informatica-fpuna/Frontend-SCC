@@ -25,7 +25,7 @@ export default class Inicio extends Component {
                     </Card>
                 </a>
                 <a href="/home/productos/faltantes">
-                    <Card className="col-md-3 card-shortcuts" style={{ marginLeft: "10px" }}>
+                    <Card className="col-md-3 card-shortcuts">
                         <Card.Header className="card-header-shortcuts">PRODUCTOS FALTANTES</Card.Header>
                         <Card.Body style={{textAlign: "center", cursor: "pointer"}}>
                             <Image height="200" src={faltantes} />
@@ -38,7 +38,7 @@ export default class Inicio extends Component {
                     </Card>
                 </a>
                 <a href="/home/equipos/disponibles">
-                    <Card className="col-md-3 card-shortcuts" style={{ marginLeft: "10px" }}>
+                    <Card className="col-md-3 card-shortcuts">
                         <Card.Header className="card-header-shortcuts">EQUIPOS DISPONIBLES</Card.Header>
                         <Card.Body style={{textAlign: "center", cursor: "pointer"}}>
                             <Image height="200" src={equipos} />

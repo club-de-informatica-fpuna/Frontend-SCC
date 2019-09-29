@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import axios from "axios";
+import {validateField, validateNumber, validateEmail, validateSelect} from "../../../util/validators";
 
 export default class AlumnoRegistrar extends Component {
 
@@ -38,9 +38,9 @@ export default class AlumnoRegistrar extends Component {
                     <Form>
                         <Form.Group controlId="formNombres">
                             <Form.Label><b>Nombres</b></Form.Label>
-                            <span className="validation-field" hidden={this.validateField(this.state.nombres, 15, 3)}>Nombre inválido</span>
+                            <span className="validation-field" hidden={validateField(this.state.nombres, 15, 3)}>Nombre inválido</span>
                             <Form.Control
-                                className={this.validateField(this.state.nombres, 15, 3) ? "input-validate-field-success" : "input-validate-field-error"}
+                                className={validateField(this.state.nombres, 15, 3) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="text"
                                 placeholder="Ingrese sus nombres"
                                 value={this.state.nombres}
@@ -49,9 +49,9 @@ export default class AlumnoRegistrar extends Component {
                         </Form.Group>
                         <Form.Group controlId="formApellidos">
                             <Form.Label><b>Apellidos</b></Form.Label>
-                            <span className="validation-field" hidden={this.validateField(this.state.apellidos, 15, 3)}>Apellido inválido</span>                            
+                            <span className="validation-field" hidden={validateField(this.state.apellidos, 15, 3)}>Apellido inválido</span>                            
                             <Form.Control
-                                className={this.validateField(this.state.apellidos, 15, 3) ? "input-validate-field-success" : "input-validate-field-error"}
+                                className={validateField(this.state.apellidos, 15, 3) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="text"
                                 placeholder="Ingrese sus apellidos"
                                 autoComplete="off"
@@ -60,9 +60,9 @@ export default class AlumnoRegistrar extends Component {
                         </Form.Group>
                         <Form.Group controlId="formDocumento">
                             <Form.Label><b>N° Documento</b></Form.Label>
-                            <span className="validation-field" hidden={this.validateNumber(this.state.documento, 99999999, 99999)}>N° de documento inválido</span>
+                            <span className="validation-field" hidden={validateNumber(this.state.documento, 99999999, 99999)}>N° de documento inválido</span>
                             <Form.Control
-                                className={this.validateNumber(this.state.documento, 99999999, 99999) ? "input-validate-field-success" : "input-validate-field-error"}
+                                className={validateNumber(this.state.documento, 99999999, 99999) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="number"
                                 placeholder="Ingrese su número de documento"
                                 autoComplete="off"
@@ -71,9 +71,9 @@ export default class AlumnoRegistrar extends Component {
                         </Form.Group>
                         <Form.Group controlId="formTelefono">
                             <Form.Label><b>N° Teléfono o Celular</b></Form.Label>
-                            <span className="validation-field" hidden={this.validateField(this.state.telefono, 20, 7)}>N° de celular inválido</span>                            
+                            <span className="validation-field" hidden={validateField(this.state.telefono, 20, 7)}>N° de celular inválido</span>                            
                             <Form.Control
-                                className={this.validateField(this.state.telefono, 20, 7) ? "input-validate-field-success" : "input-validate-field-error"}
+                                className={validateField(this.state.telefono, 20, 7) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="text"
                                 placeholder="N° de Teléfono o Celular"
                                 autoComplete="off"
@@ -82,9 +82,9 @@ export default class AlumnoRegistrar extends Component {
                         </Form.Group>
                         <Form.Group controlId="formEmail">
                             <Form.Label><b>Correo electrónico</b></Form.Label>
-                            <span className="validation-field" hidden={this.validateEmail(this.state.email)}>Email inválido</span>
+                            <span className="validation-field" hidden={validateEmail(this.state.email)}>Email inválido</span>
                             <Form.Control
-                                className={this.validateEmail(this.state.email) ? "input-validate-field-success" : "input-validate-field-error"}
+                                className={validateEmail(this.state.email) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="email"
                                 placeholder="Ingrese su email"
                                 autoComplete="off"
@@ -93,9 +93,9 @@ export default class AlumnoRegistrar extends Component {
                         </Form.Group>
                         <Form.Group controlId="formCarrera">
                             <Form.Label><b>Carrera</b></Form.Label>
-                            <span className="validation-field" hidden={this.validateSelect(this.state.carreraSelected)}>Debes seleccionar una carrera</span>                            
+                            <span className="validation-field" hidden={validateSelect(this.state.carreraSelected)}>Debes seleccionar una carrera</span>                            
                             <Form.Control
-                                className={this.validateSelect(this.state.carreraSelected) ? "input-validate-field-success" : "input-validate-field-error"}
+                                className={validateSelect(this.state.carreraSelected) ? "input-validate-field-success" : "input-validate-field-error"}
                                 as="select"
                                 value={this.state.carreraSelected}
                                 onChange={(e)=>{this.changeField(e, "carreraSelected")}}>
@@ -133,12 +133,12 @@ export default class AlumnoRegistrar extends Component {
     }
 
     validateAllFields(alumno){
-        if(this.validateField(alumno.nombres, 15, 3) && 
-            this.validateField(alumno.apellidos, 15, 3) &&
-            this.validateNumber(alumno.ci, 99999999, 99999) &&
-            this.validateField(alumno.telefono, 20, 7) &&
-            this.validateEmail(alumno.email) &&
-            this.validateSelect(alumno.idCarrera)){
+        if(validateField(alumno.nombres, 15, 3) && 
+            validateField(alumno.apellidos, 15, 3) &&
+            validateNumber(alumno.ci, 99999999, 99999) &&
+            validateField(alumno.telefono, 20, 7) &&
+            validateEmail(alumno.email) &&
+            validateSelect(alumno.idCarrera)){
             return true;
         }
         return false;
@@ -150,32 +150,5 @@ export default class AlumnoRegistrar extends Component {
         obj[field] = e.target.value;
         this.setState(obj);
     }
-
-    validateField(value, max, min){       
-        if(value === undefined){  return false; } // undefined
-        if (value && value.trim().length === 0) { return false; } // vacio        
-        if(value.length >= min && value.length <= max) { return true; } // min y max
-        return false;
-    }
-
-    validateNumber(value, max, min){       
-        if(value === undefined){  return false; } // undefined
-        if (value && value.trim().length === 0) { return false; } // vacio        
-        if(value >= min && value <= max) { return true; } // min y max
-        return false;
-    }    
-
-    validateEmail(value){
-        if(value === undefined){  return false; } // undefined
-        if (value && value.trim().length === 0) { return false; } // vacio
-        var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
-        if (filter.test(value)) { return true; }
-        return false;
-    }
-
-    validateSelect(value){
-        if(value === 0){ return false; }
-        return true;
-    }    
 
 }

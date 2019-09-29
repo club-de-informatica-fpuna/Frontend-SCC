@@ -13,11 +13,13 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1"
   },
+  "main": "src/electron-starter.js",
   "scripts": {
     "start": "react-app-env start",
     "build": "react-app-env build",
     "test": "react-app-env test",
-    "eject": "react-app-env eject"
+    "eject": "react-app-env eject",
+    "electron": "electron ."
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,6 +37,7 @@
     ]
   },
   "devDependencies": {
-    "react-app-env": "^1.2.3"
+    "react-app-env": "^1.2.3",
+    "electron": "^5.0.3"
   }
 }

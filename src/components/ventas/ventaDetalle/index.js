@@ -17,11 +17,7 @@ export default class VentaDetalle extends Component {
             itemsMostrar = detalle.map((i) => (
                 <tr>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.id}</td>
-                    <td style={{textAlign: "center", verticalAlign: "middle"}}>
-                        <Button size="sm" style={{background: "#6c757d", border: "1px solid #6c757d"}}>     
-                            <span>{i.producto.denominacion}</span>
-                        </Button>
-                    </td>
+                    <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.producto.denominacion}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{this.formatoMoneda(i.precio) + " GS."}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.cantidad}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{this.formatoMoneda(i.subtotal) + " GS."}</td>

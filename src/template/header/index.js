@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, Image, Nav, Form, Dropdown } from 'react-bootstrap';
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaTimes, FaQuestion } from "react-icons/fa";
+import { GoInfo } from "react-icons/go";
 import axios from "axios";
 import "./header.css";
 
@@ -14,7 +15,7 @@ export default class Header extends Component {
     }
 
     componentWillMount(){
-        this.getNotifications();
+        this.getNotifications();        
     }
 
     componentWillReceiveProps(nextProps) {
@@ -27,7 +28,7 @@ export default class Header extends Component {
         let notificacionesMostrar = [], cantidadNotificaciones = 0;
         if(notificaciones !== undefined && notificaciones.length > 0){
             cantidadNotificaciones = notificaciones.length;
-            Notification.requestPermission().then(function(result) {
+/*             Notification.requestPermission().then(function(result) {
                 for(var i = 0; i < notificaciones.length; i++){
                     var options = {
                         body: notificaciones[i].contenido,
@@ -35,17 +36,18 @@ export default class Header extends Component {
                     }
                     var notification = new Notification(notificaciones[i].titulo, options);
                 }
-            });            
-/*             notificacionesMostrar = notificaciones.map( (i) => (
-                <Dropdown.Item>
+            });     */        
+            notificacionesMostrar = notificaciones.map( (i) => (
+                <Dropdown.Item className="notification-item">
                     <p>
                         <strong>{i.titulo}</strong><br/>
                         {i.contenido}<br/>
                         {i.detalle}
                     </p>
                 </Dropdown.Item>
-            )); */
+            ));
         }
+
         return (
             <Navbar bg="dark" style={{ backgroundImage: "linear-gradient(to bottom right, #373737, black)" }}>
                 <Nav className="mr-auto">
@@ -59,13 +61,11 @@ export default class Header extends Component {
                             <Dropdown.Toggle variant="success" className="notification-button">
                                 <FaBell/>&nbsp;&nbsp;<strong>{cantidadNotificaciones}</strong>
                             </Dropdown.Toggle>
-                            <Dropdown.Menu>
+                            <Dropdown.Menu className="notification-item-group">
                                 {notificacionesMostrar}
                             </Dropdown.Menu>
                         </Dropdown>
                     </Nav.Link>
-                    <Nav.Link style={{ color: "white" }} href="#home">ACERCA DE</Nav.Link>
-                    <Nav.Link style={{ color: "white" }} href="#home">SALIR</Nav.Link>
                 </Form>
             </Navbar>
         );

@@ -36,12 +36,14 @@ export default class Prestamos extends Component {
             prestamo: undefined,
             equipo: undefined,
             fechaPrestamo: undefined,
-            fechaDevolucion: undefined
+            fechaDevolucion: undefined,
+            loading: false
         };
     }
 
     componentWillMount() {
         this.getEquipos();
+        this.getPrestamosByFields(undefined);
     }
 
     render() {
@@ -77,13 +79,6 @@ export default class Prestamos extends Component {
                     <td style={{textAlign: "center"}}>
                         <Button
                             style={{border: "2px solid white"}}
-                            size="sm"
-                            variant="warning"
-                            title="Editar">
-                            <FaUserEdit />
-                        </Button>&nbsp;&nbsp;
-                        <Button
-                            style={{border: "2px solid white"}}
                             onClick={(e)=> {this.deletePrestamo(e, i.idPrestamo)}}
                             size="sm"
                             variant="danger"                            
@@ -98,15 +93,14 @@ export default class Prestamos extends Component {
                             variant="success"
                             title="Devolver">
                             <FaReply />
-                        </Button>&nbsp;&nbsp;                        
+                        </Button>&nbsp;&nbsp;
                         <Button
                             style={{border: "2px solid white"}}
                             onClick={(e) => {this.showInfo(e, i)}}
                             size="sm"
                             variant="info"                            
-                            title="Info">
-                            <FaInfo />
-                        </Button>                        
+                            title="Info"><FaInfo />
+                        </Button>&nbsp;&nbsp;            
                     </td>                    
                 </tr>
             ));
@@ -170,7 +164,7 @@ export default class Prestamos extends Component {
                         </Button>
                     </Form.Row>
                 </Form>
-
+                <img hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
                 <section style={{ display: haveResults ? "block" : "none", marginTop: "10px" }}>
                     <Table hover responsive style={{ fontSize: "12px" }}>
                         <thead style={{background: "#343a40", color: "white"}}>
@@ -283,14 +277,16 @@ export default class Prestamos extends Component {
     }
 
     getPrestamos() {
+        this.setState({ loading: true });
         axios.get(process.env.REACT_APP_API_URL + "/prestamos")
-            .then(res => {
-                console.log(res.data);
-                this.setState({ prestamos: res.data });
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        .then(res => {
+            console.log(res.data);
+            this.setState({ prestamos: res.data, loading: false });
+        })
+        .catch((error) => {
+            console.log(error);
+            this.setState({ loading: false });
+        });
     }
 
     getEquipos() {
@@ -305,7 +301,8 @@ export default class Prestamos extends Component {
     }
 
     getPrestamosByFields(e) {
-        e.preventDefault();
+        if(e !== undefined){ e.preventDefault(); }
+        this.setState({loading: true});
         let cedula = this.state.cedula === "" ? null : this.state.cedula;
         let subcategoria = parseInt(this.state.equipoSelected) === 0 ? null : parseInt(this.state.equipoSelected);
         let desde = this.convertDate(this.state.desde);
@@ -313,9 +310,13 @@ export default class Prestamos extends Component {
         let queryParams = this.makeQuery(cedula, subcategoria, desde, hasta);
         console.log(queryParams);
         axios.get(process.env.REACT_APP_API_URL + "/prestamos/fields" + queryParams)
-            .then(res => {
-                this.setState({ prestamos: res.data });
-            });
+        .then(res => {
+            this.setState({ prestamos: res.data, loading: false });
+        })
+        .catch(error => {
+            console.log(error);
+            this.setState({ loading: false });
+        });
     }
 
     makeQuery(cedula, subcategoria, desde, hasta) {

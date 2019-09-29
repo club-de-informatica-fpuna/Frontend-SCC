@@ -15,50 +15,50 @@ export default class Menu extends Component {
         console.log(this.props.history);
         console.log(current);
         return (
-            <Nav variant="pills" style={{justifyContent: "center", marginTop: "20px"}}>
-                <Nav.Item>
+            <Nav variant="pills" style={{justifyContent: "center", padding: "10px"}}>
+                <Nav.Item style={{marginTop: "10px"}}>
                     <Link className={"list-group-item list-group-item-action list-group-item-light path-normal" + (current === "/home" ? " path-selected" : "")} to={`${this.props.pathMatch}`}>
                         <FaHome />&nbsp;&nbsp;&nbsp;
                         <span>INICIO</span>
                     </Link>
                 </Nav.Item>&nbsp;&nbsp;&nbsp;
-                <Nav.Item>
+                <Nav.Item style={{marginTop: "10px"}}>
                     <Link className={"list-group-item list-group-item-action list-group-item-light path-normal" + (current === "/home/alumnos" ? " path-selected" : "")} to={`${this.props.pathMatch}/alumnos`}>
                         <FaUserGraduate />&nbsp;&nbsp;&nbsp;
                        <span>ALUMNOS</span>
                     </Link>
                 </Nav.Item>&nbsp;&nbsp;&nbsp;
-                <Nav.Item>
+                <Nav.Item style={{marginTop: "10px"}}>
                     <Link className={"list-group-item list-group-item-action list-group-item-light path-normal" + (current === "/home/socios" ? " path-selected" : "")} to={`${this.props.pathMatch}/socios`}>
                         <FaUserTie />&nbsp;&nbsp;&nbsp;
                         <span>SOCIOS</span>
                     </Link>
                 </Nav.Item>&nbsp;&nbsp;&nbsp;
-                <Nav.Item>
+                <Nav.Item style={{marginTop: "10px"}}>
                     <Link className={"list-group-item list-group-item-action list-group-item-light path-normal" + (current === "/home/prestamos" ? " path-selected" : "")} to={`${this.props.pathMatch}/prestamos`}>
                         <FaRegAddressCard />&nbsp;&nbsp;&nbsp;
                         <span>PRÉSTAMOS</span>
                     </Link>
                 </Nav.Item>&nbsp;&nbsp;&nbsp;
-                <Nav.Item>
+                <Nav.Item style={{marginTop: "10px"}}>
                     <Link className={"list-group-item list-group-item-action list-group-item-light path-normal" + (current === "/home/equipos" ? " path-selected" : "")} to={`${this.props.pathMatch}/equipos`}>
                         <FaCubes />&nbsp;&nbsp;&nbsp;
                         <span>EQUIPOS</span>
                     </Link>
                 </Nav.Item>&nbsp;&nbsp;&nbsp;
-                <Nav.Item>
+                <Nav.Item style={{marginTop: "10px"}}>
                     <Link className={"list-group-item list-group-item-action list-group-item-light path-normal" + (current === "/home/productos" ? " path-selected" : "")} to={`${this.props.pathMatch}/productos`}>
                         <FaCubes />&nbsp;&nbsp;&nbsp;
                         <span>PRODUCTOS</span>
                     </Link>
                 </Nav.Item>&nbsp;&nbsp;&nbsp;
-                <Nav.Item>
+                <Nav.Item style={{marginTop: "10px"}}>
                     <Link className={"list-group-item list-group-item-action list-group-item-light path-normal" + (current === "/home/ventas" ? " path-selected" : "")} to={`${this.props.pathMatch}/ventas`}>
                         <FaTicketAlt />&nbsp;&nbsp;&nbsp;
                         <span>VENTAS</span>
                     </Link>
                 </Nav.Item>&nbsp;&nbsp;&nbsp;
-                <Nav.Item>
+                <Nav.Item style={{marginTop: "10px"}}>
                     <Link className={"list-group-item list-group-item-action list-group-item-light path-normal" + (current === "/home/caja" ? " path-selected" : "")} to={"/"}>
                         <FaDonate />&nbsp;&nbsp;&nbsp;
                         <span>CAJA</span>

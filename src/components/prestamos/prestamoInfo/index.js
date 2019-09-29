@@ -18,16 +18,41 @@ export default class PrestamoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                        <Image className="representative-image" src={prestamo.equipo.foto != undefined ? ("data:image/png;base64," + prestamo.equipo.foto) : logo} width="150" roundedCircle />
+                    <Image className="representative-image" src={prestamo.equipo.foto != undefined ? ("data:image/png;base64," + prestamo.equipo.foto) : logo} width="150" thumbnail />
                     </p>
                     <section className="modal-info-fields">
-                        <p><strong>NOMBRES Y APELLIDOS: </strong>{prestamo.alumno.nombres + " " + prestamo.alumno.apellidos}</p>
-                        <p><strong>N° DOCUMENTO: </strong>{prestamo.alumno.ci}</p>
-                        <p><strong>CARRERA: </strong>{prestamo.alumno.idCarrera.denominacion}</p>
-                        <p><strong>EQUIPO PRESTADO: </strong>{prestamo.equipo.descripcion}</p>
-                        <p><strong>FECHA PRÉSTAMO: </strong>{this.fromRFCToFormat(prestamo.fechaPrestamo)}</p>
-                        <p><strong>FECHA DEVOLUCIÓN: </strong>{prestamo.fechaDevolucion === undefined ? "NO DEVUELTO" : this.fromRFCToFormat(prestamo.fechaDevolucion)}</p>
-                        <p><strong>ESTADO: </strong>{prestamo.fechaDevolucion === undefined ? "PENDIENTE" : "DEVUELTO"}</p>                    
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td style={{textAlign: "right"}}><strong>NOMBRES Y APELLIDOS: </strong>&nbsp;</td>
+                                    <td>{prestamo.alumno.nombres + " " + prestamo.alumno.apellidos}</td>
+                                </tr>
+                                <tr>
+                                    <td style={{textAlign: "right"}}><strong>N° DOCUMENTO: </strong>&nbsp;</td>
+                                    <td>{prestamo.alumno.ci}</td>
+                                </tr>
+                                <tr>
+                                    <td style={{textAlign: "right"}}><strong>CARRERA: </strong>&nbsp;</td>
+                                    <td>{prestamo.alumno.idCarrera.denominacion}</td>
+                                </tr>
+                                <tr>
+                                    <td style={{textAlign: "right"}}><strong>EQUIPO PRESTADO: </strong>&nbsp;</td>
+                                    <td>{prestamo.equipo.descripcion}</td>
+                                </tr>
+                                <tr>
+                                    <td style={{textAlign: "right"}}><strong>FECHA PRÉSTAMO: </strong>&nbsp;</td>
+                                    <td>{this.fromRFCToFormat(prestamo.fechaPrestamo)}</td>
+                                </tr>
+                                <tr>
+                                    <td style={{textAlign: "right"}}><strong>FECHA DEVOLUCIÓN: </strong>&nbsp;</td>
+                                    <td>{prestamo.fechaDevolucion === undefined ? "NO DEVUELTO" : this.fromRFCToFormat(prestamo.fechaDevolucion)}</td>
+                                </tr>
+                                <tr>
+                                    <td style={{textAlign: "right"}}><strong>ESTADO: </strong>&nbsp;</td>
+                                    <td>{prestamo.fechaDevolucion === undefined ? "PENDIENTE" : "DEVUELTO"}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </section>
                 </Modal.Body>
                 <Modal.Footer>

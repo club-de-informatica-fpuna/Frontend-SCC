@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image, Button, Table } from "react-bootstrap";
 import { FaUserEdit, FaTrash, FaInfo } from "react-icons/fa";
 import ProductoRegistro from "./registro";
+import ProductoEditar from "./editar";
 import ProductoInfo from "./productoInfo";
 import StockRegistro from "./registroStock";
 import Notifications, {notify} from 'react-notify-toast';
@@ -16,7 +17,9 @@ export default class Productos extends Component {
             producto: undefined,
             showNuevo: false,
             showProducto: false,
-            showStock: false
+            showStock: false,
+            showEditarProducto: false,
+            loading: false
         };
     }
     
@@ -28,12 +31,14 @@ export default class Productos extends Component {
     render() {
         var productos = this.state.productos;
         let tableResults = <div></div>;
+        var havingResults = false;
         if (productos !== undefined && productos.length > 0) {
+            havingResults = true;
             tableResults = productos.map((i) => (
                 <tr>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.idProducto}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>
-                        <Image height={100} src={i.foto != undefined ? ("data:image/png;base64," + i.foto) : i.foto}/>
+                    <Image height={100} src={i.foto != undefined ? ("data:image/png;base64," + i.foto) : i.foto}/>
                     </td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.denominacion}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.precio + " GS."}</td>
@@ -41,6 +46,7 @@ export default class Productos extends Component {
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.cantidad}</td>                  
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>
                         <Button
+                            onClick={(e)=>{this.showEditarProducto(e, i)}}
                             size="sm"
                             variant="warning"
                             title="Editar">
@@ -68,12 +74,15 @@ export default class Productos extends Component {
         return (
             <section>
                 <Notifications/>
+                <ProductoEditar show={this.state.showEditarProducto} close={this.closeEditarProducto.bind(this)} update={this.updateProducto.bind(this)} producto={this.state.producto}/>
                 <StockRegistro show={this.state.showStock} close={this.closeStock.bind(this)} save={this.saveStock.bind(this)} productos={this.state.productos}/>
                 <ProductoRegistro show={this.state.showNuevo} close={this.closeNuevoProducto.bind(this)} save={this.saveProducto.bind(this)}/>
                 <ProductoInfo show={this.state.showProducto} producto={this.state.producto} close={this.closeProducto.bind(this)}/>
-                <Button onClick={this.showNuevoProducto.bind(this)}><b>Nuevo</b></Button>&nbsp;&nbsp;
-                <Button onClick={this.showAumentarStock.bind(this)}><b>Aumentar stock</b></Button>
-                <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }}>
+                <Button onClick={this.showNuevoProducto.bind(this)}><b>Nuevo producto</b></Button>&nbsp;&nbsp;
+                <Button onClick={this.showAumentarStock.bind(this)}><b>Aumentar stock</b></Button>&nbsp;&nbsp;
+                <Button><b>Disminuir stock</b></Button>
+                <br/><img hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
+                <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }} hidden={!havingResults}>
                     <thead style={{background: "#343a40", color: "white"}}>
                         <tr>
                             <th style={{textAlign: "center"}}>ID</th>
@@ -113,6 +122,20 @@ export default class Productos extends Component {
         });
     }
 
+    showEditarProducto(e, producto){
+        e.preventDefault();
+        this.setState({
+            showEditarProducto: true,
+            producto: producto
+        });
+    }
+
+    closeEditarProducto(e){
+        this.setState({
+            showEditarProducto: false
+        });
+    }
+
     closeNuevoProducto(e){
         this.setState({
             showNuevo: false
@@ -141,12 +164,14 @@ export default class Productos extends Component {
     }
 
     getProductos() {
+        this.setState({loading: true});
         axios.get(process.env.REACT_APP_API_URL + "/productos")
         .then(res => {
-            this.setState({ productos: res.data });
+            this.setState({ productos: res.data, loading: false });
         })
         .catch(error => {
             console.log(error);
+            this.setState({loading: false});
         });
     }
 
@@ -190,5 +215,20 @@ export default class Productos extends Component {
             this.setState({showStock: false});
         });        
     }
+
+    updateProducto(e, obj){
+        e.preventDefault();
+        console.log(obj);
+        axios.put(process.env.REACT_APP_API_URL + "/productos", obj)
+        .then(res => {
+            notify.show("Producto actualizado exitosamente", "success");
+            this.setState({showEditarProducto: false}, this.getProductos());
+        })
+        .catch((error) => {
+            notify.show("Ha ocurrido un error al actualizar el producto", "error");
+            console.log(error);
+            this.setState({showEditarProducto: false});
+        });
+    }     
 
 }

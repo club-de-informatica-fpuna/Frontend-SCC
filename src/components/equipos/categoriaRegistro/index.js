@@ -72,7 +72,7 @@ export default class CategoriaRegistrar extends Component {
         var file = e.target.files[0];
         if(file !== undefined){
             var reader = new FileReader();
-            reader.readAsBinaryString(file);
+            reader.readAsDataURL(file);
             reader.onload = function() {
                 this.setState({
                     file: window.btoa(reader.result),

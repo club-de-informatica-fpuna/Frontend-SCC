@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
 import { FaUserPlus, FaSearch, FaTrash, FaUserEdit, FaUserFriends, FaRss } from "react-icons/fa";
 import AlumnoRegistrar from "./alumnoRegistrar";
+import AlumnoEditar from "./alumnoEditar";
 import AlumnoInfo from "./alumnoInfo";
 import RFIDReader from "./rfidReader";
 import axios from "axios";
@@ -21,14 +22,17 @@ export default class Alumno extends Component {
             resultados: [],
             showNuevo: false,
             showInfo: false,
+            showEditar: false,
             alumno: undefined,
             carreras: [],
             rfidReading: false,
-            partnerUpShow: false
+            partnerUpShow: false,
+            loading: false
         };
     }
 
     componentWillMount() {
+        this.getAlumnosByFields();
         this.getCarreras();
     }
 
@@ -48,6 +52,7 @@ export default class Alumno extends Component {
                     <td style={{textAlign: "center"}}>{i.idCarrera.denominacion}</td>
                     <td style={{textAlign: "center"}}>
                         <Button
+                            onClick={(e) => {this.showAlumnoEditar(e, i)}}
                             size="sm"
                             variant="warning"
                             title="Editar">
@@ -66,7 +71,7 @@ export default class Alumno extends Component {
                             onClick={(e) => {this.associateStudent(e, i)}}
                             title="Asociar">
                             <FaUserFriends />
-                        </Button>
+                        </Button>&nbsp;&nbsp;
                     </td>
                 </tr>
             ));
@@ -82,6 +87,12 @@ export default class Alumno extends Component {
             <section>
                 <Notifications/>
                 <AlumnoInfo show={this.state.showInfo} alumno={this.state.alumno} close={this.closeAlumnoInfo.bind(this)}/>
+                <AlumnoEditar
+                    show={this.state.showEditar}
+                    close={this.closeAlumnoEditar.bind(this)}
+                    carreras={this.state.carreras}
+                    update={this.update.bind(this)}
+                    alumno={this.state.alumno}/>
                 <AlumnoRegistrar
                     show={this.state.showNuevo}
                     close={this.closeNuevo.bind(this)}
@@ -89,7 +100,7 @@ export default class Alumno extends Component {
                     save={this.saveAlumno.bind(this)} alumno={this.state.alumno}/>
                 <RFIDReader show={this.state.rfidReading} />
                 <SocioInf mode={false} show={this.state.partnerUpShow} showFunction={this.handleShowParner.bind(this)} partnerInf={this.state.alumno}/>
-                <Form style={{ marginTop: "10px" }}>
+                <Form>
                     <Form.Row>
                         <Col>
                             <Form.Control
@@ -130,10 +141,11 @@ export default class Alumno extends Component {
                         </Button>&nbsp;
                         <Button bsStyle="primary" onClick={this.showNuevo.bind(this)}>
                             <span>Nuevo</span>&nbsp;
-                                <FaUserPlus />
-                        </Button>
+                            <FaUserPlus />
+                        </Button>&nbsp;
                     </Form.Row>
                 </Form>
+                <img hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
                 <section style={{ display: haveResults ? "block" : "none", marginTop: "10px" }}>
                     <Table hover responsive style={{ fontSize: "12px" }}>
                         <thead style={{background: "#343a40", color: "white"}}>
@@ -160,6 +172,20 @@ export default class Alumno extends Component {
         this.setState({
             alumno: alumno,
             showInfo: true
+        });
+    }
+
+    showAlumnoEditar(e, alumno){
+        e.preventDefault();
+        this.setState({
+            alumno: alumno,
+            showEditar: true
+        });        
+    }
+
+    closeAlumnoEditar(e){
+        this.setState({
+            showEditar: false
         });
     }
 
@@ -197,15 +223,20 @@ export default class Alumno extends Component {
     }
 
     getAlumnosByFields(e) {
+        this.setState({loading: true});        
         let cedula = this.state.cedula === "" ? null : this.state.cedula;
         let carrera = parseInt(this.state.carreraSelected) === 0 ? null : parseInt(this.state.carreraSelected);
         let nombres = this.state.nombres === "" ? null : this.state.nombres;
         let apellidos = this.state.apellidos === "" ? null : this.state.apellidos;
         let queryParams = this.makeQuery(cedula, carrera, nombres, apellidos);
         axios.get(process.env.REACT_APP_API_URL + "/alumnos/fields" + queryParams)
-            .then(res => {
-                this.setState({ resultados: res.data });
-            });
+        .then(res => {
+            this.setState({ resultados: res.data, loading: false });
+        })
+        .catch(error => {
+            notify.show("Ha ocurrido un error al procesar la solicitud", "error");
+            this.setState({ loading: false });
+        });
     }
 
     getCarreras() {
@@ -227,6 +258,20 @@ export default class Alumno extends Component {
                 console.log(error);                
                 this.setState({ showNuevo: false });                
             });
+    }
+
+    update(e, obj){
+        e.preventDefault();
+        axios.put(process.env.REACT_APP_API_URL + "/alumnos", obj)
+            .then(res => {
+                notify.show("Alumno actualizado exitosamente", "success");
+                this.setState({ resultados: [res.data], showEditar: false });
+            })
+            .catch((error) => {
+                notify.show("Ha ocurrido un error al procesar la solicitud", "error");
+                console.log(error);                
+                this.setState({ showEditar: false });                
+            });        
     }
 
     deleteAlumno(e, ci) {

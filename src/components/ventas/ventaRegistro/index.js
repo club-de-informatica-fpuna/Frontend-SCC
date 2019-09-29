@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Modal, Form, Row, Col, Table } from "react-bootstrap";
-import { FaUserEdit, FaTrash, FaInfo } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
+import {validateField, validateNumber, validateDate, validateList, validateSelect} from "../../../util/validators";
 import axios from "axios";
 
 export default class VentaRegistro extends Component {
@@ -18,7 +19,8 @@ export default class VentaRegistro extends Component {
             itemProductoConcepto: "",
             itemPrecio: 0,
             itemCantidad: 1,
-            itemSubtotal: 0
+            itemSubtotal: 0,
+            validated: true
         };
     }
 
@@ -87,21 +89,23 @@ export default class VentaRegistro extends Component {
                     <Form>
                         <Form.Group as={Row} controlId="formNombreCliente">
                             <Col md={4}>
-                                <Form.Label style={{ marginBottom: 0 }}>
-                                    <b>Nombre del cliente</b>
-                                </Form.Label>
+                                <Form.Label style={{ marginBottom: 0 }}><b>Nombre del cliente</b></Form.Label>
+                                <span className="validation-field" hidden={validateField(this.state.clienteNombre, 100, 3)}>Nombre inválido</span>
                                 <Form.Control
+                                    className={validateField(this.state.clienteNombre, 100, 3) ? "input-validate-field-success" : "input-validate-field-error"}
                                     type="text"
                                     value={this.state.clienteNombre}
+                                    autoComplete="off"
                                     onChange={(e) => { this.changeField(e, "clienteNombre") }}
                                     placeholder="Ingrese el nombre del cliente"
                                 />
                             </Col>
                             <Col md={4}>
-                                <Form.Label style={{ marginBottom: 0 }}>
-                                    <b>N° Documento</b>
-                                </Form.Label>
+                                <Form.Label style={{ marginBottom: 0 }}><b>N° Documento</b></Form.Label>
+                                <span className="validation-field" hidden={validateField(this.state.clienteDocumento, 15, 6)}>N° documento inválido</span>
                                 <Form.Control
+                                    className={validateField(this.state.clienteDocumento, 15, 6) ? "input-validate-field-success" : "input-validate-field-error"}
+                                    autoComplete="off"
                                     type="text"
                                     value={this.state.clienteDocumento}
                                     onChange={(e) => { this.changeField(e, "clienteDocumento") }}
@@ -109,10 +113,10 @@ export default class VentaRegistro extends Component {
                                 />
                             </Col>
                             <Col md={4}>
-                                <Form.Label style={{ marginBottom: 0 }}>
-                                    <b>Fecha</b>
-                                </Form.Label>
+                                <Form.Label style={{ marginBottom: 0 }}><b>Fecha</b></Form.Label>
+                                <span className="validation-field" hidden={validateDate(this.state.fecha)}>Fecha inválida</span>
                                 <Form.Control
+                                    className={validateDate(this.state.fecha) ? "input-validate-field-success" : "input-validate-field-error"}
                                     type="datetime-local"
                                     value={this.state.fecha}
                                     onChange={(e) => { this.changeField(e, "fecha") }}
@@ -122,7 +126,11 @@ export default class VentaRegistro extends Component {
                         <Form.Group as={Row}>
                             <Col md={12}>
                                 <Form.Label style={{ marginBottom: 0 }}><b>Producto</b></Form.Label>
-                                <Form.Control as="select" value={this.state.itemProductoSelected} onChange={this.changeProducto.bind(this)}>
+                                <span className="validation-field" hidden={validateSelect(this.state.itemProductoSelected)}>Debes seleccionar un producto</span>
+                                <Form.Control
+                                    className={validateSelect(this.state.itemProductoSelected) ? "input-validate-field-success" : "input-validate-field-error"}
+                                    as="select"
+                                    value={this.state.itemProductoSelected} onChange={this.changeProducto.bind(this)}>
                                     <option key="0" value="0" disabled>- SELECCIONE -</option>
                                     {productosMostrar}
                                 </Form.Control>
@@ -130,6 +138,7 @@ export default class VentaRegistro extends Component {
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col>
+                                <Form.Label style={{ marginBottom: 0 }}><b>Precio</b></Form.Label>                            
                                 <Form.Control
                                     disabled
                                     placeholder="Precio del producto"
@@ -138,13 +147,17 @@ export default class VentaRegistro extends Component {
                                     value={this.state.itemPrecio}/>
                             </Col>
                             <Col>
+                                <Form.Label style={{ marginBottom: 0 }}><b>Cantidad</b></Form.Label>
+                                <span className="validation-field" hidden={validateNumber(this.state.itemCantidad, 100, 1)}>Cantidad inválida</span>
                                 <Form.Control
                                     type="number"
+                                    className={validateNumber(this.state.itemCantidad, 100, 1) ? "input-validate-field-success" : "input-validate-field-error"}
                                     style={{textAlign: "right"}}
                                     onChange={this.changeCurrentItemCantidad.bind(this)}
                                     value={this.state.itemCantidad}/>
                             </Col>
                             <Col>
+                                <Form.Label style={{ marginBottom: 0 }}><b>Subtotal</b></Form.Label>                            
                                 <Form.Control
                                     type="number"
                                     style={{textAlign: "right"}}
@@ -156,6 +169,7 @@ export default class VentaRegistro extends Component {
                                 onClick={this.addToItems.bind(this)}>Agregar</Button>
                         </Form.Group>
                     </Form>
+                    <span className="validation-field" hidden={validateList(this.state.items)}>Debes agregar por lo menos un producto</span>
                     <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }}>
                         <thead style={{ background: "#343a40", color: "white" }}>
                             <tr>
@@ -173,6 +187,8 @@ export default class VentaRegistro extends Component {
                     <section style={{float: "right"}}>
                         <b>TOTAL: </b>{this.state.importeTotal}
                     </section>
+                    <br></br>
+                    <span className="validation-field" hidden={this.state.validated} style={{textAlign: "center", fontWeight: "bold"}}>Por favor, revise los campos marcados.</span>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.close.bind(this)}>Cerrar</Button>
@@ -220,16 +236,20 @@ export default class VentaRegistro extends Component {
             precio: this.state.itemPrecio,
             subtotal: this.state.itemSubtotal
         }
-        let items = this.state.items;
-        items.push(obj);
-        this.setState({
-            itemCantidad: 1,
-            itemProductoSelected: 0,
-            itemPrecio: 0,
-            itemSubtotal: 0,
-            importeTotal: this.state.importeTotal + this.state.itemSubtotal,
-            items: items
-        });
+        if(this.validateAddItem(obj)){
+            let items = this.state.items;
+            items.push(obj);
+            this.setState({
+                itemCantidad: 1,
+                itemProductoSelected: 0,
+                itemPrecio: 0,
+                itemSubtotal: 0,
+                importeTotal: this.state.importeTotal + this.state.itemSubtotal,
+                items: items,
+                validated: true
+            });
+        }
+        else { this.setState({validated: false}); }
     }
 
     changeProducto(e){
@@ -257,7 +277,25 @@ export default class VentaRegistro extends Component {
     convertDate(date){
         if(date === undefined){ return null; }
         return date + ":00Z";
-    }    
+    }
+
+    validateAllFields(sale){
+        if(validateField(sale.clienteNombre, 100, 3) &&
+            validateField(sale.clienteDocumento, 15, 6) &&
+            validateDate(sale.fecha) &&
+            validateList(sale.detalle)){
+            return true;
+        }
+        return false;
+    }
+    
+    validateAddItem(item){
+        if(validateSelect(item.idProducto) &&
+            validateNumber(item.cantidad, 100, 1)){
+            return true;
+        }
+        return false;
+    }     
 
     handleSave(e){
         e.preventDefault();
@@ -268,8 +306,11 @@ export default class VentaRegistro extends Component {
             fecha: this.convertDate(this.state.fecha),
             importeTotal: this.state.importeTotal
         };
-        if(true){
-            this.props.save(e, obj);
+        if(this.validateAllFields(obj)){
+            this.setState({validated: true}, this.props.save(e, obj));
+        }
+        else{
+            this.setState({validated: false});
         }
     }
 

@@ -3,17 +3,33 @@ import { Modal, Button, Form } from "react-bootstrap";
 import {validateField, validateNumber} from "../../../util/validators";
 import {FaFileImage} from "react-icons/fa";
 
-export default class ProductoRegistro extends Component {
+export default class ProductoEditar extends Component {
 
     constructor(props){
         super(props);
         this.state = {
+            idProducto: undefined,
             denominacion: "",
             precio: 0,
             foto: undefined,
+            estado: true,
             fileSpan: "Seleccione el archivo",
-            validated: true 
+            validated: true
         };
+    }
+
+
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps);
+        if(nextProps.producto !== undefined){
+            this.setState({
+                idProducto: nextProps.producto.idProducto,
+                denominacion: nextProps.producto.denominacion,
+                precio: nextProps.producto.precio,
+                foto: nextProps.producto.foto,
+                estado: nextProps.producto.estado
+            });
+        }
     }
 
     render() {
@@ -21,7 +37,7 @@ export default class ProductoRegistro extends Component {
         return (
             <Modal show={this.props.show} onHide={this.props.close.bind(this)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Nuevo producto</Modal.Title>
+                    <Modal.Title>Editar producto</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -98,13 +114,14 @@ export default class ProductoRegistro extends Component {
     handleSave(e){
         e.preventDefault();
         let producto = {
+            idProducto: this.state.idProducto,
             denominacion: this.state.denominacion,
-            estado: true,
+            estado: this.state.estado,
             foto: this.state.foto,
             precio: this.state.precio
         }
         if(this.validateAllFields(producto)){
-            this.setState({validated: true}, this.props.save(e, producto));
+            this.setState({validated: true}, this.props.update(e, producto));
         }
         else{
             this.setState({validated: false});
