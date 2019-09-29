@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Row, Col, Table } from "react-bootstrap";
+import { Button, Form, Col, Table } from "react-bootstrap";
 import { FaUserPlus, FaSearch, FaTrash, FaUserEdit, FaUserFriends, FaRss } from "react-icons/fa";
 import AlumnoRegistrar from "./alumnoRegistrar";
 import AlumnoEditar from "./alumnoEditar";
@@ -37,7 +37,6 @@ export default class Alumno extends Component {
     }
 
     render() {
-        console.log(this.state.resultados);
         let results = this.state.resultados;
         let haveResults = false;
         var tableResults = <div></div>;
@@ -66,6 +65,7 @@ export default class Alumno extends Component {
                             <FaTrash />
                         </Button>&nbsp;&nbsp;
                         <Button
+                            disabled={i.asociado}
                             size="sm"
                             variant="info"
                             onClick={(e) => {this.associateStudent(e, i)}}
@@ -190,7 +190,6 @@ export default class Alumno extends Component {
     }
 
     closeAlumnoInfo(e){
-        //e.preventDefault();
         this.setState({
             showInfo: false
         });
@@ -208,7 +207,6 @@ export default class Alumno extends Component {
     }
 
     closeNuevo(e) {
-        //e.preventDefault();
         this.setState({ showNuevo: false });
     }
 

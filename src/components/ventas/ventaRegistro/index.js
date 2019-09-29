@@ -218,7 +218,7 @@ export default class VentaRegistro extends Component {
         e.preventDefault();
         var items = this.state.items;
         console.log(items);        
-        items = items.filter(item => item.idProducto != obj.idProducto);
+        items = items.filter(item => item.idProducto !== obj.idProducto);
         console.log(items);
         this.setState({
             items: items,

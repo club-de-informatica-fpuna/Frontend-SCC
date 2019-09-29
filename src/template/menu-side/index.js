@@ -12,8 +12,6 @@ export default class Menu extends Component {
 
     render() {
         var current = this.props.history.location.pathname;
-        console.log(this.props.history);
-        console.log(current);
         return (
             <Nav variant="pills" style={{justifyContent: "center", padding: "10px"}}>
                 <Nav.Item style={{marginTop: "10px"}}>

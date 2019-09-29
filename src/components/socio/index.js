@@ -39,24 +39,24 @@ export default class Socio extends Component {
         if(res !== undefined && res.length > 0){
             tableRender = res.map((i) => {
                 let toolTipPartner = (<ToolTipSocio partnerName={i.alumno.nombres} image={i.foto} career={i.alumno.idCarrera.denominacion} />);
-                return(
-                <tr key={i.alumno.ci}>
-                    <OverlayTrigger placement="auto-start"
-                                    delay={{ show: 250, hide: 400 }}
-                                    overlay={toolTipPartner}>
-                        <td>{i.alumno.nombres.toUpperCase()} {i.alumno.apellidos.toUpperCase()}</td>
-                    </OverlayTrigger>
-                    <td>{i.alumno.ci}</td> 
-                    <td>{i.alumno.telefono}</td>
-                    <td>{i.alumno.email}</td>
-                    <td>{i.alumno.idCarrera.denominacion.toUpperCase()}</td>
-                    <td>
-                        <Button size="sm" variant="warning"><FaUserEdit/></Button>&nbsp;&nbsp;
-                        <Button size="sm" variant="danger"><FaUserSlash/></Button>&nbsp;&nbsp;
-                        <Button size="sm" variant="info" onClick={(e)=>{this.handleShowInf(e, i)}}><FaInfo /></Button>
-                    </td>
-                </tr>
-                );
+                let rows = (<tr key={i.alumno.ci}>
+                                <OverlayTrigger placement="auto-start"
+                                                delay={{ show: 250, hide: 400 }}
+                                                overlay={toolTipPartner}>
+                                    <td>{i.alumno.nombres.toUpperCase()} {i.alumno.apellidos.toUpperCase()}</td>
+                                </OverlayTrigger>
+                                <td>{i.alumno.ci}</td>
+                                <td>{i.alumno.telefono}</td>
+                                <td>{i.alumno.email}</td>
+                                <td>{i.alumno.idCarrera.denominacion.toUpperCase()}</td>
+                                <td>
+                                    <Button size="sm" variant="danger" onClick={(e)=>{this.disassociateStudent(e, i)}}><FaUserSlash/></Button>&nbsp;&nbsp;
+                                    <Button size="sm" variant="info" onClick={(e)=>{this.handleShowInf(e, i)}}><FaInfo /></Button>
+                                </td>
+                            </tr>
+                            );
+                let empty = <></>;
+                return(i.estado ? rows : empty);
             });
         }
 
@@ -172,18 +172,33 @@ export default class Socio extends Component {
         e.preventDefault();
         let requestAddress = getBackEndContext("socios/rfid");
         this.setState({ rfidShow: true });
-
         let rs = await axios.get(requestAddress);
-        if(rs.status === 200){
-            this.setState({ results: [rs.data], rfidShow: false });
-        }
-        else{
-            this.setState({rfidShow: false});
-        }
-
+        let partialResult =  this.state.results;
+        this.setState({ results: rs.status === 200 ? [rs.data] : partialResult, rfidShow: false });
     }
 
     handleShowInf(e, partnerInf){
         this.setState({showInfModal: !this.state.showInfModal, partnerDetails: partnerInf});
+    }
+
+    disassociateStudent(e, student){
+        e.preventDefault();
+
+        let studentPut = {
+            idSocio: student.idSocio,
+            uuid: "Ninguno",
+            foto: null,
+            fechaIngreso: student.fechaIngreso,
+            ci: student.alumno.ci,
+            estado: false
+        };
+        let endPoint = getBackEndContext("socios");
+
+        axios.put(endPoint, studentPut).then(rs => {
+            this.getPartnersByFilter(e);
+        }).catch(error => {
+            console.log(error);
+        })
+
     }
 }
