@@ -4,6 +4,7 @@ import Notifications, {notify} from 'react-notify-toast';
 import axios from "axios";
 import VentaDetalle from "./ventaDetalle";
 import VentaRegistro from "./ventaRegistro";
+import Paginator from "../paginator";
 
 export default class Ventas extends Component {
 
@@ -14,12 +15,16 @@ export default class Ventas extends Component {
             venta: undefined,
             showNuevaVenta: false,
             showDetalle: false,
-            loading: false
+            loading: false,
+            firstPage: 1,
+            lastPage: undefined,
+            currentPage: 1,
+            pageSize: 5
         };
     }
 
     componentWillMount() {
-        this.getVentas();
+        this.getVentas(this.state.currentPage, this.state.pageSize);
     }
 
     render() {
@@ -73,6 +78,14 @@ export default class Ventas extends Component {
                         {tableResults}
                     </tbody>
                 </Table>
+                <Paginator
+                    prev={this.previousPage.bind(this)}
+                    next={this.nextPage.bind(this)}
+                    first={this.toFirstPage.bind(this)}
+                    last={this.toLastPage.bind(this)}
+                    firstPage={this.state.firstPage}
+                    lastPage={this.state.lastPage}
+                    currentPage={this.state.currentPage}/>
             </section>
         );
     }
@@ -117,11 +130,17 @@ export default class Ventas extends Component {
         this.setState(obj);
     }
 
-    getVentas() {
+    getVentas(page, pageSize) {
         this.setState({loading: true});
-        axios.get(process.env.REACT_APP_API_URL + "/ventas")
+        let query = "?page=" + page + "&pageSize=" + pageSize;
+        axios.get(process.env.REACT_APP_API_URL + "/ventas" + query)
         .then(res => {
-            this.setState({ ventas: res.data, loading: false });
+            this.setState({
+                ventas: res.data.content,
+                loading: false,
+                currentPage: res.data.pageable.pageNumber+1,
+                lastPage: res.data.totalPages
+            });
         })
         .catch(error => {
             this.setState({loading: false});
@@ -167,6 +186,36 @@ export default class Ventas extends Component {
 
     formatoMoneda(number){
         return new Intl.NumberFormat('de-DE').format(number);
-    }    
+    }
+
+    nextPage(e){
+        e.preventDefault();
+        if((this.state.currentPage+1) <= this.state.lastPage){
+            let change = this.state.currentPage + 1;
+            this.setState({
+                currentPage: change
+            }, this.getVentas(change, this.state.pageSize));
+        }
+    }
+
+    previousPage(e){
+        e.preventDefault();
+        if((this.state.currentPage-1) >= this.state.firstPage){
+            let change = this.state.currentPage - 1;
+            this.setState({
+                currentPage: change
+            }, this.getVentas(change, this.state.pageSize));
+        }
+    }
+
+    toFirstPage(e){
+        e.preventDefault();
+        this.setState({currentPage: this.state.firstPage}, this.getVentas(this.state.firstPage, this.state.pageSize));
+    }
+
+    toLastPage(e){
+        e.preventDefault();
+        this.setState({currentPage: this.state.lastPage}, this.getVentas(this.state.lastPage, this.state.pageSize));
+    }
 
 }

@@ -1,0 +1,23 @@
+.btn-paginator-default {
+    background: white;
+    color: #1f61c0;
+    border: 1px solid #1f61c0;
+}
+
+.btn-paginator-default:hover{
+    background: #1f61c0;
+    color: white;
+    border: 1px solid #1f61c0;    
+}
+
+.btn-paginator-active {
+    background: #1f61c0;
+    color: white;
+    border: 1px solid #1f61c0;
+}
+
+.btn-paginator-active:hover{
+    background: #1f61c0;
+    color: white;
+    border: 1px solid #1f61c0;
+}

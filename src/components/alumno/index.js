@@ -8,6 +8,7 @@ import RFIDReader from "./rfidReader";
 import axios from "axios";
 import Notifications, {notify} from 'react-notify-toast';
 import SocioInf from '../socio/socio-inf'
+import Paginator from "../paginator";
 
 export default class Alumno extends Component {
 
@@ -27,12 +28,16 @@ export default class Alumno extends Component {
             carreras: [],
             rfidReading: false,
             partnerUpShow: false,
-            loading: false
+            loading: false,
+            firstPage: 1,
+            lastPage: undefined,
+            currentPage: 1,
+            pageSize: 5
         };
     }
 
     componentWillMount() {
-        this.getAlumnosByFields();
+        this.getAlumnosByFields(this.state.currentPage, this.state.pageSize);
         this.getCarreras();
     }
 
@@ -133,7 +138,7 @@ export default class Alumno extends Component {
                                 {optionsCarreras}
                             </Form.Control>
                         </Col>
-                        <Button variant="primary" onClick={this.getAlumnosByFields.bind(this)}>
+                        <Button variant="primary" onClick={(e) => {this.getAlumnosByFields(this.state.currentPage, this.state.pageSize)}}>
                             <FaSearch />
                         </Button>&nbsp;
                         <Button variant="primary" onClick={this.getAlumnoFromRFID.bind(this)}>
@@ -162,6 +167,14 @@ export default class Alumno extends Component {
                             {tableResults}
                         </tbody>
                     </Table>
+                    <Paginator
+                        prev={this.previousPage.bind(this)}
+                        next={this.nextPage.bind(this)}
+                        first={this.toFirstPage.bind(this)}
+                        last={this.toLastPage.bind(this)}
+                        firstPage={this.state.firstPage}
+                        lastPage={this.state.lastPage}
+                        currentPage={this.state.currentPage}/>
                 </section>
             </section>
         );
@@ -210,26 +223,25 @@ export default class Alumno extends Component {
         this.setState({ showNuevo: false });
     }
 
-    makeQuery(cedula, carrera, nombres, apellidos) {
-        if (cedula === null && carrera === null && nombres === null && apellidos === null) { return ""; }
-        let query = "?", cantidad = 0;
-        if (cedula !== null) { if (cantidad > 0) { query += "&"; } query += "documento=" + cedula; cantidad++; }
-        if (carrera !== null) { if (cantidad > 0) { query += "&"; } query += "idCarrera=" + carrera; cantidad++; }
-        if (nombres !== null) { if (cantidad > 0) { query += "&"; } query += "nombres=" + nombres; cantidad++; }
-        if (apellidos !== null) { if (cantidad > 0) { query += "&"; } query += "apellidos=" + apellidos; cantidad++; }
+    makeQuery(cedula, carrera, nombres, apellidos, page, pageSize) {
+        let query = "?page=" + page + "&pageSize=" + pageSize;
+        if (cedula !== null) { query += "&documento=" + cedula; }
+        if (carrera !== null) { query += "&idCarrera=" + carrera; }
+        if (nombres !== null) { query += "&nombres=" + nombres; }
+        if (apellidos !== null) { query += "&apellidos=" + apellidos; }
         return query;
     }
 
-    getAlumnosByFields(e) {
+    getAlumnosByFields(page, pageSize) {
         this.setState({loading: true});        
         let cedula = this.state.cedula === "" ? null : this.state.cedula;
         let carrera = parseInt(this.state.carreraSelected) === 0 ? null : parseInt(this.state.carreraSelected);
         let nombres = this.state.nombres === "" ? null : this.state.nombres;
         let apellidos = this.state.apellidos === "" ? null : this.state.apellidos;
-        let queryParams = this.makeQuery(cedula, carrera, nombres, apellidos);
+        let queryParams = this.makeQuery(cedula, carrera, nombres, apellidos, page, pageSize);
         axios.get(process.env.REACT_APP_API_URL + "/alumnos/fields" + queryParams)
         .then(res => {
-            this.setState({ resultados: res.data, loading: false });
+            this.setState({ resultados: res.data.content, loading: false, currentPage: (res.data.pageable.pageNumber+1), lastPage: res.data.totalPages });
         })
         .catch(error => {
             notify.show("Ha ocurrido un error al procesar la solicitud", "error");
@@ -276,7 +288,7 @@ export default class Alumno extends Component {
         e.preventDefault();
         axios.delete(process.env.REACT_APP_API_URL + "/alumnos/" + ci)
             .then(res => {
-                this.getAlumnosByFields();
+                this.getAlumnosByFields(this.state.currentPage, this.state.pageSize);
             })
             .catch((error) => {
                 console.log(error);
@@ -303,5 +315,35 @@ export default class Alumno extends Component {
         e.preventDefault();
         this.setState({alumno : student, partnerUpShow : true});
     }
+
+    nextPage(e){
+        e.preventDefault();
+        if((this.state.currentPage+1) <= this.state.lastPage){
+            let change = this.state.currentPage + 1;
+            this.setState({
+                currentPage: change
+            }, this.getAlumnosByFields(change, this.state.pageSize));
+        }
+    }
+
+    previousPage(e){
+        e.preventDefault();
+        if((this.state.currentPage-1) >= this.state.firstPage){
+            let change = this.state.currentPage - 1;
+            this.setState({
+                currentPage: change
+            }, this.getAlumnosByFields(change, this.state.pageSize));
+        }
+    }
+
+    toFirstPage(e){
+        e.preventDefault();
+        this.setState({currentPage: this.state.firstPage}, this.getAlumnosByFields(this.state.firstPage, this.state.pageSize));
+    }
+
+    toLastPage(e){
+        e.preventDefault();
+        this.setState({currentPage: this.state.lastPage}, this.getAlumnosByFields(this.state.lastPage, this.state.pageSize));
+    }    
 
 }

@@ -9,6 +9,7 @@ import TiempoPrestado from "./tiempoPrestado";
 import DevolucionModal from "./devolucion";
 import RFIDReader from "../alumno/rfidReader";
 import Notifications, {notify} from 'react-notify-toast';
+import Paginator from "../paginator";
 import axios from "axios";
 
 export default class Prestamos extends Component {
@@ -37,13 +38,17 @@ export default class Prestamos extends Component {
             equipo: undefined,
             fechaPrestamo: undefined,
             fechaDevolucion: undefined,
-            loading: false
+            loading: false,
+            firstPage: 1,
+            lastPage: undefined,
+            currentPage: 1,
+            pageSize: 5
         };
     }
 
     componentWillMount() {
         this.getEquipos();
-        this.getPrestamosByFields(undefined);
+        this.getPrestamosByFields(this.state.currentPage, this.state.pageSize);
     }
 
     render() {
@@ -153,7 +158,9 @@ export default class Prestamos extends Component {
                                 {equiposOptions}
                             </Form.Control>
                         </Col>
-                        <Button variant="primary" onClick={this.getPrestamosByFields.bind(this)}>
+                        <Button
+                            variant="primary"
+                            onClick={(e)=>{this.getPrestamosByFields(this.state.currentPage, this.state.pageSize)}}>
                             <FaSearch />
                         </Button>&nbsp;
                         <Button variant="primary" onClick={this.getPrestamosFromRFID.bind(this)}>
@@ -182,6 +189,15 @@ export default class Prestamos extends Component {
                             {tableResults}
                         </tbody>
                     </Table>
+                    <Paginator
+                        prev={this.previousPage.bind(this)}
+                        next={this.nextPage.bind(this)}
+                        first={this.toFirstPage.bind(this)}
+                        last={this.toLastPage.bind(this)}
+                        firstPage={this.state.firstPage}
+                        lastPage={this.state.lastPage}
+                        currentPage={this.state.currentPage}
+                    />
                 </section>
 
             </section>
@@ -300,18 +316,22 @@ export default class Prestamos extends Component {
             });
     }
 
-    getPrestamosByFields(e) {
-        if(e !== undefined){ e.preventDefault(); }
+    getPrestamosByFields(page, pageSize) {
         this.setState({loading: true});
         let cedula = this.state.cedula === "" ? null : this.state.cedula;
         let subcategoria = parseInt(this.state.equipoSelected) === 0 ? null : parseInt(this.state.equipoSelected);
         let desde = this.convertDate(this.state.desde);
         let hasta = this.convertDate(this.state.hasta);
-        let queryParams = this.makeQuery(cedula, subcategoria, desde, hasta);
+        let queryParams = this.makeQuery(cedula, subcategoria, desde, hasta, page, pageSize);
         console.log(queryParams);
         axios.get(process.env.REACT_APP_API_URL + "/prestamos/fields" + queryParams)
         .then(res => {
-            this.setState({ prestamos: res.data, loading: false });
+            this.setState({
+                prestamos: res.data.content,
+                loading: false,
+                currentPage: res.data.pageable.pageNumber+1,
+                lastPage: res.data.totalPages
+            });
         })
         .catch(error => {
             console.log(error);
@@ -319,13 +339,12 @@ export default class Prestamos extends Component {
         });
     }
 
-    makeQuery(cedula, subcategoria, desde, hasta) {
-        if (cedula === null && subcategoria === null && desde === null && hasta === null) { return ""; }
-        let query = "?", cantidad = 0;
-        if (cedula !== null) { if (cantidad > 0) { query += "&"; } query += "documento=" + cedula; cantidad++; }
-        if (subcategoria !== null) { if (cantidad > 0) { query += "&"; } query += "idSubcategoria=" + subcategoria; cantidad++; }
-        if (desde !== null) { if (cantidad > 0) { query += "&"; } query += "inicio=" + desde; cantidad++; }
-        if (hasta !== null) { if (cantidad > 0) { query += "&"; } query += "devolucion=" + hasta; cantidad++; }
+    makeQuery(cedula, subcategoria, desde, hasta, page, pageSize) {
+        let query = "?page=" + page + "&pageSize=" + pageSize;
+        if (cedula !== null) { query += "&documento=" + cedula; }
+        if (subcategoria !== null) { query += "&idSubcategoria=" + subcategoria; }
+        if (desde !== null) { query += "&inicio=" + desde; }
+        if (hasta !== null) { query += "&devolucion=" + hasta; }
         return query;
     }
 
@@ -381,7 +400,7 @@ export default class Prestamos extends Component {
         axios.delete(process.env.REACT_APP_API_URL + "/prestamos/" + idPrestamo)
         .then(res => {
             notify.show("Se ha eliminado correctamente el préstamo", "success");
-            this.getPrestamosByFields(e);
+            this.getPrestamosByFields(this.state.currentPage, this.state.pageSize);
         })
         .catch((error) => {
             notify.show("Ha ocurrido un error al eliminar el préstamo", "error");
@@ -394,7 +413,8 @@ export default class Prestamos extends Component {
         axios.post(process.env.REACT_APP_API_URL + "/prestamos/devolucion", obj)
         .then(res => {
             notify.show("Se ha realizado la operación correctamente", "success");
-            this.setState({ showDevolucion: false}, this.getPrestamosByFields(e));
+            this.setState({ showDevolucion: false},
+            this.getPrestamosByFields(this.state.currentPage, this.state.pageSize));
         })
         .catch((error) => {
             notify.show("Ha ocurrido un error al realizar la operación", "error");            
@@ -402,5 +422,35 @@ export default class Prestamos extends Component {
             this.setState({ showDevolucion: false});
         });        
     }
+
+    nextPage(e){
+        e.preventDefault();
+        if((this.state.currentPage+1) <= this.state.lastPage){
+            let change = this.state.currentPage + 1;
+            this.setState({
+                currentPage: change
+            }, this.getPrestamosByFields(change, this.state.pageSize));
+        }
+    }
+
+    previousPage(e){
+        e.preventDefault();
+        if((this.state.currentPage-1) >= this.state.firstPage){
+            let change = this.state.currentPage - 1;
+            this.setState({
+                currentPage: change
+            }, this.getPrestamosByFields(change, this.state.pageSize));
+        }
+    }
+
+    toFirstPage(e){
+        e.preventDefault();
+        this.setState({currentPage: this.state.firstPage}, this.getPrestamosByFields(this.state.firstPage, this.state.pageSize));
+    }
+
+    toLastPage(e){
+        e.preventDefault();
+        this.setState({currentPage: this.state.lastPage}, this.getPrestamosByFields(this.state.lastPage, this.state.pageSize));
+    }    
 
 }
