@@ -23,3 +23,13 @@ export function buildQueryParams(params, context) {
     let queryStr = newQueryParam.join(newQueryParam.length > 1 ? "&" : "");
     return context.concat("?").concat(queryStr);
 }
+
+/**
+ * Construye la fecha YYYY-MM-ddThh:mm:ss
+ * @param {*} dateOld 
+ */
+export function buildDate(dateOld){
+    let time = new Date().toLocaleTimeString();
+    let newDate = dateOld+'T'+time;
+    return newDate;
+}

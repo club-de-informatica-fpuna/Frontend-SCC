@@ -3,10 +3,12 @@ import {Form, Row, Col, Button, Table, OverlayTrigger} from 'react-bootstrap';
 import { FaSearch, FaRegGrinBeamSweat, FaUserSlash, FaInfo} from "react-icons/fa";
 import { FiRadio } from "react-icons/fi";
 import axios from 'axios';
-import {getBackEndContext, buildQueryParams} from '../../util/generate-query-params';
+import {getBackEndContext, buildQueryParams, buildDate} from '../../util/generate-util';
 import RFIDReader from "../alumno/rfidReader";
 import ToolTipSocio from './toolTip-profile';
+import Notifications, {notify} from 'react-notify-toast';
 import SocioInf from './socio-inf';
+import Paginator from '../paginator'
 
 export default class Socio extends Component {
 
@@ -22,11 +24,16 @@ export default class Socio extends Component {
             carreraList: [],
             rfidShow:false,
             showInfModal:false,
-            partnerDetails: undefined
+            partnerDetails: undefined,
+            firstPage: 1,
+            lastPage: undefined,
+            currentPage: 1,
+            pageSize: 5
         }
     }
 
     componentWillMount(){
+        this.getPartnersByFilter(this.state.currentPage, this.state.pageSize);
         this.getCarreras();
     }
 
@@ -67,6 +74,7 @@ export default class Socio extends Component {
         }
         return(
             <section>
+                <Notifications/>
                 <Form>
                     <Row>
                         <Col style={{ paddingRight: 0 }}>
@@ -106,14 +114,14 @@ export default class Socio extends Component {
                             </Form.Control>
                         </Col>
                         <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Button variant="primary" onClick={this.getPartnersByFilter.bind(this)}>
+                            <Button variant="primary" onClick={(e) => {this.getPartnersByFilter(this.state.currentPage, this.state.pageSize)}}>
                                 <FaSearch />
                             </Button>&nbsp;
                             <div className="btn btn-primary" onClick={this.getPartnerByRFID.bind(this)}><FiRadio style={{"fontSize":"1.4em"}}/></div>
                         </Col>
                     </Row>
                 </Form>
-                <section style={{display: res.length > 0 ? "block" : "none", marginTop: "10px"}}>
+                <section style={{display: "block", marginTop: "10px"}}>
                     <Table hover responsive size="sm" style={{ fontSize: "12px" }}>
                         <thead style={{background: "#343a40", color: "white"}}>
                             <tr>
@@ -131,7 +139,18 @@ export default class Socio extends Component {
                     </Table>
                 </section>
                 <RFIDReader show={this.state.rfidShow}/>
-                <SocioInf mode={true} show={this.state.showInfModal} showFunction={this.handleShowInf.bind(this)} partnerInf={this.state.partnerDetails}/>
+                <SocioInf mode={true} show={this.state.showInfModal}
+                          showFunction={this.handleShowInf.bind(this)}
+                          partnerInf={this.state.partnerDetails}
+                          updateTable={(e) => {this.getPartnersByFilter(this.state.currentPage, this.state.pageSize)}}/>
+                <Paginator
+                        prev={this.previousPage.bind(this)}
+                        next={this.nextPage.bind(this)}
+                        first={this.toFirstPage.bind(this)}
+                        last={this.toLastPage.bind(this)}
+                        firstPage={this.state.firstPage}
+                        lastPage={this.state.lastPage}
+                        currentPage={this.state.currentPage}/>  
             </section>
         );
     }
@@ -142,18 +161,20 @@ export default class Socio extends Component {
         this.setState(obj);
     }
 
-    getPartnersByFilter(e) {
-        e.preventDefault();
+    getPartnersByFilter(page, pageSize) {
+
         let params = {  cedula: this.state.cedula,
                         nombres: this.state.nombres,
                         apellidos: this.state.apellidos,
                         telefono: this.state.telefono,
-                        carrera:this.state.carreraSelected
+                        carrera:this.state.carreraSelected,
+                        page:page !== undefined ? page : this.state.currentPage,
+                        pageSize:pageSize !== undefined ? pageSize : this.state.pageSize
                     };
         let requestAddress = buildQueryParams(params, getBackEndContext("socios/filter"));
         axios.get(requestAddress).then(rs => {
             let dataRs = rs.data;
-            this.setState({ results: dataRs !== undefined ? dataRs : []});
+            this.setState({ results: dataRs !== undefined ? dataRs.content : [], currentPage: (dataRs.pageable.pageNumber+1), lastPage: dataRs.totalPages});
         }).catch(error => {
             console.log(error);
         })
@@ -188,17 +209,49 @@ export default class Socio extends Component {
             idSocio: student.idSocio,
             uuid: "Ninguno",
             foto: null,
-            fechaIngreso: student.fechaIngreso,
+            fechaIngreso: buildDate(student.fechaIngreso),
             ci: student.alumno.ci,
             estado: false
         };
         let endPoint = getBackEndContext("socios");
 
         axios.put(endPoint, studentPut).then(rs => {
-            this.getPartnersByFilter(e);
+            this.getPartnersByFilter(this.state.currentPage, this.state.pageSize);
+            notify.show("Se a desasocio correctamente", "success");
         }).catch(error => {
             console.log(error);
+            notify.show("Error al intentar desasociar", "error");
         })
 
+    }
+
+    nextPage(e){
+        e.preventDefault();
+        if((this.state.currentPage+1) <= this.state.lastPage){
+            let change = this.state.currentPage + 1;
+            this.setState({
+                currentPage: change
+            }, this.getPartnersByFilter(change, this.state.pageSize));
+        }
+    }
+
+    previousPage(e){
+        e.preventDefault();
+        if((this.state.currentPage-1) >= this.state.firstPage){
+            let change = this.state.currentPage - 1;
+            this.setState({
+                currentPage: change
+            }, this.getPartnersByFilter(change, this.state.pageSize));
+        }
+    }
+
+    toFirstPage(e){
+        e.preventDefault();
+        this.setState({currentPage: this.state.firstPage}, this.getPartnersByFilter(this.state.firstPage, this.state.pageSize));
+    }
+
+    toLastPage(e){
+        e.preventDefault();
+        this.setState({currentPage: this.state.lastPage}, this.getPartnersByFilter(this.state.lastPage, this.state.pageSize));
     }
 }

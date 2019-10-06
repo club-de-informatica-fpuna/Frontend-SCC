@@ -19,7 +19,6 @@ export default class AlumnoEditar extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        console.log(nextProps);
         if(nextProps.alumno !== undefined){
             this.setState({
                 nombres: nextProps.alumno.nombres,

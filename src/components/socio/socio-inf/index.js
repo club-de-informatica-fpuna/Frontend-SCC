@@ -3,8 +3,9 @@ import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { MdClose, MdExposurePlus1, MdRefresh } from "react-icons/md";
 import student from "../../../static/student.svg";
-import { getBackEndContext } from "../../../util/generate-query-params";
+import { getBackEndContext, buildDate } from "../../../util/generate-util";
 import axios from "axios";
+import {notify} from 'react-notify-toast';
 import "./inf-socio-style.css";
 
 export default class SocioInf extends Component {
@@ -45,8 +46,7 @@ export default class SocioInf extends Component {
                   <Button variant="success" onClick={this.upPartner.bind(this)} style={{ display: this.props.mode ? "none" : "" }}>
                     <MdExposurePlus1 />
                   </Button>
-                  &nbsp;
-                  <Button variant="info" style={{ display: this.props.mode && this.state.editDisabled ? "" : "none" }}>
+                  <Button variant="info" onClick={this.updatePartner.bind(this)} style={{ display: this.props.mode && this.state.editDisabled ? "" : "none" }}>
                     <MdRefresh />
                   </Button>
                   &nbsp;&nbsp;
@@ -93,9 +93,11 @@ export default class SocioInf extends Component {
                         </span>
                         <span className="twPc-StatValue">
                           <Form.Control style={{ background: "transparent", border: "transparent", paddingLeft: "0em" }}
-                            type="text"
+                            type="date"
                             placeholder={this.state.person.fechaIngreso}
-                            disabled={this.state.editDisabled}
+                            value={this.state.person.fechaIngreso}
+                            onChange={(e) => {this.changeManager(e, "person", "fechaIngreso")}}
+                            disabled={!this.state.editDisabled && this.props.mode}
                           />
                         </span>
                     </li>
@@ -167,43 +169,51 @@ export default class SocioInf extends Component {
     this.setState({ editDisabled: !this.state.editDisabled });
   }
 
-  changeManager(e, fileName) {
+  changeManager(e, fileName, subFilename) {
     e.preventDefault();
     let obj = {};
-    console.log(e.target.value);
-    obj[fileName] = e.target.value;
-    this.setState(obj);
+    if(fileName==="person" && subFilename!==undefined){
+      obj = this.state.person;
+      obj[subFilename] = e.target.value;
+      this.setState({person:obj});
+    }else{
+      obj[fileName] = e.target.value;
+      this.setState(obj);
+    }
   }
 
   setInfShow(inf) {
     let personInf = {
       ci: "Nada que mostrar",
-      fechaIngreso: new Date().toJSON().slice(0, 19),
-      uuid: "Ninguno",
+      fechaIngreso: new Date(),
+      uuid: "No identificado",
       nombres: "Nada que mostrar",
       apellidos: "Nada que mostrar",
       denominacion: "Nada que mostrar",
       telefono: "Nada que mostrar",
       email: "Nada que mostrar",
-      estado: true
+      estado: false
     };
     if (this.props.mode && inf !== undefined) {
-      personInf.ci = inf.alumno.ci;
+      personInf.ci           = inf.alumno.ci;
       personInf.fechaIngreso = inf.fechaIngreso;
-      personInf.uuid = inf.uuid;
-      personInf.nombres = inf.alumno.nombres.toUpperCase();
-      personInf.apellidos = inf.alumno.apellidos.toUpperCase();
+      personInf.uuid         = inf.uuid;
+      personInf.nombres      = inf.alumno.nombres.toUpperCase();
+      personInf.apellidos    = inf.alumno.apellidos.toUpperCase();
       personInf.denominacion = inf.alumno.idCarrera.denominacion;
-      personInf.telefono = inf.alumno.telefono;
-      personInf.email = inf.alumno.email;
-      personInf.estado = inf.estado;
+      personInf.telefono     = inf.alumno.telefono;
+      personInf.email        = inf.alumno.email;
+      personInf.estado       = inf.estado;
+      personInf.idSocio      = inf.idSocio;
     } else if (inf !== undefined) {
-      personInf.ci = inf.ci;
-      personInf.nombres = inf.nombres.toUpperCase();
-      personInf.apellidos = inf.apellidos.toUpperCase();
+      personInf.ci           = inf.ci;
+      personInf.nombres      = inf.nombres.toUpperCase();
+      personInf.apellidos    = inf.apellidos.toUpperCase();
       personInf.denominacion = inf.idCarrera.denominacion;
-      personInf.telefono = inf.telefono;
-      personInf.email = inf.email;
+      personInf.telefono     = inf.telefono;
+      personInf.email        = inf.email;
+      personInf.idSocio      = inf.idSocio;
+      personInf.estado       = inf.asociado;
     }
     this.setState({ person: personInf });
   }
@@ -242,15 +252,55 @@ export default class SocioInf extends Component {
     let studentPost = {
       ci: this.state.person.ci,
       estado: this.state.person.estado,
-      fechaIngreso: this.state.person.fechaIngreso,
+      fechaIngreso: buildDate(this.state.person.fechaIngreso),
       foto: window.btoa(this.state.partnerImg),
       uuid: this.state.person.uuid
     };
+    if(studentPost.estado) {
+      studentPost.estado = true;
+      axios.post(endPoint, studentPost).then(rs => {
+        this.handleCloseModal();
+        this.props.updateTable(e);
+        notify.show(this.state.person.nombres.toUpperCase()+" a sido correctamente asociado", "success");
+      }).catch(error => {
+        console.log(error);
+        notify.show("Ocurrio un error al intentar asociar a "+this.state.person.nombres, "error");
+      })
+    } else {
+      studentPost.idSocio = this.state.person.idSocio;
+      studentPost.estado = true;
+      let name = this.state.person.nombres.toUpperCase();
+      axios.put(endPoint, studentPost).then(rs => {
+        this.handleCloseModal();
+        this.props.updateTable(e);
+        notify.show(name+" a sido correctamente asociado", "success");
+      }).catch(error => {
+        console.log(error);
+        notify.show("Ocurrio un error al intentar asociar a "+name, "error");
+      })
 
-    axios.post(endPoint, studentPost).then(rs => {
+    }
+  }
 
+  updatePartner(e) {
+    e.preventDefault();
+    let endPoint = getBackEndContext("socios");
+    let studentPut = {
+      idSocio: this.state.person.idSocio,
+      ci: this.state.person.ci,
+      estado: this.state.person.estado,
+      fechaIngreso: buildDate(this.state.person.fechaIngreso),
+      foto: window.btoa(this.state.partnerImg),
+      uuid: this.state.person.uuid
+    };
+    let name = this.state.person.nombres.toUpperCase();
+    axios.put(endPoint, studentPut).then(rs => {
+      this.handleCloseModal();
+      this.props.updateTable(e);
+      notify.show("Los datos del socio "+name+" han sido actualizados correctamente", "success");
     }).catch(error => {
       console.log(error);
+      notify.show("Ocurrio un error al intentar actualizar los datos del Socio "+name, "error");
     })
   }
 

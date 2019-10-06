@@ -104,7 +104,10 @@ export default class Alumno extends Component {
                     carreras={this.state.carreras}
                     save={this.saveAlumno.bind(this)} alumno={this.state.alumno}/>
                 <RFIDReader show={this.state.rfidReading} />
-                <SocioInf mode={false} show={this.state.partnerUpShow} showFunction={this.handleShowParner.bind(this)} partnerInf={this.state.alumno}/>
+                <SocioInf mode={false} show={this.state.partnerUpShow}
+                          showFunction={this.handleShowParner.bind(this)}
+                          partnerInf={this.state.alumno}
+                          updateTable={(e) => {this.getAlumnosByFields(this.state.currentPage, this.state.pageSize)}}/>
                 <Form>
                     <Form.Row>
                         <Col>
