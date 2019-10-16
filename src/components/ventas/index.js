@@ -63,29 +63,31 @@ export default class Ventas extends Component {
                 </Button>
                 <br/>
                 <img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
-                <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }} hidden={!havingResults}>
-                    <thead style={{background: "#343a40", color: "white"}}>
-                        <tr>
-                            <th style={{textAlign: "center"}}>ID</th>
-                            <th style={{textAlign: "center"}}>NOMBRE DEL CLIENTE</th>
-                            <th style={{textAlign: "center"}}>N° DOCUMENTO</th>
-                            <th style={{textAlign: "center"}}>FECHA</th>
-                            <th style={{textAlign: "center"}}>TOTAL</th>
-                            <th style={{textAlign: "center"}}>ACCIONES</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tableResults}
-                    </tbody>
-                </Table>
-                <Paginator
-                    prev={this.previousPage.bind(this)}
-                    next={this.nextPage.bind(this)}
-                    first={this.toFirstPage.bind(this)}
-                    last={this.toLastPage.bind(this)}
-                    firstPage={this.state.firstPage}
-                    lastPage={this.state.lastPage}
-                    currentPage={this.state.currentPage}/>
+                <section hidden={!havingResults}>
+                    <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }}>
+                        <thead style={{background: "#343a40", color: "white"}}>
+                            <tr>
+                                <th style={{textAlign: "center"}}>ID</th>
+                                <th style={{textAlign: "center"}}>NOMBRE DEL CLIENTE</th>
+                                <th style={{textAlign: "center"}}>N° DOCUMENTO</th>
+                                <th style={{textAlign: "center"}}>FECHA</th>
+                                <th style={{textAlign: "center"}}>TOTAL</th>
+                                <th style={{textAlign: "center"}}>ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tableResults}
+                        </tbody>
+                    </Table>
+                    <Paginator
+                        prev={this.previousPage.bind(this)}
+                        next={this.nextPage.bind(this)}
+                        first={this.toFirstPage.bind(this)}
+                        last={this.toLastPage.bind(this)}
+                        firstPage={this.state.firstPage}
+                        lastPage={this.state.lastPage}
+                        currentPage={this.state.currentPage}/>
+                </section>
             </section>
         );
     }

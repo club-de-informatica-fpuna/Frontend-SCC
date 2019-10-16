@@ -49,23 +49,7 @@ export default class VentaRegistro extends Component {
                 <tr>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.concepto}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.precio}</td>
-                    <td style={{textAlign: "center", verticalAlign: "middle"}}>
-                        <input
-                            disabled
-                            type="number"
-                            defaultValue={i.cantidad}
-                            min="1"
-                            max="100"
-                            style={{
-                                width: "5em",
-                                margin: "0px!important",
-                                padding: "5px",
-                                borderRadius: "7px",
-                                border: "1px solid silver",
-                                textAlign: "center"
-                            }}
-                        />
-                    </td>
+                    <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.cantidad}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.subtotal}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>
                         <Button  size="sm" variant="danger" onClick={(e)=>{this.deleteFromDetails(e, i)}}>
