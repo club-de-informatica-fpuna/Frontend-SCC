@@ -14,7 +14,7 @@ export default class AlumnoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                        <Image className="representative-image" src={logo} width="150" roundedCircle />
+                        <Image className="representative-image" src={alumno.foto ? alumno.foto : logo} width="150" roundedCircle />
                     </p>
                     <section className="modal-info-fields">
                         <p><strong>NOMBRES: </strong>{alumno.nombres}</p>
