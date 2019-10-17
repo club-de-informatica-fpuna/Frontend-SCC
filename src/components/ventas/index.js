@@ -17,7 +17,7 @@ export default class Ventas extends Component {
             venta: undefined,
             nombreClienteFilter: "",
             documentoClienteFilter: "",
-            fechaFilter: new Date(),
+            fechaFilter: this.now(),
             showNuevaVenta: false,
             showDetalle: false,
             loading: false,
@@ -26,6 +26,11 @@ export default class Ventas extends Component {
             currentPage: 1,
             pageSize: 5
         };
+    }
+
+    now(){
+        var date = new Date();
+        return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
     }
 
     componentWillMount() {
