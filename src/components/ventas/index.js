@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Table } from "react-bootstrap";
+import { Button, Table, Form, Col } from "react-bootstrap";
+import { FaSearch } from "react-icons/fa";
 import Notifications, {notify} from 'react-notify-toast';
 import axios from "axios";
 import VentaDetalle from "./ventaDetalle";
 import VentaRegistro from "./ventaRegistro";
 import Paginator from "../paginator";
+import {buildQueryParams} from "../../util/generate-util";
 
 export default class Ventas extends Component {
 
@@ -13,6 +15,9 @@ export default class Ventas extends Component {
         this.state = {
             ventas: [],
             venta: undefined,
+            nombreClienteFilter: "",
+            documentoClienteFilter: "",
+            fechaFilter: new Date(),
             showNuevaVenta: false,
             showDetalle: false,
             loading: false,
@@ -62,6 +67,38 @@ export default class Ventas extends Component {
                     <strong>Nueva venta</strong>
                 </Button>
                 <br/>
+                <Form style={{marginTop: "10px"}}>
+                    <Form.Row>
+                        <Col>
+                            <Form.Control
+                                type="text"
+                                placeholder="Nombre del cliente"
+                                value={this.state.nombreClienteFilter}
+                                onChange={(e) => { this.onChangeField(e, "nombreClienteFilter") }}
+                            />
+                        </Col>
+                        <Col>
+                            <Form.Control
+                                type="text"
+                                placeholder="Número de documento"
+                                value={this.state.documentoClienteFilter}
+                                onChange={(e) => { this.onChangeField(e, "documentoClienteFilter") }}
+                            />
+                        </Col>                      
+                        <Col>
+                            <Form.Control
+                                type="date"
+                                placeholder="Fecha"
+                                value={this.state.fechaFilter}
+                                onChange={(e) => { this.onChangeField(e, "fechaFilter") }} />
+                        </Col>
+                        <Button
+                            variant="primary"
+                            onClick={(e) => {this.getVentas(this.state.currentPage, this.state.pageSize)}}>
+                            <FaSearch />
+                        </Button>
+                    </Form.Row>
+                </Form>
                 <img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
                 <section hidden={!havingResults}>
                     <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }}>
@@ -91,6 +128,11 @@ export default class Ventas extends Component {
             </section>
         );
     }
+
+    convertDate(date){
+        if(date === undefined){ return null; }
+        return date + "T00:00:00Z";
+    }    
 
     showNuevaVenta(e){
         e.preventDefault();
@@ -134,8 +176,15 @@ export default class Ventas extends Component {
 
     getVentas(page, pageSize) {
         this.setState({loading: true});
-        let query = "?page=" + page + "&pageSize=" + pageSize;
-        axios.get(process.env.REACT_APP_API_URL + "/ventas" + query)
+        let obj = {
+            page: page,
+            pageSize: pageSize,
+            documento: this.state.documentoClienteFilter,
+            nombres: this.state.nombreClienteFilter,
+            fecha: this.convertDate(this.state.fechaFilter)
+        }
+        console.log(process.env.REACT_APP_API_URL + buildQueryParams(obj, "/ventas/fields"));
+        axios.get(process.env.REACT_APP_API_URL + buildQueryParams(obj, "/ventas/fields"))
         .then(res => {
             this.setState({
                 ventas: res.data.content,

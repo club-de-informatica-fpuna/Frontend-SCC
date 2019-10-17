@@ -142,9 +142,9 @@ export default class Registrar extends Component {
         e.preventDefault();
         let cedula = this.state.documento === "" ? null : this.state.documento;
         if(cedula === null){ return; }
-        axios.get(process.env.REACT_APP_API_URL + "/alumnos/fields?documento=" + cedula)
+        axios.get(process.env.REACT_APP_API_URL + "/alumnos/fields?documento=" + cedula + "&page=1&pageSize=1")
             .then(res => {
-                this.setState({ alumno: res.data[0] });
+                this.setState({ alumno: res.data.content[0] });
             })
             .catch(res => {
                 this.setState({ alumno: undefined });
