@@ -261,7 +261,7 @@ export default class SocioInf extends Component {
       axios.post(endPoint, studentPost).then(rs => {
         this.handleCloseModal();
         this.props.updateTable(e);
-        notify.show(this.state.person.nombres.toUpperCase()+" a sido correctamente asociado", "success");
+        notify.show(this.state.person.nombres.toUpperCase()+" ha sido correctamente asociado", "success");
       }).catch(error => {
         console.log(error);
         notify.show("Ocurrio un error al intentar asociar a "+this.state.person.nombres, "error");
@@ -273,12 +273,11 @@ export default class SocioInf extends Component {
       axios.put(endPoint, studentPost).then(rs => {
         this.handleCloseModal();
         this.props.updateTable(e);
-        notify.show(name+" a sido correctamente asociado", "success");
+        notify.show(name+" ha sido correctamente asociado", "success");
       }).catch(error => {
         console.log(error);
         notify.show("Ocurrio un error al intentar asociar a "+name, "error");
       })
-
     }
   }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, ListGroup, Badge, Button} from "react-bootstrap";
 import axios from 'axios';
-import {getBackEndContext, buildQueryParams} from '../../util/generate-util';
+import {getBackEndContext, buildQueryParams, formatoMoneda, getMonthYear} from '../../util/generate-util';
 
 export default class Report extends Component {
 
@@ -22,48 +22,50 @@ export default class Report extends Component {
 
     render() {
         let {today, todaySeven, year} = this.state;
+        let zeroSale = [{quantity: 0, total:0}];
         if (today.length === 0){
-            today = [{quantity: 0, total:0}]
+            today = zeroSale;
         }
         if (todaySeven.length === 0){
-            todaySeven = [{quantity: 0, total:0}]
+            todaySeven = zeroSale;
         }
         if (year.length === 0){
-            year = [{quantity: 0, total:0}]
+            year = zeroSale;
         }
+        let titleSub = getMonthYear(new Date().getMonth());
         let todayRender     = (<ListGroup>
                                 <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                        CANTIDAD : <Badge variant="light">{today[0].quantity}</Badge>
+                                        CANTIDAD DE VENTAS: <Badge variant="light">{today[0].quantity}</Badge>
                                     </Button>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                        TOTAL : <Badge variant="light">{today[0].total}</Badge>
+                                        TOTAL DE VENTAS: <Badge variant="light">{formatoMoneda(today[0].total)}</Badge>
                                     </Button>
                                 </ListGroup.Item>
                               </ListGroup>);
         let todaySevenRender = (<ListGroup>
                                   <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                      CANTIDAD : <Badge variant="light">{todaySeven[0].quantity}</Badge>
+                                      CANTIDAD DE VENTAS: <Badge variant="light">{todaySeven[0].quantity}</Badge>
                                     </Button>
                                    </ListGroup.Item>
                                   <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                      TOTAL : <Badge variant="light">{todaySeven[0].total}</Badge>
+                                      TOTAL DE VENTAS: <Badge variant="light">{formatoMoneda(todaySeven[0].total)}</Badge>
                                     </Button>
                                   </ListGroup.Item>
                                 </ListGroup>);
         let yearRender      = (<ListGroup>
                                 <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                        CANTIDAD : <Badge variant="light">{year[0].quantity}</Badge>
+                                        CANTIDAD DE VENTAS: <Badge variant="light">{year[0].quantity}</Badge>
                                     </Button>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                        TOTAL : <Badge variant="light">{year[0].total}</Badge>
+                                        TOTAL DE VENTAS: <Badge variant="light">{formatoMoneda(year[0].total)}</Badge>
                                     </Button>
                                 </ListGroup.Item>
                                </ListGroup>);    
@@ -85,16 +87,16 @@ export default class Report extends Component {
                             {todaySevenRender}
                         </Card.Body>
                         <Card.Footer className="card-footer-shortcuts">
-                            <Card.Link>DEL MES</Card.Link>
+                            <Card.Link>DEL MES DE {titleSub.month}</Card.Link>
                         </Card.Footer>
                     </Card>
                     <Card className="col-md-3 card-shortcuts">
                         <Card.Header className="card-header-shortcuts"></Card.Header>
-                        <Card.Body style={{ textAlign: "center", cursor: "pointer" }}>;
+                        <Card.Body style={{ textAlign: "center", cursor: "pointer" }}>
                             {yearRender}
                         </Card.Body>
                         <Card.Footer className="card-footer-shortcuts">
-                            <Card.Link>DEL AÑO</Card.Link>
+                            <Card.Link>DEL AÑO {titleSub.year}</Card.Link>
                         </Card.Footer>
                     </Card>
                 </div>

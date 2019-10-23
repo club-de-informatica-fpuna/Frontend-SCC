@@ -39,14 +39,15 @@ export default class Socio extends Component {
 
 
     render() {
-        let res = this.state.results;
-        let tableRender = <tr><FaRegGrinBeamSweat/></tr>;
+        let res = this.state.results === undefined ? [] : this.state.results;
+        res = res.filter(partner => partner.estado);
+        let tableRender = <><div><FaRegGrinBeamSweat style={{height:"4em", width:"4em"}}/></div>&nbsp;<div><span>NO SE HAN ENCONTRADO RESULTADOS!!!</span></div></>;
         let optionCarreras = <option disabled={true}>- No hay carreras -</option>;
         let carrerasRs = this.state.carreraList;
         if(res !== undefined && res.length > 0){
             tableRender = res.map((i) => {
                 let toolTipPartner = (<ToolTipSocio partnerName={i.alumno.nombres} image={i.foto} career={i.alumno.idCarrera.denominacion} />);
-                let rows = (<tr key={i.alumno.ci}>
+                return (<tr key={i.alumno.ci}>
                                 <OverlayTrigger placement="auto-start"
                                                 delay={{ show: 250, hide: 400 }}
                                                 overlay={toolTipPartner}>
@@ -62,8 +63,6 @@ export default class Socio extends Component {
                                 </td>
                             </tr>
                             );
-                let empty = <></>;
-                return(i.estado ? rows : empty);
             });
         }
 
@@ -121,9 +120,9 @@ export default class Socio extends Component {
                         </Col>
                     </Row>
                 </Form>
-                <section style={{display: "block", marginTop: "10px"}}>
-                    <Table hover responsive size="sm" style={{ fontSize: "12px" }}>
-                        <thead style={{background: "#343a40", color: "white"}}>
+                <section style={{display: "block", marginTop: "10px",paddingTop: res.length > 0 ? "" : "6em" }}>
+                    <Table hover responsive size="sm" style={{ fontSize: "12px", textAlign:res.length > 0 ? "":"center"}}>
+                        <thead style={{background: "#343a40", color: "#fff", display:res.length > 0 ? "":"none"}}>
                             <tr>
                                 <th>NOMBRES Y APELLIDOS</th>
                                 <th>N° CÉDULA</th>
@@ -150,7 +149,8 @@ export default class Socio extends Component {
                         last={this.toLastPage.bind(this)}
                         firstPage={this.state.firstPage}
                         lastPage={this.state.lastPage}
-                        currentPage={this.state.currentPage}/>  
+                        currentPage={this.state.currentPage}
+                        show={res.length > 0}/>  
             </section>
         );
     }
@@ -204,7 +204,6 @@ export default class Socio extends Component {
 
     disassociateStudent(e, student){
         e.preventDefault();
-
         let studentPut = {
             idSocio: student.idSocio,
             uuid: "Ninguno",
@@ -217,7 +216,7 @@ export default class Socio extends Component {
 
         axios.put(endPoint, studentPut).then(rs => {
             this.getPartnersByFilter(this.state.currentPage, this.state.pageSize);
-            notify.show("Se a desasocio correctamente", "success");
+            notify.show("Se ha desasociado correctamente", "success");
         }).catch(error => {
             console.log(error);
             notify.show("Error al intentar desasociar", "error");

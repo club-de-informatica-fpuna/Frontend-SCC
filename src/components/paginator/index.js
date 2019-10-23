@@ -6,9 +6,8 @@ import "./paginator.css";
 export default class Paginator extends Component {
 
     render(){
-
         return(
-            <section style={{textAlign: "right"}}>
+            <section hidden={!this.props.show} style={{textAlign: "right"}}>
                 <Button className="btn-paginator-default" onClick={this.props.prev.bind(this)}><FaAngleLeft/></Button>&nbsp;&nbsp;
                 <Button className="btn-paginator-default" onClick={this.props.first.bind(this)}><span>{this.props.firstPage}</span></Button>&nbsp;&nbsp;
                 <Button className="btn-paginator-active"><span>{this.props.currentPage}</span></Button>&nbsp;&nbsp;

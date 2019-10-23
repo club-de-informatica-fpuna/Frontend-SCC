@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Modal, Button, Table } from "react-bootstrap";
-
+import {formatoMoneda} from '../../../util/generate-util';
 export default class VentaDetalle extends Component {
 
     render() {
@@ -14,9 +14,9 @@ export default class VentaDetalle extends Component {
                 <tr>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.id}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.producto.denominacion}</td>
-                    <td style={{textAlign: "center", verticalAlign: "middle"}}>{this.formatoMoneda(i.precio) + " GS."}</td>
+                    <td style={{textAlign: "center", verticalAlign: "middle"}}>{formatoMoneda(i.precio)}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.cantidad}</td>
-                    <td style={{textAlign: "center", verticalAlign: "middle"}}>{this.formatoMoneda(i.subtotal) + " GS."}</td>
+                    <td style={{textAlign: "center", verticalAlign: "middle"}}>{formatoMoneda(i.subtotal)}</td>
                 </tr>
             ));
         }
@@ -43,7 +43,7 @@ export default class VentaDetalle extends Component {
                         </Table>
                         <section style={{float: "right", fontSize: "20px"}}>
                             <b>TOTAL: </b>
-                            {this.formatoMoneda(venta.importeTotal) + " GS."}</section>
+                            {formatoMoneda(venta.importeTotal)}</section>
                     </section>
                 </Modal.Body>
                 <Modal.Footer>
@@ -51,10 +51,6 @@ export default class VentaDetalle extends Component {
                 </Modal.Footer>
             </Modal>
         );
-    }
-
-    formatoMoneda(number){
-        return new Intl.NumberFormat('de-DE').format(number);
     }
 
 }
