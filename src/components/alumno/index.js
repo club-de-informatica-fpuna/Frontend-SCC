@@ -171,6 +171,7 @@ export default class Alumno extends Component {
                         </tbody>
                     </Table>
                     <Paginator
+                        show={results.length > 0}
                         prev={this.previousPage.bind(this)}
                         next={this.nextPage.bind(this)}
                         first={this.toFirstPage.bind(this)}

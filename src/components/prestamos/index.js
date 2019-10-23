@@ -190,6 +190,7 @@ export default class Prestamos extends Component {
                         </tbody>
                     </Table>
                     <Paginator
+                        show={prestamos.length > 0}
                         prev={this.previousPage.bind(this)}
                         next={this.nextPage.bind(this)}
                         first={this.toFirstPage.bind(this)}

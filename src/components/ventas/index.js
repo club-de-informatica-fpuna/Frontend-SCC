@@ -122,6 +122,7 @@ export default class Ventas extends Component {
                         </tbody>
                     </Table>
                     <Paginator
+                        show={ventas.length > 0}
                         prev={this.previousPage.bind(this)}
                         next={this.nextPage.bind(this)}
                         first={this.toFirstPage.bind(this)}
@@ -136,6 +137,7 @@ export default class Ventas extends Component {
 
     convertDate(date){
         if(date === undefined){ return null; }
+        if(date == ""){ return ""; } 
         return date + "T00:00:00Z";
     }    
 
