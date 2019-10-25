@@ -137,7 +137,7 @@ export default class Ventas extends Component {
 
     convertDate(date){
         if(date === undefined){ return null; }
-        if(date == ""){ return ""; } 
+        if(date === ""){ return ""; } 
         return date + "T00:00:00Z";
     }    
 

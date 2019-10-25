@@ -36,36 +36,36 @@ export default class Report extends Component {
         let todayRender     = (<ListGroup>
                                 <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                        CANTIDAD DE VENTAS: <Badge variant="light">{today[0].quantity}</Badge>
+                                        <div>CANTIDAD DE VENTAS</div><Badge pill variant="light">{today[0].quantity}</Badge>
                                     </Button>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                        TOTAL DE VENTAS: <Badge variant="light">{formatoMoneda(today[0].total)}</Badge>
+                                        <div>TOTAL DE VENTAS</div><Badge pill variant="light">{formatoMoneda(today[0].total)}</Badge>
                                     </Button>
                                 </ListGroup.Item>
                               </ListGroup>);
         let todaySevenRender = (<ListGroup>
                                   <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                      CANTIDAD DE VENTAS: <Badge variant="light">{todaySeven[0].quantity}</Badge>
+                                      <div>CANTIDAD DE VENTAS</div><Badge pill variant="light">{todaySeven[0].quantity}</Badge>
                                     </Button>
                                    </ListGroup.Item>
                                   <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                      TOTAL DE VENTAS: <Badge variant="light">{formatoMoneda(todaySeven[0].total)}</Badge>
+                                      <div>TOTAL DE VENTAS</div><Badge pill variant="light">{formatoMoneda(todaySeven[0].total)}</Badge>
                                     </Button>
                                   </ListGroup.Item>
                                 </ListGroup>);
         let yearRender      = (<ListGroup>
                                 <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                        CANTIDAD DE VENTAS: <Badge variant="light">{year[0].quantity}</Badge>
+                                       <div>CANTIDAD DE VENTAS</div><Badge pill variant="light">{year[0].quantity}</Badge>
                                     </Button>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Button variant="primary" disabled>
-                                        TOTAL DE VENTAS: <Badge variant="light">{formatoMoneda(year[0].total)}</Badge>
+                                        <div>TOTAL DE VENTAS</div><Badge pill variant="light">{formatoMoneda(year[0].total)}</Badge>
                                     </Button>
                                 </ListGroup.Item>
                                </ListGroup>);    

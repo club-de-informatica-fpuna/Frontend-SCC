@@ -41,14 +41,13 @@ export function buildDate(dateOld) {
         day     = dateOld.getDate().toString();
         month   = (dateOld.getMonth()+1).toString();
         year    = dateOld.getFullYear().toString();
-        newDate = year.concat(separate).concat(month).concat(separate).concat(day).concat(formatT).concat(time).concat(formatZ);
     } else {
         let date = dateOld.split("-");
         day   = date[2];
         month = date[1];
         year  = date[0];
-        newDate = year.concat(separate).concat(month).concat(separate).concat(day).concat(formatT).concat(time).concat(formatZ);
     }
+    newDate = year.concat(separate).concat(month).concat(separate).concat(day).concat(formatT).concat(time).concat(formatZ);
     return newDate;    
 }
 

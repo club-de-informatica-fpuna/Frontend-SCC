@@ -250,13 +250,15 @@ export default class SocioInf extends Component {
     e.preventDefault();
     let endPoint = getBackEndContext("socios");
     let studentPost = {
+      idSocio: this.state.person.idSocio,
       ci: this.state.person.ci,
       estado: this.state.person.estado,
       fechaIngreso: buildDate(this.state.person.fechaIngreso),
       foto: window.btoa(this.state.partnerImg),
       uuid: this.state.person.uuid
     };
-    if(studentPost.estado) {
+
+    if(studentPost.idSocio === null) {
       studentPost.estado = true;
       axios.post(endPoint, studentPost).then(rs => {
         this.handleCloseModal();
@@ -267,7 +269,6 @@ export default class SocioInf extends Component {
         notify.show("Ocurrio un error al intentar asociar a "+this.state.person.nombres, "error");
       })
     } else {
-      studentPost.idSocio = this.state.person.idSocio;
       studentPost.estado = true;
       let name = this.state.person.nombres.toUpperCase();
       axios.put(endPoint, studentPost).then(rs => {
