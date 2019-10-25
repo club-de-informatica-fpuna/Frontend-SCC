@@ -41,7 +41,7 @@ export default class Socio extends Component {
     render() {
         let res = this.state.results === undefined ? [] : this.state.results;
         res = res.filter(partner => partner.estado);
-        let tableRender = <><div><FaRegGrinBeamSweat style={{height:"4em", width:"4em"}}/></div>&nbsp;<div><span>NO SE HAN ENCONTRADO RESULTADOS!!!</span></div></>;
+        let tableRender = <><tr><td style={{borderTop: "none"}} ><FaRegGrinBeamSweat style={{height:"4em", width:"4em"}}/></td></tr>&nbsp;<tr>NO SE HAN ENCONTRADO RESULTADOS!!!</tr></>;
         let optionCarreras = <option disabled={true}>- No hay carreras -</option>;
         let carrerasRs = this.state.carreraList;
         if(res !== undefined && res.length > 0){
@@ -121,7 +121,7 @@ export default class Socio extends Component {
                     </Row>
                 </Form>
                 <section style={{display: "block", marginTop: "10px",paddingTop: res.length > 0 ? "" : "6em" }}>
-                    <Table hover responsive size="sm" style={{ fontSize: "12px", textAlign:res.length > 0 ? "":"center"}}>
+                    <Table hover={res.length > 0 ? true:false} responsive size="sm" style={{ fontSize: "12px", textAlign:res.length > 0 ? "":"center"}}>
                         <thead style={{background: "#343a40", color: "#fff", display:res.length > 0 ? "":"none"}}>
                             <tr>
                                 <th>NOMBRES Y APELLIDOS</th>

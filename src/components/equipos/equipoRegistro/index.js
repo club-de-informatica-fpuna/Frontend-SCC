@@ -21,6 +21,10 @@ export default class EquipoRegistrar extends Component {
         };
     }
 
+    componentWillMount(){
+        this.getCategorias();
+    }
+
     now(){
         let date = new Date();
         let stringDate = date.getUTCFullYear() + "-" + this.checkDigits(date.getUTCMonth()+1) + "-" + this.checkDigits(date.getUTCDate());

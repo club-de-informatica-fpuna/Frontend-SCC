@@ -30,12 +30,12 @@ export default class Productos extends Component {
 
     render() {
         var productos = this.state.productos;
-        let tableResults = <div></div>;
+        let tableResults = <tr></tr>;
         var havingResults = false;
         if (productos !== undefined && productos.length > 0) {
             havingResults = true;
             tableResults = productos.map((i) => (
-                <tr>
+                <tr key={i.denominacion}>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>{i.idProducto}</td>
                     <td style={{textAlign: "center", verticalAlign: "middle"}}>
                         <Image height={100} src={i.foto !== undefined ? ("data:image/png;base64," + i.foto) : i.foto}/>

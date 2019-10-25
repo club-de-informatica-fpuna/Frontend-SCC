@@ -20,7 +20,6 @@ export default class ProductoEditar extends Component {
 
 
     componentWillReceiveProps(nextProps){
-        console.log(nextProps);
         if(nextProps.producto !== undefined){
             this.setState({
                 idProducto: nextProps.producto.idProducto,

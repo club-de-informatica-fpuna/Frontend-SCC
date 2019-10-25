@@ -19,7 +19,6 @@ export default class EquipoRegistrar extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        console.log(nextProps);
         if(nextProps.equipo !== undefined){
             this.getSubcategorias(nextProps.equipo.categoria.idCategoria);
             this.setState({
@@ -49,7 +48,6 @@ export default class EquipoRegistrar extends Component {
     }
 
     render() {
-        console.log(this.props.equipo);
         let categorias = this.state.categorias;
         let subcategorias = this.state.subcategorias;
         let optionsSubcategorias = <option value="-1" disabled>No hay subcategorias</option>;

@@ -6,7 +6,6 @@ export function validateField(value, max, min){
 }
 
 export function validateDate(date){
-    console.log(date);
     if(date === undefined){  return false; } // undefined
     return true;
 }

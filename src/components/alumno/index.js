@@ -44,7 +44,7 @@ export default class Alumno extends Component {
     render() {
         let results = this.state.resultados;
         let haveResults = false;
-        var tableResults = <div></div>;
+        var tableResults = <></>;
         if (results !== undefined && results.length > 0) {
             haveResults = true;
             tableResults = results.map((i) => (

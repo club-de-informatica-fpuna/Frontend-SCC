@@ -18,6 +18,10 @@ export default class SubcategoriaRegistrar extends Component {
         };
     }
 
+    componentWillMount(){
+        this.getCategorias();
+    }
+
     render() {
 
         var categorias = this.state.categorias;
@@ -120,7 +124,7 @@ export default class SubcategoriaRegistrar extends Component {
     handleSave(e){
         e.preventDefault();
         var obj = {
-            idCategoria: this.state.categoriaSelected,
+            idCategoria: parseInt(this.state.categoriaSelected),
             denominacion: this.state.descripcion,
             logoRepresentante: this.state.file
         }

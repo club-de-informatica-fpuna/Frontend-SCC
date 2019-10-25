@@ -35,7 +35,7 @@ export default class SocioInf extends Component {
     }
 
     return (
-      <Modal show={this.props.show} onHide={this.handleCloseModal.bind(this)} size="lg">
+      <Modal show={this.props.show} onHide={this.handleCloseModal.bind(this)} size="lg" dialogClassName="modal-90w">
         <div className="container">
           <div className="row">
             <div className="twPc-div" style={{ height: "16em" }}>
@@ -129,7 +129,7 @@ export default class SocioInf extends Component {
                         <span className="twPc-StatValue">
                           <Form.Control style={{ background: "transparent", border: "transparent", paddingLeft: "0em" }}
                             type="text"
-                            value={this.state.person.uuid}
+                            defaultValue={this.state.person.uuid}
                             placeholder={this.state.person.uuid}
                             disabled={this.state.editDisabled}
                           />

@@ -152,7 +152,6 @@ export default class Registrar extends Component {
     }
 
     closeEquipos(e) {
-        e.preventDefault();
         this.setState({ showEquipos: false });
     }
 

@@ -56,7 +56,7 @@ export default class Prestamos extends Component {
         let equipos = this.state.equipos;
         let prestamos = this.state.prestamos;
         let equiposOptions = <option disabled>No hay equipos</option>;
-        let tableResults = <div></div>;
+        let tableResults = <tr></tr>;
         if (equipos !== undefined && equipos.length > 0) {
             equiposOptions = equipos.map((i) => (
                 <option
@@ -309,7 +309,6 @@ export default class Prestamos extends Component {
     getEquipos() {
         axios.get(process.env.REACT_APP_API_URL + "/subcategoria")
             .then(res => {
-                console.log(res.data);
                 this.setState({ equipos: res.data });
             })
             .catch((error) => {
@@ -324,14 +323,15 @@ export default class Prestamos extends Component {
         let desde = this.convertDate(this.state.desde);
         let hasta = this.convertDate(this.state.hasta);
         let queryParams = this.makeQuery(cedula, subcategoria, desde, hasta, page, pageSize);
-        console.log(queryParams);
         axios.get(process.env.REACT_APP_API_URL + "/prestamos/fields" + queryParams)
         .then(res => {
+            let dataEmpty = {content:[], pageable: {pageNumber:0}, totalPages:5};
+            let dataPage = res.data === "" ? dataEmpty : res.data ;
             this.setState({
-                prestamos: res.data.content,
+                prestamos: dataPage.content ,
                 loading: false,
-                currentPage: res.data.pageable.pageNumber+1,
-                lastPage: res.data.totalPages
+                currentPage: dataPage.pageable.pageNumber+1,
+                lastPage: dataPage.totalPages
             });
         })
         .catch(error => {

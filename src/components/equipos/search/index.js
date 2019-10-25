@@ -25,10 +25,10 @@ export default class SearchEquipo extends Component {
             categoriasMostrar = equipos.map((i) => (
                 <Accordion defaultActiveKey="0" style={{borderBottom: "1px solid silver", marginBottom: "10px"}}>
                     <Card>
-                        <Accordion.Toggle className="card-header-title" as={Card.Header} eventKey="0">
+                        <Accordion.Toggle className="card-header-title" as={Card.Header} eventKey={i.idCategoria+i.denominacion}>
                             {i.denominacion}
                         </Accordion.Toggle>
-                        <Accordion.Collapse eventKey="0">
+                        <Accordion.Collapse eventKey={i.idCategoria+i.denominacion}>
                             <Card.Body>
                                 {this.getSubcategorias(i.subcategorias)}
                             </Card.Body>
@@ -39,7 +39,7 @@ export default class SearchEquipo extends Component {
         }
         return (
             <>
-                <Modal show={this.props.show}>
+                <Modal show={this.props.show} onHide={this.props.close}>
                     <Modal.Header closeButton>
                         <Modal.Title>Equipos</Modal.Title>
                     </Modal.Header>
@@ -72,14 +72,14 @@ export default class SearchEquipo extends Component {
         return subcategoriasMostrar;
     }
 
-    getEquipos(equipos){
+    getEquipos(equipos) {
         let equiposMostrar = equipos.map((k) => (
             <Accordion defaultActiveKey="0" style={{borderBottom: "1px solid silver", marginBottom: "10px"}}>
                 <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="0">
+                    <Accordion.Toggle as={Card.Header} eventKey={k.idEquipo}>
                         {k.descripcion}
                     </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="0">
+                    <Accordion.Collapse eventKey={k.idEquipo}>
                         <Card.Body>
                             <span><b>Fecha adquisición: </b>{k.fechaAdquisicion}</span>
                             <Button
