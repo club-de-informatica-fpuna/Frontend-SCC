@@ -1,29 +1,24 @@
-.card-header{
-    background: white;
-    color: #343a40;
-    border: 1px solid silver;
-    border-bottom: 1.5px solid silver;
-    font-family: "Lato Bold"!important;  
-    cursor: "pointer";  
-}
-
-.card-header-title {
+.card-header-title-team {
     background-image: linear-gradient(to bottom right, #343a40, #202325);
-    color: white;
-    font-family: "Lato Bold"!important;  
-    cursor: "pointer";    
+    color: #fff;
+    font-family: 'Lato Bold' !important;
+    cursor: pointer;
 }
 
-.card-body{
-    background: white;
+.card-body-team {
+    background: #fff;
     color: #20262a;
     font-family: "Lato Light";
 }
 
-.modal-info-fields p{
+.modal-info-fields p {
     margin: 0;
 }
 
 .modal-info-fields {
     margin-top: 20px;
+}
+
+.subcategory-cursor {
+    cursor: pointer!important;
 }

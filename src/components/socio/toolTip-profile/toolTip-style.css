@@ -56,7 +56,7 @@
     color: #999999;
 }
 
-.card-tooltip .card-body {
+.card-tooltip .card-body-tooltip {
     padding: 0 20px;
     margin-top: 20px;
 }

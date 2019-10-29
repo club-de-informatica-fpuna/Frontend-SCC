@@ -37,11 +37,11 @@ export default class Equipos extends Component {
             categoriasMostrar = equipos.map((i) => (
                 <Accordion className="col-md-12" defaultActiveKey="0" style={{ marginBottom: "10px", padding: 0}}>
                     <Card style={{borderBottom: "1px solid silver"}}>
-                        <Accordion.Toggle className="card-header-title" as={Card.Header} eventKey="0" style={{cursor: "pointer"}}>
+                        <Accordion.Toggle className="card-header-title-team" as={Card.Header} eventKey="0" style={{cursor: "pointer"}}>
                             <b>{i.denominacion.toUpperCase()}</b>
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="0">
-                            <Card.Body className="card-body">
+                            <Card.Body className="card-body-team">
                                 {this.getSubcategorias(i.subcategorias, i)}
                             </Card.Body>
                         </Accordion.Collapse>
@@ -80,7 +80,8 @@ export default class Equipos extends Component {
         let subcategoriasMostrar = subcategorias.map((j) => (
             <Accordion defaultActiveKey="0" style={{ borderBottom: "1px solid silver", marginBottom: "10px" }}>
                 <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="0" style={{background: "#666666", color: "white", cursor: "pointer"}}>
+                    <Accordion.Toggle className="subcategory-cursor" as={Card.Header} eventKey="0"
+                                      style={{background: "#666666", color: "#fff"}}>
                         <b>{j.denominacion.toUpperCase()}</b>
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="0">
@@ -98,7 +99,7 @@ export default class Equipos extends Component {
         let equiposMostrar = equipos.map((k) => (
             <Accordion defaultActiveKey="0" style={{ borderBottom: "1px solid silver", marginBottom: "10px" }}>
                 <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="0" style={{cursor: "pointer"}}>
+                    <Accordion.Toggle className="subcategory-cursor" as={Card.Header} eventKey="0" style={{cursor: "pointer"}}>
                         <b>{k.descripcion.toUpperCase()}</b>
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="0">
