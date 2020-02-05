@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, Col, Table } from "react-bootstrap";
-import { FaUserPlus, FaSearch, FaTrash, FaUserEdit, FaUserFriends, FaRss } from "react-icons/fa";
+import { FaUserPlus, FaSearch, FaTrash, FaUserEdit, FaUserFriends, FaRegGrinBeamSweat, FaRss } from "react-icons/fa";
 import AlumnoRegistrar from "./alumnoRegistrar";
 import AlumnoEditar from "./alumnoEditar";
 import AlumnoInfo from "./alumnoInfo";
@@ -44,7 +44,7 @@ export default class Alumno extends Component {
     render() {
         let results = this.state.resultados;
         let haveResults = false;
-        var tableResults = <></>;
+        var tableResults = <><tr><td style={{borderTop: "none"}} ><FaRegGrinBeamSweat style={{height:"4em", width:"4em"}}/></td></tr>&nbsp;<tr>NO SE HAN ENCONTRADO RESULTADOS!!!</tr></>;
         if (results !== undefined && results.length > 0) {
             haveResults = true;
             tableResults = results.map((i) => (
@@ -154,9 +154,9 @@ export default class Alumno extends Component {
                     </Form.Row>
                 </Form>
                 <img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
-                <section style={{ display: haveResults ? "block" : "none", marginTop: "10px" }}>
-                    <Table hover responsive style={{ fontSize: "12px" }}>
-                        <thead style={{background: "#343a40", color: "white"}}>
+                <section hidden={this.state.loading} style={{ marginTop: "10px" }}>
+                    <Table hover={haveResults} responsive style={{ fontSize: "12px", textAlign: haveResults ? "" : "center" }}>
+                        <thead hidden={!haveResults} style={{background: "#343a40", color: "white"}}>
                             <tr>
                                 <th >NOMBRES Y APELLIDOS</th>
                                 <th style={{textAlign: "center"}}>N° CÉDULA</th>
@@ -248,8 +248,7 @@ export default class Alumno extends Component {
             this.setState({ resultados: res.data.content, loading: false, currentPage: (res.data.pageable.pageNumber+1), lastPage: res.data.totalPages });
         })
         .catch(error => {
-            notify.show("Ha ocurrido un error al procesar la solicitud", "error");
-            this.setState({ loading: false });
+            this.setState({ resultados: [], loading: false });
         });
     }
 

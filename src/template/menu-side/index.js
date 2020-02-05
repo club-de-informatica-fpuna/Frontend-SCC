@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { FaHome, FaUserGraduate, FaUserTie, FaRegAddressCard, FaCubes, FaTicketAlt } from "react-icons/fa";
+import { FaHome, FaUserGraduate, FaUserTie, FaRegAddressCard, FaCubes, FaTicketAlt, FaCog } from "react-icons/fa";
 import {IoMdPaper} from "react-icons/io";
 import "./menu.css";
 
@@ -56,9 +56,15 @@ export default class Menu extends Component {
                 <Nav.Item style={{marginTop: "10px"}}>
                     <Link className={"list-group-item list-group-item-action list-group-item-light path-normal" + (current === "/home/reporte" ? " path-selected" : "")} to={`${this.props.pathMatch}/reporte`}>
                         <IoMdPaper />&nbsp;&nbsp;&nbsp;
-                        <span>REPORTE</span>
+                        <span>REPORTES</span>
                     </Link>
-                </Nav.Item>                
+                </Nav.Item>&nbsp;&nbsp;&nbsp;
+                <Nav.Item style={{marginTop: "10px"}}>
+                    <Link className={"list-group-item list-group-item-action list-group-item-light path-normal" + (current === "/home/configuracion" ? " path-selected" : "")} to={`${this.props.pathMatch}/configuracion`}>
+                        <FaCog />&nbsp;&nbsp;&nbsp;
+                        <span>CONFIGURACIÓN</span>
+                    </Link>
+                </Nav.Item>
             </Nav>
         );
     }

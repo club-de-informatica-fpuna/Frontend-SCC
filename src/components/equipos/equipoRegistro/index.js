@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Col } from "react-bootstrap";
 import axios from "axios";
-import {FaFileImage} from "react-icons/fa";
+import {FaFileImage, FaRedoAlt} from "react-icons/fa";
 import {validateField, validateSelect, validateDate} from "../../../util/validators";
 
 export default class EquipoRegistrar extends Component {
@@ -84,18 +84,27 @@ export default class EquipoRegistrar extends Component {
                                 onChange={(e)=>{this.changeField(e, "fechaAdquisicion")}}                                
                             />
                         </Form.Group>
-                        <Form.Group controlId="formDocumento">
-                            <Form.Label><b>Categoría</b></Form.Label>
-                            <span className="validation-field" hidden={validateSelect(this.state.categoriaSelected)}>Debe seleccionar la categoría</span>
-                            <Form.Control
-                                as="select"
-                                className={validateSelect(this.state.categoriaSelected) ? "input-validate-field-success" : "input-validate-field-error"}
-                                value={this.state.categoriaSelected}
-                                onChange={this.changeCategorias.bind(this)}>
-                                <option value="0" disabled> - SELECCIONE LA CATEGORÍA - </option>
-                                {optionsCategorias}
-                            </Form.Control>
-                        </Form.Group>
+                        <Form.Row>
+                            <Col md={12}>
+                                <Form.Label><b>Categoría</b></Form.Label>
+                                <span className="validation-field" hidden={validateSelect(this.state.categoriaSelected)}>Debe seleccionar la categoría</span>                                
+                            </Col>                            
+                        </Form.Row>
+                        <Form.Row style={{marginBottom: "1em"}}>
+                            <Col md={"auto"}>
+                                <Form.Control
+                                    as="select"
+                                    className={validateSelect(this.state.categoriaSelected) ? "input-validate-field-success" : "input-validate-field-error"}
+                                    value={this.state.categoriaSelected}
+                                    onChange={this.changeCategorias.bind(this)}>
+                                    <option value="0" disabled> - SELECCIONE LA CATEGORÍA - </option>
+                                    {optionsCategorias}
+                                </Form.Control>                            
+                            </Col>
+                            <Col>
+                                <Button style={{float: "right"}} onClick={this.getCategorias.bind(this)}><FaRedoAlt/></Button>                            
+                            </Col>                            
+                        </Form.Row>
                         <Form.Group controlId="formDocumento">
                             <Form.Label><b>Subcategoría</b></Form.Label>
                             <span className="validation-field" hidden={validateSelect(this.state.subcategoriaSelected)}>Debe seleccionar la subcategoría</span>
@@ -172,7 +181,7 @@ export default class EquipoRegistrar extends Component {
         var file = e.target.files[0];
         if(file !== undefined){
             var reader = new FileReader();
-            reader.readAsDataURL(file);
+            reader.readAsBinaryString(file);
             reader.onload = function() {
                 this.setState({
                     file: window.btoa(reader.result),
@@ -187,12 +196,16 @@ export default class EquipoRegistrar extends Component {
         var obj = {
             descripcion: this.state.descripcion,
             estado: true,
-            fechaAdquisicion: this.state.fechaAdquisicion,
-            idSubcategoria: this.state.subcategoriaSelected,
+            fechaAdquisicion: this.convertDate(this.state.fechaAdquisicion),
+            idSubcategoria: parseInt(this.state.subcategoriaSelected),
             foto: this.state.file
         }
         if(this.validateAllFields(obj)) { this.setState({validated: true}, this.props.save(e, obj)); }
         else { this.setState({validated: false}); }
+    }
+
+    convertDate(date){
+        return date + ":00Z";
     }
 
 }

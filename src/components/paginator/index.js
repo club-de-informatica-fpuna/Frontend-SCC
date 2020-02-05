@@ -5,7 +5,13 @@ import "./paginator.css";
 
 export default class Paginator extends Component {
 
+    constructor(props){
+        super(props);
+    }
+
     render(){
+
+        console.log(this.props);
         return(
             <section hidden={!this.props.show} style={{textAlign: "right"}}>
                 <Button className="btn-paginator-default" onClick={this.props.prev.bind(this)}><FaAngleLeft/></Button>&nbsp;&nbsp;

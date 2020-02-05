@@ -8,6 +8,7 @@ import Equipos from "../../components/equipos";
 import Productos from "../../components/productos";
 import Ventas from "../../components/ventas";
 import Report from "../../components/report";
+import Configuracion from "../../components/configuracion";
 
 export default class Container extends Component {
 
@@ -23,6 +24,7 @@ export default class Container extends Component {
                     <Route path={`${this.props.pathMatch}/productos`} component={Productos} />
                     <Route path={`${this.props.pathMatch}/ventas`} component={Ventas} />
                     <Route path={`${this.props.pathMatch}/reporte`} component={Report} />
+                    <Route path={`${this.props.pathMatch}/configuracion`} component={Configuracion} />                    
                     <Route path={`${this.props.pathMatch}`} component={Inicio} />
                 </Switch>
             </div>

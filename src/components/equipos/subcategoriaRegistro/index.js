@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Col } from "react-bootstrap";
 import {validateField, validateSelect} from "../../../util/validators";
-import {FaFileImage} from "react-icons/fa";
+import {FaFileImage, FaRedoAlt} from "react-icons/fa";
 import axios from "axios";
 
 export default class SubcategoriaRegistrar extends Component {
@@ -41,18 +41,27 @@ export default class SubcategoriaRegistrar extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group controlId="formCategorias">
-                            <Form.Label><b>Categoría</b></Form.Label>
-                            <span className="validation-field" hidden={validateSelect(this.state.categoriaSelected)}>Debe seleccionar una categoría</span>
-                            <Form.Control
-                                className={validateSelect(this.state.categoriaSelected) ? "input-validate-field-success" : "input-validate-field-error"}
-                                as="select"
-                                value={this.state.categoriaSelected}
-                                onChange={(e)=>{this.changeField(e, "categoriaSelected")}}>
-                                <option value="0" key="0" disabled> - SELECCIONE CATEGORIA - </option>
-                                {categoriasOpciones}
-                            </Form.Control>
-                        </Form.Group>     
+                        <Form.Row>
+                            <Col>
+                                <Form.Label><b>Categoría</b></Form.Label>
+                                <span className="validation-field" hidden={validateSelect(this.state.categoriaSelected)}>Debe seleccionar una categoría</span>                            
+                            </Col>
+                        </Form.Row>
+                        <Form.Row style={{marginBottom: "1em"}}>
+                            <Col>
+                                <Form.Control
+                                    className={validateSelect(this.state.categoriaSelected) ? "input-validate-field-success" : "input-validate-field-error"}
+                                    as="select"
+                                    value={this.state.categoriaSelected}
+                                    onChange={(e)=>{this.changeField(e, "categoriaSelected")}}>
+                                    <option value="0" key="0" disabled> - SELECCIONE CATEGORIA - </option>
+                                    {categoriasOpciones}
+                                </Form.Control>
+                            </Col>
+                            <Col>
+                                <Button size="sm" style={{float: "right"}} onClick={this.getCategorias.bind(this)}><FaRedoAlt/></Button>                            
+                            </Col>
+                        </Form.Row>
                         <Form.Group controlId="formDescripcion">
                             <Form.Label><b>Descripción</b></Form.Label>
                             <span className="validation-field" hidden={validateField(this.state.descripcion, 50, 3)}>La descripción es inválida</span>

@@ -120,7 +120,7 @@ export default class Socio extends Component {
                         </Col>
                     </Row>
                 </Form>
-                <section style={{display: "block", marginTop: "10px",paddingTop: res.length > 0 ? "" : "6em" }}>
+                <section style={{display: "block", marginTop: "10px"}}>
                     <Table hover={res.length > 0 ? true:false} responsive size="sm" style={{ fontSize: "12px", textAlign:res.length > 0 ? "":"center"}}>
                         <thead style={{background: "#343a40", color: "#fff", display:res.length > 0 ? "":"none"}}>
                             <tr>

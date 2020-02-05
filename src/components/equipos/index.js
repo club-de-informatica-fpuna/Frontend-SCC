@@ -110,13 +110,13 @@ export default class Equipos extends Component {
                                     <Button variant="warning" size="sm" onClick={(e) => {this.showEditarEquipo(e, k, subcategoria, categoria)}}>
                                         <FaPen/>
                                     </Button>&nbsp;&nbsp;
-                                    <Button variant="danger" size="sm">
+                                    <Button variant="danger" size="sm" onClick={(e)=>{this.deleteEquipo(e, k.idEquipo)}}>
                                         <FaTrash/>
                                     </Button>
                             </section>
                             <section style={{display: "inline-block", float: "right"}} hidden={!k.foto}>
                                 <Image src={("data:image/png;base64," + k.foto)} width="100" thumbnail/>
-                            </section>                            
+                            </section>
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>
@@ -202,6 +202,18 @@ export default class Equipos extends Component {
             notify.show("Ha ocurrido un error al registrar el equipo", "error");
             this.setState({showNuevoEquipo: false});
         });
+    }
+
+    deleteEquipo(e, id){
+        axios.delete(process.env.REACT_APP_API_URL + "/equipos/" + id)
+        .then(res => {
+            notify.show("Equipo eliminado exitosamente", "success");            
+            this.getEquiposByCategorias();
+        })
+        .catch((error) => {
+            console.log(error);
+            notify.show("Ha ocurrido un error al eliminar el equipo", "error");
+        });        
     }
 
     updateEquipo(e, obj){
