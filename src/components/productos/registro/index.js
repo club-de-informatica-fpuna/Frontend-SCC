@@ -77,7 +77,7 @@ export default class ProductoRegistro extends Component {
         var file = e.target.files[0];
         if(file !== undefined){
             var reader = new FileReader();
-            reader.readAsDataURL(file);
+            reader.readAsBinaryString(file);
             reader.onload = function() {
                 this.setState({
                     foto: window.btoa(reader.result),
