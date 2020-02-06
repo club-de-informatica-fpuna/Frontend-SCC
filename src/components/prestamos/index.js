@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Table } from "react-bootstrap";
-import { FaSearch, FaRss, FaTrash, FaReply, FaInfo } from "react-icons/fa";
+import { FaSearch, FaRss, FaTrash, FaReply, FaInfo, FaRegGrinBeamSweat } from "react-icons/fa";
 import Registrar from "./registrar";
 import AlumnoInfo from "../alumno/alumnoInfo";
 import PrestamoInfo from "./prestamoInfo";
@@ -56,7 +56,7 @@ export default class Prestamos extends Component {
         let equipos = this.state.equipos;
         let prestamos = this.state.prestamos;
         let equiposOptions = <option disabled>No hay equipos</option>;
-        let tableResults = <tr></tr>;
+        let tableResults = <><tr><td style={{borderTop: "none"}} ><FaRegGrinBeamSweat style={{height:"4em", width:"4em"}}/></td></tr>&nbsp;<tr>NO SE HAN ENCONTRADO RESULTADOS!!!</tr></>;
         if (equipos !== undefined && equipos.length > 0) {
             equiposOptions = equipos.map((i) => (
                 <option
@@ -77,8 +77,8 @@ export default class Prestamos extends Component {
                     <td style={{textAlign: "center"}}><Button variant="secondary" size="sm" onClick={(e) => {this.showEquipoInfo(e, i.equipo)}}>{i.equipo.descripcion}</Button></td>
                     <td style={{textAlign: "center"}}>{this.fromRFCToFormat(i.fechaPrestamo)}</td>
                     <td style={{textAlign: "center"}}>
-                        <Button onClick={(e) => {this.showTiempoPrestado(e, i.fechaPrestamo, i.fechaDevolucion)}} size="sm" style={!i.hasOwnProperty("fechaDevolucion") ? {background: "#dc3545", border: "1px solid #dc3545", color: "white"} : {background: "#229954", border: "1px solid #229954", color: "white"}}>
-                            {i.fechaDevolucion === undefined ? "NO DEVUELTO" : this.fromRFCToFormat(i.fechaDevolucion)}                  
+                        <Button onClick={(e) => {this.showTiempoPrestado(e, i.fechaPrestamo, i.fechaDevolucion)}} size="sm" style={i.fechaDevolucion == undefined ? {background: "#dc3545", border: "1px solid #dc3545", color: "white"} : {background: "#229954", border: "1px solid #229954", color: "white"}}>
+                            {i.fechaDevolucion == undefined ? "NO DEVUELTO" : this.fromRFCToFormat(i.fechaDevolucion)}                  
                         </Button>
                     </td>
                     <td style={{textAlign: "center"}}>
@@ -172,9 +172,9 @@ export default class Prestamos extends Component {
                     </Form.Row>
                 </Form>
                 <img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
-                <section style={{ display: haveResults ? "block" : "none", marginTop: "10px" }}>
-                    <Table hover responsive style={{ fontSize: "12px" }}>
-                        <thead style={{background: "#343a40", color: "white"}}>
+                <section hidden={this.state.loading} style={{ marginTop: "10px" }}>
+                    <Table hover={haveResults} responsive style={{ fontSize: "12px", textAlign: haveResults ? "" : "center" }}>
+                        <thead hidden={!haveResults} style={{background: "#343a40", color: "white"}}>
                             <tr>
                                 <th>ID</th>
                                 <th style={{textAlign: "center"}}>NOMBRES Y APELLIDOS</th>

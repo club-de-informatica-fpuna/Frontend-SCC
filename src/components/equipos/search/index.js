@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Modal, Button, Accordion, Card } from "react-bootstrap";
 import axios from "axios";
+import "../equipos.css";
 export default class SearchEquipo extends Component {
 
     constructor(props) {
@@ -29,7 +30,7 @@ export default class SearchEquipo extends Component {
                             {i.denominacion}
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey={i.idCategoria+i.denominacion}>
-                            <Card.Body>
+                            <Card.Body className="card-body-team">
                                 {this.getSubcategorias(i.subcategorias)}
                             </Card.Body>
                         </Accordion.Collapse>

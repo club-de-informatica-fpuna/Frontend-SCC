@@ -239,6 +239,7 @@ export default class SocioInf extends Component {
     await axios.get(endPoint).then(rs => {
       let personUpdateInf = this.state.person;
       personUpdateInf.uuid = rs.data;
+      console.log(personUpdateInf);
       this.setState({ person: personUpdateInf, waitForRFID: false });
     }).catch(ex => {
       console.error(ex);
