@@ -152,12 +152,12 @@ export default class Registrar extends Component {
     }
 
     closeEquipos(e) {
-        this.setState({ showEquipos: false });
+        this.setState({ showEquipos: false }, this.props.showFunction);
     }
 
     showEquipos(e){
         e.preventDefault();
-        this.setState({ showEquipos: true });        
+        this.setState({ showEquipos: true }, this.props.close);        
     }
 
     selectEquipo(e, key, label){
@@ -166,7 +166,7 @@ export default class Registrar extends Component {
             showEquipos: false,
             equipoSelectedKey: key,
             equipoSelectedLabel: label
-        });
+        }, this.props.showFunction);
     }
 
     convertDate(date){

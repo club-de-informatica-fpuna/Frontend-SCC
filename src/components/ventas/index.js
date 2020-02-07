@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Table, Form, Col } from "react-bootstrap";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaRegGrinBeamSweat } from "react-icons/fa";
 import Notifications, {notify} from 'react-notify-toast';
 import axios from "axios";
 import VentaDetalle from "./ventaDetalle";
@@ -39,7 +39,7 @@ export default class Ventas extends Component {
 
     render() {
         var ventas = this.state.ventas;
-        let tableResults = <div></div>;
+        let tableResults = <><tr><td style={{borderTop: "none"}} ><FaRegGrinBeamSweat style={{height:"4em", width:"4em"}}/></td></tr>&nbsp;<tr>NO SE HAN ENCONTRADO RESULTADOS!!!</tr></>;
         var havingResults = false;
         if (ventas !== undefined && ventas.length > 0) {
             havingResults = true;
@@ -105,9 +105,9 @@ export default class Ventas extends Component {
                     </Form.Row>
                 </Form>
                 <img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
-                <section hidden={!havingResults}>
-                    <Table hover responsive style={{ fontSize: "12px", marginTop: "10px" }}>
-                        <thead style={{background: "#343a40", color: "white"}}>
+                <section>
+                    <Table hover={havingResults} responsive style={{ fontSize: "12px", marginTop: "10px", textAlign: havingResults ? "" : "center" }}>
+                        <thead hidden={!havingResults} style={{background: "#343a40", color: "white"}}>
                             <tr>
                                 <th style={{textAlign: "center"}}>ID</th>
                                 <th style={{textAlign: "center"}}>NOMBRE DEL CLIENTE</th>

@@ -123,6 +123,7 @@ export default class Prestamos extends Component {
                     show={this.state.showNuevo}
                     close={this.closeNuevo.bind(this)}
                     save={this.savePrestamo.bind(this)}
+                    showFunction={this.showNuevo.bind(this)}
                 />
                 <RFIDReader show={this.state.rfidReading}/>
                 <Form>
@@ -277,7 +278,6 @@ export default class Prestamos extends Component {
     }
 
     showNuevo(e) {
-        e.preventDefault();
         this.setState({ showNuevo: true });
     }    
 

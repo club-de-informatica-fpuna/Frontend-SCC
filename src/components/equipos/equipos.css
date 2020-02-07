@@ -1,7 +1,7 @@
 .card-header-title-team {
     background-image: linear-gradient(to bottom right, #343a40, #202325);
     color: #fff;
-    font-family: 'Lato Bold' !important;
+    font-family: "Lato Bold";
     cursor: pointer;
 }
 

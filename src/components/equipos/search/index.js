@@ -82,7 +82,7 @@ export default class SearchEquipo extends Component {
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey={k.idEquipo}>
                         <Card.Body>
-                            <span><b>Fecha adquisición: </b>{k.fechaAdquisicion}</span>
+                            <span><b>Fecha adquisición: </b>{this.convertDate(k.fechaAdquisicion)}</span>
                             <Button
                                 disabled={k.estado ? false : true}
                                 size="sm"
@@ -116,5 +116,16 @@ export default class SearchEquipo extends Component {
                 this.setState({ equipos: undefined });
             })
     }
+
+    convertDate(date){
+        let fecha = new Date(date);
+        return this.checkDigits(fecha.getUTCDate()) + 
+        "/" + this.checkDigits(fecha.getUTCMonth()) + 
+        "/" + this.checkDigits(fecha.getUTCFullYear());
+    }
+
+    checkDigits(digit){
+        return digit < 10 ? ("0" + digit) : digit;
+    }        
 
 }
