@@ -111,6 +111,7 @@ export default class Alumno extends Component {
                 <Form>
                     <Form.Row>
                         <Col>
+                            <Form.Label style={{marginBottom: "0px"}}><b>N° de cédula</b></Form.Label>
                             <Form.Control
                                 type="number"
                                 placeholder="N° de cédula"
@@ -119,6 +120,7 @@ export default class Alumno extends Component {
                             />
                         </Col>
                         <Col>
+                            <Form.Label style={{marginBottom: "0px"}}><b>Nombres</b></Form.Label>                        
                             <Form.Control
                                 type="text"
                                 placeholder="Nombres"
@@ -126,6 +128,7 @@ export default class Alumno extends Component {
                                 onChange={(e) => { this.onChangeField(e, "nombres") }} />
                         </Col>
                         <Col>
+                            <Form.Label style={{marginBottom: "0px"}}><b>Apellidos</b></Form.Label>                        
                             <Form.Control
                                 type="text"
                                 placeholder="Apellidos"
@@ -133,6 +136,7 @@ export default class Alumno extends Component {
                                 onChange={(e) => { this.onChangeField(e, "apellidos") }} />
                         </Col>
                         <Col md="4">
+                            <Form.Label style={{marginBottom: "0px"}}><b>Carrera</b></Form.Label>                            
                             <Form.Control
                                 as="select"
                                 value={this.state.carreraSelected}
@@ -141,13 +145,13 @@ export default class Alumno extends Component {
                                 {optionsCarreras}
                             </Form.Control>
                         </Col>
-                        <Button variant="primary" onClick={(e) => {this.getAlumnosByFields(this.state.currentPage, this.state.pageSize)}}>
+                        <Button style={{marginTop: "20px", height: "34px"}} variant="primary" onClick={(e) => {this.getAlumnosByFields(this.state.currentPage, this.state.pageSize)}}>
                             <FaSearch />
                         </Button>&nbsp;
-                        <Button variant="primary" onClick={this.getAlumnoFromRFID.bind(this)}>
+                        <Button style={{marginTop: "20px", height: "34px"}} variant="primary" onClick={this.getAlumnoFromRFID.bind(this)}>
                             <FaRss />
                         </Button>&nbsp;
-                        <Button variant="primary" onClick={this.showNuevo.bind(this)}>
+                        <Button style={{marginTop: "20px", height: "34px"}} variant="primary" onClick={this.showNuevo.bind(this)}>
                             <span>Nuevo</span>&nbsp;
                             <FaUserPlus />
                         </Button>&nbsp;

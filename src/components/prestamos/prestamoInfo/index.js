@@ -41,11 +41,11 @@ export default class PrestamoInfo extends Component {
                                 </tr>
                                 <tr>
                                     <td style={{textAlign: "right"}}><strong>FECHA DEVOLUCIÓN: </strong>&nbsp;</td>
-                                    <td>{prestamo.fechaDevolucion === undefined ? "NO DEVUELTO" : this.fromRFCToFormat(prestamo.fechaDevolucion)}</td>
+                                    <td>{prestamo.fechaDevolucion == undefined ? "NO DEVUELTO" : this.fromRFCToFormat(prestamo.fechaDevolucion)}</td>
                                 </tr>
                                 <tr>
                                     <td style={{textAlign: "right"}}><strong>ESTADO: </strong>&nbsp;</td>
-                                    <td>{prestamo.fechaDevolucion === undefined ? "PENDIENTE" : "DEVUELTO"}</td>
+                                    <td>{prestamo.fechaDevolucion == undefined ? "PENDIENTE" : "DEVUELTO"}</td>
                                 </tr>
                             </tbody>
                         </table>

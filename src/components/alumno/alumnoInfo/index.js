@@ -1,11 +1,32 @@
 import React, { Component } from "react";
 import { Modal, Button, Image } from "react-bootstrap";
+import axios from "axios";
 
 export default class AlumnoInfo extends Component {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            socio: undefined
+        };
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.alumno != undefined){
+            var alumno = nextProps.alumno;
+            if(alumno.asociado){
+                this.getSocio(alumno.idSocio);
+            }
+            else{
+                this.setState({socio: undefined});
+            }
+        }
+    }
 
     render() {
         var logo = require("./user.png");
         var alumno = this.props.alumno;
+        var socio = this.state.socio;
         if(alumno === undefined){ return (<></>) }
         return (
             <Modal show={this.props.show} onHide={this.props.close.bind(this)}>
@@ -14,7 +35,7 @@ export default class AlumnoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                        <Image className="representative-image" src={alumno.foto ? alumno.foto : logo} width="150" roundedCircle />
+                        <Image className="representative-image" src={ (socio != undefined && socio.foto != undefined) ? socio.foto : logo} width="150" roundedCircle />
                     </p>
                     <section className="modal-info-fields">
                         <p><strong>NOMBRES: </strong>{alumno.nombres}</p>
@@ -31,6 +52,16 @@ export default class AlumnoInfo extends Component {
                 </Modal.Footer>
             </Modal>
         );
+    }
+
+    getSocio(id){
+        axios.get(process.env.REACT_APP_API_URL + "/socios/" + id)
+        .then(res => {
+            this.setState({ socio: res.data  });
+        })
+        .catch(error => {
+            this.setState({ socio: undefined });
+        });
     }
 
 }

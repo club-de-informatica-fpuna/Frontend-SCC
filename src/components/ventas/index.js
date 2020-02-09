@@ -75,6 +75,7 @@ export default class Ventas extends Component {
                 <Form style={{marginTop: "10px"}}>
                     <Form.Row>
                         <Col>
+                            <Form.Label style={{marginBottom: "0px"}}><b>Nombre del cliente</b></Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Nombre del cliente"
@@ -83,6 +84,7 @@ export default class Ventas extends Component {
                             />
                         </Col>
                         <Col>
+                            <Form.Label style={{marginBottom: "0px"}}><b>Número de documento</b></Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Número de documento"
@@ -91,6 +93,7 @@ export default class Ventas extends Component {
                             />
                         </Col>                      
                         <Col>
+                            <Form.Label style={{marginBottom: "0px"}}><b>Fecha de venta</b></Form.Label>
                             <Form.Control
                                 type="date"
                                 placeholder="Fecha"
@@ -98,6 +101,7 @@ export default class Ventas extends Component {
                                 onChange={(e) => { this.onChangeField(e, "fechaFilter") }} />
                         </Col>
                         <Button
+                            style={{marginTop: "20px", height: "34px"}}
                             variant="primary"
                             onClick={(e) => {this.getVentas(this.state.currentPage, this.state.pageSize)}}>
                             <FaSearch />
@@ -106,7 +110,7 @@ export default class Ventas extends Component {
                 </Form>
                 <img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
                 <section>
-                    <Table hover={havingResults} responsive style={{ fontSize: "12px", marginTop: "10px", textAlign: havingResults ? "" : "center" }}>
+                    <Table size={"sm"} hover={havingResults} responsive style={{ fontSize: "12px", marginTop: "10px", textAlign: havingResults ? "" : "center" }}>
                         <thead hidden={!havingResults} style={{background: "#343a40", color: "white"}}>
                             <tr>
                                 <th style={{textAlign: "center"}}>ID</th>

@@ -110,7 +110,7 @@ export default class Prestamos extends Component {
                 </tr>
             ));
         }
-
+        console.log(this.state.desde, this.state.hasta);
         return (
             <section>
                 <Notifications/>
@@ -129,6 +129,7 @@ export default class Prestamos extends Component {
                 <Form>
                     <Form.Row>
                         <Col md="2">
+                            <Form.Label style={{marginBottom: "0px"}}><b>N° de cédula</b></Form.Label>
                             <Form.Control
                                 type="number"
                                 placeholder="N° de cédula"
@@ -137,20 +138,23 @@ export default class Prestamos extends Component {
                             />
                         </Col>
                         <Col>
+                            <Form.Label style={{marginBottom: "0px"}}><b>Fecha desde</b></Form.Label>                        
                             <Form.Control
-                                type="datetime-local"
+                                type="date"
                                 placeholder="Desde"
                                 value={this.state.desde}
                                 onChange={(e) => { this.onChangeField(e, "desde") }} />
                         </Col>
                         <Col>
+                            <Form.Label style={{marginBottom: "0px"}}><b>Fecha hasta</b></Form.Label>
                             <Form.Control
-                                type="datetime-local"
+                                type="date"
                                 placeholder="Hasta"
                                 value={this.state.hasta}
                                 onChange={(e) => { this.onChangeField(e, "hasta") }} />
                         </Col>
                         <Col md="3">
+                            <Form.Label style={{marginBottom: "0px"}}><b>Equipo</b></Form.Label>                            
                             <Form.Control
                                 as="select"
                                 value={this.state.equipoSelected}
@@ -160,14 +164,15 @@ export default class Prestamos extends Component {
                             </Form.Control>
                         </Col>
                         <Button
+                            style={{marginTop: "20px", height: "34px"}}
                             variant="primary"
                             onClick={(e)=>{this.getPrestamosByFields(this.state.currentPage, this.state.pageSize)}}>
                             <FaSearch />
                         </Button>&nbsp;
-                        <Button variant="primary" onClick={this.getPrestamosFromRFID.bind(this)}>
+                        <Button style={{marginTop: "20px", height: "34px"}} variant="primary" onClick={this.getPrestamosFromRFID.bind(this)}>
                             <FaRss />
                         </Button>&nbsp;
-                        <Button variant="primary" onClick={this.showNuevo.bind(this)}>
+                        <Button style={{marginTop: "20px", height: "34px"}} variant="primary" onClick={this.showNuevo.bind(this)}>
                             <span>Nuevo</span>
                         </Button>
                     </Form.Row>
@@ -342,16 +347,17 @@ export default class Prestamos extends Component {
 
     makeQuery(cedula, subcategoria, desde, hasta, page, pageSize) {
         let query = "?page=" + page + "&pageSize=" + pageSize;
-        if (cedula !== null) { query += "&documento=" + cedula; }
-        if (subcategoria !== null) { query += "&idSubcategoria=" + subcategoria; }
-        if (desde !== null) { query += "&inicio=" + desde; }
-        if (hasta !== null) { query += "&devolucion=" + hasta; }
+        if (cedula != null) { query += "&documento=" + cedula; }
+        if (subcategoria != null) { query += "&idSubcategoria=" + subcategoria; }
+        if (desde != null) { query += "&inicio=" + desde; }
+        if (hasta != null) { query += "&devolucion=" + hasta; }
         return query;
     }
 
     convertDate(date){
-        if(date === undefined){ return null; }
-        return date + ":00Z";
+        console.log(date);
+        if(!date){ return null; }
+        return date + "T00:00:00Z";
     }
 
     fromRFCToFormat(date){
