@@ -30,7 +30,7 @@ export default class Ventas extends Component {
 
     now(){
         var date = new Date();
-        return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        return date.getFullYear() + "-" + this.checkDigits((date.getMonth() + 1)) + "-" + this.checkDigits(date.getDate());
     }
 
     componentWillMount() {
@@ -41,6 +41,7 @@ export default class Ventas extends Component {
         var ventas = this.state.ventas;
         let tableResults = <><tr><td style={{borderTop: "none"}} ><FaRegGrinBeamSweat style={{height:"4em", width:"4em"}}/></td></tr>&nbsp;<tr>NO SE HAN ENCONTRADO RESULTADOS!!!</tr></>;
         var havingResults = false;
+        var total = 0;
         if (ventas !== undefined && ventas.length > 0) {
             havingResults = true;
             tableResults = ventas.map((i) => (
@@ -61,6 +62,9 @@ export default class Ventas extends Component {
                     </td>                    
                 </tr>
             ));
+            for(var i = 0; i < ventas.length; i++){
+                total += ventas[i].importeTotal;
+            }
         }
 
         return (
@@ -134,6 +138,8 @@ export default class Ventas extends Component {
                         firstPage={this.state.firstPage}
                         lastPage={this.state.lastPage}
                         currentPage={this.state.currentPage}/>
+                    <br></br>
+                    <h5 style={{float: "right"}}><strong>TOTAL: </strong>{this.formatoMoneda(total) + " GS."}</h5>
                 </section>
             </section>
         );
