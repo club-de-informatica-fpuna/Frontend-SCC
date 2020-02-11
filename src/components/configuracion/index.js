@@ -50,7 +50,7 @@ export default class Configuracion extends Component {
                         </Nav.Item>
                     </Nav>
                 </section>
-                <section hidden={!(this.state.optionSelected === 1)} className="col-md-4" style={{ marginTop: "20px" }} >
+                <section hidden={!(this.state.optionSelected == 1)} className="col-md-4" style={{ marginTop: "20px" }} >
                     <Button onClick={this.showRegistrarCarrera.bind(this)}>Nueva carrera</Button>
                     <Table hover={haveResults} responsive style={{ fontSize: "12px", marginTop: "10px", textAlign: haveResults ? "" : "center" }}>
                         <thead hidden={!haveResults} style={{ background: "#343a40", color: "white" }}>
@@ -64,7 +64,7 @@ export default class Configuracion extends Component {
                         </tbody>
                     </Table>
                 </section>
-                <section hidden={!(this.state.optionSelected === 2)} className="col-md-12">
+                <section hidden={!(this.state.optionSelected == 2)} className="col-md-12">
 
                 </section>
             </section>
