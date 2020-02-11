@@ -3,7 +3,7 @@ import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { MdClose, MdExposurePlus1, MdRefresh } from "react-icons/md";
 import student from "../../../static/student.svg";
-import { getBackEndContext, buildDate } from "../../../util/generate-util";
+import { getBackEndContext, buildDate, buildDateStandard } from "../../../util/generate-util";
 import axios from "axios";
 import {notify} from 'react-notify-toast';
 import "./inf-socio-style.css";
@@ -38,7 +38,7 @@ export default class SocioInf extends Component {
       <Modal show={this.props.show} onHide={this.handleCloseModal.bind(this)} size="lg" dialogClassName="modal-90w">
         <div className="container">
           <div className="row">
-            <div className="twPc-div" style={{ height: "16em" }}>
+            <div className="twPc-div" style={{ height: "18em" }}>
               <section className="twPc-bg twPc-block"></section>
 
               <div>
@@ -60,7 +60,7 @@ export default class SocioInf extends Component {
                 </div>
 
                 <section className="twPc-avatarLink">
-                  <img alt="Partner" className="twPc-avatarImg" src={this.state.partnerImg} />
+                  <img alt="Partner" style={{width:"auto"}} className="twPc-avatarImg" src={this.state.partnerImg} />
                 </section>
 
                 <div className="twPc-divUser">
@@ -101,7 +101,7 @@ export default class SocioInf extends Component {
                           />
                         </span>
                     </li>
-                    <li className="twPc-ArrangeSizeFit" style={{ paddingRight: "2em" }}>
+                    <li className="twPc-ArrangeSizeFit">
                         <span className="twPc-StatLabel twPc-block">
                           Telefono
                         </span>
@@ -118,7 +118,7 @@ export default class SocioInf extends Component {
                           Correo
                         </span>
                         <span className="twPc-StatValue">
-                          <Form.Control style={{ background: "transparent", border: "transparent", paddingLeft: "0em" }}
+                          <Form.Control style={{ background: "transparent", border: "transparent", paddingLeft: "0em", width:"13em" }}
                             type="text"
                             placeholder={this.state.person.email}
                             disabled />
@@ -129,26 +129,32 @@ export default class SocioInf extends Component {
                         <span className="twPc-StatValue">
                           <Form.Control style={{ background: "transparent", border: "transparent", paddingLeft: "0em" }}
                             type="text"
-                            defaultValue={this.state.person.uuid}
+                            value={this.state.person.uuid}
                             placeholder={this.state.person.uuid}
-                            disabled={this.state.editDisabled}
+                            disabled
                           />
                         </span>
                     </li>
                     <li className="twPc-ArrangeSizeFit" style={{ paddingRight: "2em", display: this.props.mode && !this.state.editDisabled ? "none" : "" }}>
-                        <Button variant="primary" disabled={false} onClick={this.getCodeRFID.bind(this)}>
-                          RFID
-                          <Spinner style={{ display: this.state.waitForRFID ? "" : "none" }} as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
-                        </Button>
+                        <span className="twPc-StatLabel twPc-block" style={{paddingBottom:"1.5em"}}></span>
+                        <span className="twPc-StatValue">
+                          <Button variant="primary" disabled={false} onClick={this.getCodeRFID.bind(this)}>
+                            RFID
+                            <Spinner style={{ display: this.state.waitForRFID ? "" : "none" }} as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
+                          </Button>
+                        </span>
                     </li>
-                    <li className="twPc-ArrangeSizeFit" style={{ display: this.props.mode && !this.state.editDisabled ? "none" : "" }}>
-                        <Button className="input-div-container" variant="primary" disabled={false}>
-                          IMAGEN
-                        <input className="input-file" type="file"
-                            accept=".jpg, .png, .jpeg"
-                            onChange={this.handleImgChange.bind(this)}
-                          />
-                        </Button>
+                    <li className="twPc-ArrangeSizeFit" style={{ display: this.props.mode && !this.state.editDisabled ? "none" : "" , paddingLeft:"7.8em"}}>
+                        <span className="twPc-StatLabel twPc-block" style={{paddingBottom:"1.5em"}}></span>
+                        <span className="twPc-StatValue">
+                          <Button className="input-div-container" variant="primary" disabled={false}>
+                            IMAGEN
+                          <input className="input-file" type="file"
+                              accept=".jpg, .png, .jpeg"
+                              onChange={this.handleImgChange.bind(this)}
+                            />
+                          </Button>
+                        </span>
                     </li>
                   </ul>
                 </div>
@@ -185,7 +191,7 @@ export default class SocioInf extends Component {
   setInfShow(inf) {
     let personInf = {
       ci: "Nada que mostrar",
-      fechaIngreso: new Date(),
+      fechaIngreso: buildDateStandard(),
       uuid: "No identificado",
       nombres: "Nada que mostrar",
       apellidos: "Nada que mostrar",

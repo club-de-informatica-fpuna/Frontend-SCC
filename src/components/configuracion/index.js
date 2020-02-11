@@ -25,7 +25,7 @@ export default class Configuracion extends Component {
         var tableResults = <><tr><td style={{ borderTop: "none" }} ><FaRegGrinBeamSweat style={{ height: "4em", width: "4em" }} /></td></tr>&nbsp;<tr>NO SE HAN ENCONTRADO RESULTADOS!!!</tr></>;
         var haveResults = false;
         var carreras = this.state.carreras;
-        if (carreras != undefined && carreras.length > 0) {
+        if (carreras !== undefined && carreras.length > 0) {
             haveResults = true;
             tableResults = carreras.map((i) => (
                 <tr key={i.idCarrera} style={{ cursor: "pointer" }}>
@@ -50,7 +50,7 @@ export default class Configuracion extends Component {
                         </Nav.Item>
                     </Nav>
                 </section>
-                <section hidden={!(this.state.optionSelected == 1)} className="col-md-4" style={{ marginTop: "20px" }} >
+                <section hidden={!(this.state.optionSelected === 1)} className="col-md-4" style={{ marginTop: "20px" }} >
                     <Button onClick={this.showRegistrarCarrera.bind(this)}>Nueva carrera</Button>
                     <Table hover={haveResults} responsive style={{ fontSize: "12px", marginTop: "10px", textAlign: haveResults ? "" : "center" }}>
                         <thead hidden={!haveResults} style={{ background: "#343a40", color: "white" }}>
@@ -64,7 +64,7 @@ export default class Configuracion extends Component {
                         </tbody>
                     </Table>
                 </section>
-                <section hidden={!(this.state.optionSelected == 2)} className="col-md-12">
+                <section hidden={!(this.state.optionSelected === 2)} className="col-md-12">
 
                 </section>
             </section>

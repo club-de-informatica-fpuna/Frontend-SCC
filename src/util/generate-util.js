@@ -68,3 +68,15 @@ export function getMonthYear(pos) {
     let monts = [{month: "ENERO",year: annum}, {month: "FEBRERO",year: annum}, {month:"MARZO", year: annum}, {month:"ABRIL", year:annum}, {month:"MAYO", year:annum}, {month:"JUNIO", year:annum}, {month:"JULIO", year:annum}, {month:"AGOSTO", year:annum}, {month:"SEPTIEMBRE", year:annum}, {month:"OCTUBRE", year:annum}, {month:"NOVIEMBRE", year:annum}, {month:"DICIEMBRE", year:annum}];
     return monts[pos];
 }
+
+export function buildDateStandard() {
+    const separate  = "-";
+    let day;
+    let month;
+    let year;
+    let newDate = new Date();
+    day     = newDate.getDate().toString();
+    month   = (newDate.getMonth()+1) < 10 ? "0".concat((newDate.getMonth()+1)) : (newDate.getMonth()+1);
+    year    = newDate.getFullYear().toString();
+    return year.concat(separate).concat(month).concat(separate).concat(day);
+}

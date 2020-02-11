@@ -12,7 +12,7 @@ export default class AlumnoInfo extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(nextProps.alumno != undefined){
+        if(nextProps.alumno !== undefined){
             var alumno = nextProps.alumno;
             if(alumno.asociado){
                 this.getSocio(alumno.idSocio);
@@ -35,7 +35,7 @@ export default class AlumnoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                        <Image className="representative-image" src={ (socio != undefined && socio.foto != undefined) ? socio.foto : logo} width="150" roundedCircle />
+                        <Image className="representative-image" src={ (socio !== undefined && socio.foto !== undefined) ? socio.foto : logo} width="150" roundedCircle />
                     </p>
                     <section className="modal-info-fields">
                         <p><strong>NOMBRES: </strong>{alumno.nombres}</p>

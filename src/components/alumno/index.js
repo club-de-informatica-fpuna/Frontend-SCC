@@ -120,7 +120,7 @@ export default class Alumno extends Component {
                             />
                         </Col>
                         <Col>
-                            <Form.Label style={{marginBottom: "0px"}}><b>Nombres</b></Form.Label>                        
+                            <Form.Label style={{marginBottom: "0px"}}><b>Nombres</b></Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Nombres"
@@ -128,7 +128,7 @@ export default class Alumno extends Component {
                                 onChange={(e) => { this.onChangeField(e, "nombres") }} />
                         </Col>
                         <Col>
-                            <Form.Label style={{marginBottom: "0px"}}><b>Apellidos</b></Form.Label>                        
+                            <Form.Label style={{marginBottom: "0px"}}><b>Apellidos</b></Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Apellidos"

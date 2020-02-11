@@ -76,48 +76,52 @@ export default class Socio extends Component {
                 <Notifications/>
                 <Form>
                     <Row>
-                        <Col style={{ paddingRight: 0 }}>
+                        <Col md="2" style={{ paddingRight: 0 }}>
+                            <Form.Label style={{marginBottom: "0px"}}><b>N° de cédula</b></Form.Label>
                             <Form.Control
                                 type="number"
                                 placeholder="N° de cédula"
                                 value={this.state.cedula}
                                 onChange={(e) => { this.onChangeField(e, "cedula") }} />
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
+                        <Col md="2" style={{ padding: 0, paddingLeft: "5px" }}>
+                            <Form.Label style={{marginBottom: "0px"}}><b>Nombres</b></Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Nombres"
                                 value={this.state.nombres}
                                 onChange={(e) => { this.onChangeField(e, "nombres") }} />
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
+                        <Col md="2" style={{ padding: 0, paddingLeft: "5px" }}>
+                            <Form.Label style={{marginBottom: "0px"}}><b>Apellidos</b></Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Apellidos"
                                 value={this.state.apellidos}
                                 onChange={(e) => { this.onChangeField(e, "apellidos") }} />
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
+                        <Col md="2" style={{ padding: 0, paddingLeft: "5px" }}>
+                            <Form.Label style={{marginBottom: "0px"}}><b>Tel&eacute;fono</b></Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Teléfono"
                                 value={this.state.telefono}
                                 onChange={(e) => { this.onChangeField(e, "telefono") }} />
                         </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Form.Control as="select"
-                            value={this.state.carreraSelected}
-                            onChange={(e)=>{this.onChangeField(e, "carreraSelected")}}>
+                        <Col md="3" style={{ padding: 0, paddingLeft: "5px" }}>
+                            <Form.Label style={{marginBottom: "0px"}}><b>Carrera</b></Form.Label>
+                            <Form.Control as="select" value={this.state.carreraSelected}
+                                          onChange={(e)=>{this.onChangeField(e, "carreraSelected")}}>
                                 <option value=""> - CARRERAS - </option>
                                 {optionCarreras}
                             </Form.Control>
-                        </Col>
-                        <Col style={{ padding: 0, paddingLeft: "5px" }}>
-                            <Button variant="primary" onClick={(e) => {this.getPartnersByFilter(this.state.currentPage, this.state.pageSize)}}>
-                                <FaSearch />
+                        </Col>&nbsp;&nbsp;&nbsp;
+                        <div style={{float:"right"}}>
+                            <Button variant="primary" onClick={(e) => {this.getPartnersByFilter(this.state.currentPage, this.state.pageSize)}} style={{marginTop:"1.5em"}}>
+                                <FaSearch/>
                             </Button>&nbsp;
-                            <div className="btn btn-primary" onClick={this.getPartnerByRFID.bind(this)}><FiRadio style={{"fontSize":"1.4em"}}/></div>
-                        </Col>
+                            <div className="btn btn-primary" onClick={this.getPartnerByRFID.bind(this)} style={{marginTop:"1.5em"}}><FiRadio style={{"fontSize":"1.4em"}}/></div>
+                        </div>
                     </Row>
                 </Form>
                 <section style={{display: "block", marginTop: "10px"}}>
