@@ -9,6 +9,7 @@ import axios from "axios";
 import Notifications, {notify} from 'react-notify-toast';
 import SocioInf from '../socio/socio-inf'
 import Paginator from "../paginator";
+import {get} from "../../util/cookies";
 
 export default class Alumno extends Component {
 
@@ -304,8 +305,13 @@ export default class Alumno extends Component {
 
     async getAlumnoFromRFID(e) {
         e.preventDefault();
+        var port = get("scc_port");
+        if(port == null){
+            notify.show("Debes configurar primero el puerto RFID", "warning");
+            return;
+        }
         this.setState({ rfidReading: true });
-        let res = await axios.get(process.env.REACT_APP_API_URL + "/alumnos/rfid");
+        let res = await axios.get(process.env.REACT_APP_API_URL + "/alumnos/rfid?port=" + port );
         if(res.status === 200){
             this.setState({ resultados: [res.data], rfidReading: false });
         }

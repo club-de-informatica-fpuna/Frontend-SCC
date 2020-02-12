@@ -6,6 +6,7 @@ import student from "../../../static/student.svg";
 import { getBackEndContext, buildDate, buildDateStandard } from "../../../util/generate-util";
 import axios from "axios";
 import {notify} from 'react-notify-toast';
+import {get} from "../../../util/cookies";
 import "./inf-socio-style.css";
 
 export default class SocioInf extends Component {
@@ -240,7 +241,12 @@ export default class SocioInf extends Component {
 
   async getCodeRFID(e) {
     e.preventDefault();
-    let endPoint = getBackEndContext("socios/rfid/code");
+    var port = get("scc_port");
+    if(port == null){
+        notify.show("Debes configurar primero el puerto RFID", "warning");
+        return;
+    } 
+    let endPoint = getBackEndContext("socios/rfid/code?port=" + port);
     this.setState({ waitForRFID: true });
     await axios.get(endPoint).then(rs => {
       let personUpdateInf = this.state.person;

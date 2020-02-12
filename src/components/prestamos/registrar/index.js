@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { Modal, Button, Form, Col, Row } from "react-bootstrap";
+import Notifications, {notify} from 'react-notify-toast';
 import { FaSearch, FaRss } from "react-icons/fa";
 import axios from "axios";
 import RFIDReader from "../../alumno/rfidReader";
 import SearchEquipos from "../../equipos/search";
 import {validateField, validateSelect, validateDate} from "../../../util/validators";
+import {get} from "../../../util/cookies";
 
 export default class Registrar extends Component {
 
@@ -39,6 +41,7 @@ export default class Registrar extends Component {
 
         return (
             <section>
+                <Notifications/>
                 <RFIDReader show={this.state.rfidReading} />
                 <SearchEquipos
                     show={this.state.showEquipos}
@@ -128,8 +131,13 @@ export default class Registrar extends Component {
 
     async getAlumnoFromRFID(e) {
         e.preventDefault();
+        var port = get("scc_port");
+        if(port == null){
+            notify.show("Debes configurar primero el puerto RFID", "warning");
+            return;
+        }        
         this.setState({ rfidReading: true });
-        let res = await axios.get(process.env.REACT_APP_API_URL + "/alumnos/rfid");
+        let res = await axios.get(process.env.REACT_APP_API_URL + "/alumnos/rfid?port=" + port);
         if (res.status === 200) {
             this.setState({ alumno: res.data, documento: res.data.ci, rfidReading: false });
         }

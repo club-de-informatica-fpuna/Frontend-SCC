@@ -9,6 +9,7 @@ import ToolTipSocio from './toolTip-profile';
 import Notifications, {notify} from 'react-notify-toast';
 import SocioInf from './socio-inf';
 import Paginator from '../paginator'
+import {get} from "../../util/cookies";
 
 export default class Socio extends Component {
 
@@ -195,7 +196,12 @@ export default class Socio extends Component {
 
     async getPartnerByRFID(e) {
         e.preventDefault();
-        let requestAddress = getBackEndContext("socios/rfid");
+        var port = get("scc_port");
+        if(port == null){
+            notify.show("Debes configurar primero el puerto RFID", "warning");
+            return;
+        }        
+        let requestAddress = getBackEndContext("socios/rfid?port=" + port);
         this.setState({ rfidShow: true });
         let rs = await axios.get(requestAddress);
         let partialResult =  this.state.results;

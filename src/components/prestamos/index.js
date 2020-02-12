@@ -10,6 +10,7 @@ import DevolucionModal from "./devolucion";
 import RFIDReader from "../alumno/rfidReader";
 import Notifications, {notify} from 'react-notify-toast';
 import Paginator from "../paginator";
+import {get} from "../../util/cookies";
 import axios from "axios";
 
 export default class Prestamos extends Component {
@@ -196,7 +197,7 @@ export default class Prestamos extends Component {
                         </tbody>
                     </Table>
                     <Paginator
-                        show={prestamos.length > 0}
+                        show={prestamos != undefined ? prestamos.length > 0 : false}
                         prev={this.previousPage.bind(this)}
                         next={this.nextPage.bind(this)}
                         first={this.toFirstPage.bind(this)}
@@ -377,8 +378,13 @@ export default class Prestamos extends Component {
 
     async getPrestamosFromRFID(e) {
         e.preventDefault();
+        var port = get("scc_port");
+        if(port == null){
+            notify.show("Debes configurar primero el puerto RFID", "warning");
+            return;
+        }        
         this.setState({ rfidReading: true });
-        let res = await axios.get(process.env.REACT_APP_API_URL + "/prestamos/rfid");
+        let res = await axios.get(process.env.REACT_APP_API_URL + "/prestamos/rfid?port=" + port);
         if(res.status === 200){
             this.setState({ prestamos: res.data, rfidReading: false });
         }
