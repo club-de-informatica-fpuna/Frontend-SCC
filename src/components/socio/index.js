@@ -201,7 +201,7 @@ export default class Socio extends Component {
             notify.show("Debes configurar primero el puerto RFID", "warning");
             return;
         }        
-        let requestAddress = getBackEndContext("socios/rfid?port=" + port);
+        let requestAddress = buildQueryParams({port:port}, getBackEndContext("socios/rfid"));
         this.setState({ rfidShow: true });
         let rs = await axios.get(requestAddress);
         let partialResult =  this.state.results;
