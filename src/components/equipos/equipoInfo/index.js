@@ -10,7 +10,7 @@ export default class EquipoInfo extends Component {
         return (
             <Modal show={this.props.show} onHide={this.props.close.bind(this)}>
                 <Modal.Header closeButton>
-                    <Modal.Title><b>{"Equipo: "}</b>{equipo.descripcion}</Modal.Title>
+                    <Modal.Title>{equipo.descripcion}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>

@@ -14,7 +14,7 @@ export default class PrestamoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                    <Image className="representative-image" src={prestamo.equipo.foto ? ("data:image/png;base64," + prestamo.equipo.foto) : logo} width="150" thumbnail />
+                    <Image className="representative-image" src={prestamo.equipo.foto ? (prestamo.equipo.foto) : logo} width="150" thumbnail />
                     </p>
                     <section className="modal-info-fields">
                         <table>
