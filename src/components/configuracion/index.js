@@ -50,7 +50,7 @@ export default class Configuracion extends Component {
             portsResults = ports.map((i) => (
                 <tr key={i}>
                     <td style={{ textAlign: "left", verticalAlign: "middle" }}>{i}</td>
-                    <td style={{ textAlign: "center", verticalAlign: "middle" }}>
+                    <td style={{ textAlign: "right", verticalAlign: "middle" }}>
                         <Button size="sm" variant="success" onClick={(e)=>{this.selectPort(i)}} disabled={this.getCurrentPort() == i}>Seleccionar</Button>
                     </td>
                 </tr>

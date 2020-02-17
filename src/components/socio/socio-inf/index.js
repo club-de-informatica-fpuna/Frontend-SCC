@@ -3,7 +3,7 @@ import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { MdClose, MdExposurePlus1, MdRefresh } from "react-icons/md";
 import student from "../../../static/student.svg";
-import { getBackEndContext, buildDate, buildDateStandard } from "../../../util/generate-util";
+import { getBackEndContext, buildDate, buildDateStandard, buildQueryParams } from "../../../util/generate-util";
 import axios from "axios";
 import {notify} from 'react-notify-toast';
 import {get} from "../../../util/cookies";
@@ -243,10 +243,10 @@ export default class SocioInf extends Component {
     e.preventDefault();
     var port = get("scc_port");
     if(port == null){
-        notify.show("Debes configurar primero el puerto RFID", "warning");
-        return;
-    } 
-    let endPoint = getBackEndContext("socios/rfid/code?port=" + port);
+      notify.show("Debes configurar primero el puerto RFID", "warning");
+      return;
+    }
+    let endPoint = buildQueryParams({port:port}, getBackEndContext("socios/rfid/code"));
     this.setState({ waitForRFID: true });
     await axios.get(endPoint).then(rs => {
       let personUpdateInf = this.state.person;
