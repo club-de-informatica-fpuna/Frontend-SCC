@@ -115,7 +115,7 @@ export default class Equipos extends Component {
                                     </Button>
                             </section>
                             <section style={{display: "inline-block", float: "right"}} hidden={!k.foto}>
-                                <Image src={("data:image/png;base64," + k.foto)} width="100" thumbnail/>
+                                <Image src={(k.foto)} width="100" thumbnail/>
                             </section>
                         </Card.Body>
                     </Accordion.Collapse>

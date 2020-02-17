@@ -160,7 +160,7 @@ export default class EquipoRegistrar extends Component {
         e.preventDefault();
         var file = e.target.files[0];   
         var reader = new FileReader();
-        reader.readAsBinaryString(file);
+        reader.readAsDataURL(file);
         reader.onload = function() {
             this.setState({
                 file: window.btoa(reader.result)

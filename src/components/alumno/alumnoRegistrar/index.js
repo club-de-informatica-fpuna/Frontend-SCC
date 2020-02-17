@@ -38,9 +38,9 @@ export default class AlumnoRegistrar extends Component {
                     <Form>
                         <Form.Group controlId="formNombres">
                             <Form.Label><b>Nombres</b></Form.Label>
-                            <span className="validation-field" hidden={validateField(this.state.nombres, 15, 3)}>Nombre inválido</span>
+                            <span className="validation-field" hidden={validateField(this.state.nombres, 50, 3)}>Nombre inválido</span>
                             <Form.Control
-                                className={validateField(this.state.nombres, 15, 3) ? "input-validate-field-success" : "input-validate-field-error"}
+                                className={validateField(this.state.nombres, 50, 3) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="text"
                                 placeholder="Ingrese sus nombres"
                                 value={this.state.nombres}
@@ -49,9 +49,9 @@ export default class AlumnoRegistrar extends Component {
                         </Form.Group>
                         <Form.Group controlId="formApellidos">
                             <Form.Label><b>Apellidos</b></Form.Label>
-                            <span className="validation-field" hidden={validateField(this.state.apellidos, 15, 3)}>Apellido inválido</span>                            
+                            <span className="validation-field" hidden={validateField(this.state.apellidos, 50, 3)}>Apellido inválido</span>                            
                             <Form.Control
-                                className={validateField(this.state.apellidos, 15, 3) ? "input-validate-field-success" : "input-validate-field-error"}
+                                className={validateField(this.state.apellidos, 50, 3) ? "input-validate-field-success" : "input-validate-field-error"}
                                 type="text"
                                 placeholder="Ingrese sus apellidos"
                                 autoComplete="off"
@@ -133,8 +133,8 @@ export default class AlumnoRegistrar extends Component {
     }
 
     validateAllFields(alumno){
-        if(validateField(alumno.nombres, 15, 3) && 
-            validateField(alumno.apellidos, 15, 3) &&
+        if(validateField(alumno.nombres, 50, 3) && 
+            validateField(alumno.apellidos, 50, 3) &&
             validateNumber(alumno.ci, 99999999, 99999) &&
             validateField(alumno.telefono, 20, 7) &&
             validateEmail(alumno.email) &&

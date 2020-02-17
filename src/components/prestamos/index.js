@@ -78,7 +78,7 @@ export default class Prestamos extends Component {
                     <td style={{textAlign: "center"}}><Button variant="secondary" size="sm" onClick={(e) => {this.showEquipoInfo(e, i.equipo)}}>{i.equipo.descripcion}</Button></td>
                     <td style={{textAlign: "center"}}>{this.fromRFCToFormat(i.fechaPrestamo)}</td>
                     <td style={{textAlign: "center"}}>
-                        <Button onClick={(e) => {this.showTiempoPrestado(e, i.fechaPrestamo, i.fechaDevolucion)}} size="sm" style={i.fechaDevolucion === undefined ? {background: "#dc3545", border: "1px solid #dc3545", color: "white"} : {background: "#229954", border: "1px solid #229954", color: "white"}}>
+                        <Button onClick={(e) => {this.showTiempoPrestado(e, i.fechaPrestamo, i.fechaDevolucion)}} size="sm" style={i.fechaDevolucion == undefined ? {background: "#dc3545", border: "1px solid #dc3545", color: "white"} : {background: "#229954", border: "1px solid #229954", color: "white"}}>
                             {i.fechaDevolucion == undefined ? "NO DEVUELTO" : this.fromRFCToFormat(i.fechaDevolucion)}                  
                         </Button>
                     </td>

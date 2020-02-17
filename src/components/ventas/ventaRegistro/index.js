@@ -26,7 +26,7 @@ export default class VentaRegistro extends Component {
 
     now() {
         let date = new Date();
-        let stringDate = date.getUTCFullYear() + "-" + this.checkDigits(date.getUTCMonth() + 1) + "-" + this.checkDigits(date.getUTCDate());
+        let stringDate = date.getUTCFullYear() + "-" + this.checkDigits(date.getUTCMonth() + 1) + "-" + this.checkDigits(date.getDate());
         let time = this.checkDigits(date.getHours()) + ":" + this.checkDigits(date.getUTCMinutes());
         return stringDate + "T" + time;
     }

@@ -14,6 +14,7 @@ export default class Ventas extends Component {
         super(props);
         this.state = {
             ventas: [],
+            total: 0,
             venta: undefined,
             nombreClienteFilter: "",
             documentoClienteFilter: "",
@@ -41,7 +42,6 @@ export default class Ventas extends Component {
         var ventas = this.state.ventas;
         let tableResults = <><tr><td style={{borderTop: "none"}} ><FaRegGrinBeamSweat style={{height:"4em", width:"4em"}}/></td></tr>&nbsp;<tr>NO SE HAN ENCONTRADO RESULTADOS!!!</tr></>;
         var havingResults = false;
-        var total = 0;
         if (ventas !== undefined && ventas.length > 0) {
             havingResults = true;
             tableResults = ventas.map((i) => (
@@ -62,9 +62,6 @@ export default class Ventas extends Component {
                     </td>                    
                 </tr>
             ));
-            for(var i = 0; i < ventas.length; i++){
-                total += ventas[i].importeTotal;
-            }
         }
 
         return (
@@ -114,7 +111,7 @@ export default class Ventas extends Component {
                 </Form>
                 <img alt="Cargando ..." hidden={!this.state.loading} src={"/loading.gif"} height={50} style={{marginTop: "10px"}}/>
                 <section>
-                    <Table size={"sm"} hover={havingResults} responsive style={{ fontSize: "12px", marginTop: "10px", textAlign: havingResults ? "" : "center" }}>
+                    <Table size={"sm"} hover={havingResults} hidden={this.state.loading} responsive style={{ fontSize: "12px", marginTop: "10px", textAlign: havingResults ? "" : "center" }}>
                         <thead hidden={!havingResults} style={{background: "#343a40", color: "white"}}>
                             <tr>
                                 <th style={{textAlign: "center"}}>ID</th>
@@ -139,7 +136,7 @@ export default class Ventas extends Component {
                         lastPage={this.state.lastPage}
                         currentPage={this.state.currentPage}/>
                     <br></br>
-                    <h5 style={{float: "right"}}><strong>TOTAL: </strong>{this.formatoMoneda(total) + " GS."}</h5>
+                    <h5 style={{float: "right"}}><strong>TOTAL: </strong>{this.formatoMoneda(this.state.total) + " GS."}</h5>
                 </section>
             </section>
         );
@@ -208,12 +205,30 @@ export default class Ventas extends Component {
                 loading: false,
                 currentPage: res.data.pageable.pageNumber+1,
                 lastPage: res.data.totalPages
-            });
+            }, this.getTotals);
         })
         .catch(error => {
             this.setState({loading: false});
             console.log(error);
         });
+    }
+
+    getTotals(){
+        let obj = {
+            page: 1,
+            pageSize: 5,
+            documento: this.state.documentoClienteFilter,
+            nombres: this.state.nombreClienteFilter,
+            fecha: this.convertDate(this.state.fechaFilter)
+        }
+        axios.get(process.env.REACT_APP_API_URL + buildQueryParams(obj, "/ventas/total"))
+        .then(res => {
+            this.setState({total: res.data});
+        })
+        .catch(error => {
+            console.log(error);
+            this.setState({total: 0});
+        });        
     }
 
     getVentaById(id){

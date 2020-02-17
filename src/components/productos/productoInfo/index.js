@@ -14,7 +14,7 @@ export default class ProductoInfo extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{textAlign: "center"}}>
-                        <Image className="representative-image" src={ producto.foto ? ("data:image/png;base64," + producto.foto) : logo} width="150" thumbnail />
+                        <Image className="representative-image" src={ producto.foto ? (producto.foto) : logo} width="150" thumbnail />
                     </p>
                     <section className="modal-info-fields">
                         <p><strong>DENOMINACION: </strong>{producto.denominacion}</p>
