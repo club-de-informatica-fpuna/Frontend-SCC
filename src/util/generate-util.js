@@ -3,7 +3,7 @@
  * @param {*} path : recurso del path del back-end
  */
 export function getBackEndContext(resource){
-    const backEndPath = "http://localhost:8080/scc/";
+    const backEndPath = process.env.REACT_APP_API_URL;
     return resource === undefined || resource === "" ? backEndPath : backEndPath.concat(resource);
 }
 
