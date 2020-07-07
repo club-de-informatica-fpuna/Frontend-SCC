@@ -38,6 +38,6 @@
   },
   "devDependencies": {
     "react-app-env": "^1.2.3",
-    "electron": "^5.0.3"
+    "electron": "^7.2.4"
   }
 }
